@@ -1,0 +1,371 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --neon-red: #ffffff;
+  --neon-white: #ffffff;
+  --neon-glow: rgba(255, 255, 255, 0.18);
+  --glass: rgba(0, 0, 0, 0.025);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+  background-color: var(--background);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--background);
+  background-image: none;
+  color: #f5f5f5;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+/* Noise overlay — mais sutil em fundo preto forte */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.026;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Neon text */
+.neon-text {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 12px rgba(255, 255, 255, 0.72),
+    0 0 24px rgba(255, 255, 255, 0.16);
+}
+
+.neon-text-blue {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.7),
+    0 0 28px rgba(255, 255, 255, 0.16);
+}
+
+.neon-text-purple {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.7),
+    0 0 28px rgba(255, 255, 255, 0.14);
+}
+
+/* LED sign — placa neon nítida e chamativa */
+.led-sign {
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  filter: brightness(1.08);
+  text-shadow:
+    0 0 1px #ffffff,
+    0 0 2px #ffffff,
+    0 0 8px #ffffff,
+    0 0 16px rgba(255, 255, 255, 1),
+    0 0 28px rgba(255, 255, 255, 0.9),
+    0 0 56px rgba(255, 255, 255, 0.32),
+    0 0 92px rgba(255, 255, 255, 0.16),
+    0 0 132px rgba(255, 255, 255, 0.08);
+}
+
+@keyframes led-sign-breathe {
+  0%, 100% {
+    text-shadow:
+      0 0 1px #ffffff,
+      0 0 2px #ffffff,
+      0 0 8px #ffffff,
+      0 0 16px rgba(255, 255, 255, 1),
+      0 0 28px rgba(255, 255, 255, 0.9),
+      0 0 56px rgba(255, 255, 255, 0.32),
+      0 0 92px rgba(255, 255, 255, 0.16),
+      0 0 132px rgba(255, 255, 255, 0.08);
+    filter: brightness(1.08);
+  }
+  50% {
+    text-shadow:
+      0 0 2px #ffffff,
+      0 0 4px #ffffff,
+      0 0 10px #ffffff,
+      0 0 22px rgba(255, 255, 255, 1),
+      0 0 40px rgba(255, 255, 255, 0.96),
+      0 0 70px rgba(255, 255, 255, 0.36),
+      0 0 108px rgba(255, 255, 255, 0.18),
+      0 0 150px rgba(255, 255, 255, 0.1);
+    filter: brightness(1.16);
+  }
+}
+
+@keyframes led-sign-flicker {
+  0%, 100% { opacity: 1; }
+  4% { opacity: 1; }
+  4.5% { opacity: 0.92; }
+  5% { opacity: 1; }
+  5.5% { opacity: 0.88; }
+  6% { opacity: 1; }
+  50% { opacity: 1; }
+  50.5% { opacity: 0.95; }
+  51% { opacity: 1; }
+  89% { opacity: 1; }
+  89.5% { opacity: 0.9; }
+  90% { opacity: 1; }
+}
+
+.led-sign-flicker {
+  animation:
+    led-sign-breathe 2s ease-in-out infinite,
+    led-sign-flicker 4.8s linear infinite;
+}
+
+/* LED flicker genérico */
+@keyframes led-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.85; }
+  94% { opacity: 1; }
+  96% { opacity: 0.9; }
+  97% { opacity: 1; }
+}
+
+.led-flicker {
+  animation: led-flicker 3s infinite;
+}
+
+@keyframes led-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 4px rgba(255, 255, 255, 0.9),
+      0 0 12px rgba(255, 255, 255, 0.72),
+      0 0 24px rgba(255, 255, 255, 0.16);
+  }
+  50% {
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 1),
+      0 0 18px rgba(255, 255, 255, 0.78),
+      0 0 36px rgba(255, 255, 255, 0.24);
+  }
+}
+
+.led-pulse {
+  animation: led-pulse 2s ease-in-out infinite, led-flicker 4s infinite;
+}
+
+/* Glass card — mais escuro */
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Glow button */
+.glow-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.glow-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+/* Loader animado */
+.loader {
+  --color-1: #fff;
+  --size: 1px;
+  font-size: calc(72 * var(--size));
+  color: var(--color-1);
+  width: 1em;
+  height: 1em;
+  box-sizing: border-box;
+  background-color: currentcolor;
+  position: relative;
+  border-radius: 50%;
+  transform: rotateX(-60deg) perspective(calc(1000 * var(--size)));
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.2));
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  animation: flowerFlow 1s ease-out infinite;
+}
+
+.loader:after {
+  animation-delay: 0.4s;
+}
+
+@keyframes flowerFlow {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg);
+    box-shadow:
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor,
+      0 0 0 -0.5em currentcolor;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(180deg);
+    box-shadow:
+      -1em -1em 0 -0.35em currentcolor,
+      0 -1.5em 0 -0.35em currentcolor,
+      1em -1em 0 -0.35em currentcolor,
+      -1.5em 0 0 -0.35em currentcolor,
+      1.5em -0 0 -0.35em currentcolor,
+      -1em 1em 0 -0.35em currentcolor,
+      0 1.5em 0 -0.35em currentcolor,
+      1em 1em 0 -0.35em currentcolor;
+  }
+}
+
+/* Terminal intro */
+.terminal-window {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(8, 10, 16, 0.82);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 14px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.terminal-bar {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.8rem 0.95rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.terminal-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.terminal-body {
+  padding: 1rem 1rem 1.1rem;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.terminal-line {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.terminal-prompt {
+  color: #8ee7ff;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  margin-left: 0.2rem;
+  background-color: #ffffff;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Grid background */
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.tech-grid-static {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+}
