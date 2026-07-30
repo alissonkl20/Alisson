@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { MouseGlow } from "@/components/effects/MouseGlow";
-import { LoadingScreen } from "@/components/intro/LoadingScreen";
 import { Navigation } from "@/components/layout/Navigation";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
@@ -24,10 +23,7 @@ export default function Home() {
 
   return (
     <>
-      {phase === "loading" && <LoadingScreen onComplete={handleLoadingComplete} />}
-
-      {phase === "main" && (
-        <LenisProvider>
+     
           <motion.main
             initial={false}
             animate={{ opacity: 1 }}
@@ -46,8 +42,6 @@ export default function Home() {
             <Contact />
             <Footer />
           </motion.main>
-        </LenisProvider>
-      )}
     </>
   );
 }
