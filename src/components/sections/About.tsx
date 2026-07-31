@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { profile, aboutStats, techCategories } from "@/lib/data";
 import { SectionTitle } from "@/components/ui/NeonText";
@@ -22,10 +23,12 @@ export function About() {
             <div className="group relative h-full w-full">
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 blur-2xl transition-all duration-500 group-hover:blur-3xl" />
               <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] transition-transform duration-300 hover:scale-[1.01]">
-                <img
+                <Image
                   src="/foto.png"
                   alt={profile.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               </div>
