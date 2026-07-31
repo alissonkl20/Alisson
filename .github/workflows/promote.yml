@@ -1,0 +1,42 @@
+name: Promote Develop to Main
+
+on:
+  workflow_run:
+    workflows:
+      - "Next.js CI"
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+
+jobs:
+
+  promote:
+
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'develop'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Merge develop into main
+        run: |
+          git fetch origin
+          git checkout main
+          git pull origin main
+          git merge origin/develop --no-edit
+          git push origin main
