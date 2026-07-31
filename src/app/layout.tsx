@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./global.css";
+import AccessTracker from "@/components/analytics/AccessTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,13 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
-      <body className="min-h-full bg-[var(--background)] antialiased">{children}</body>
+      <body className="min-h-full bg-[var(--background)] antialiased">
+
+        <AccessTracker />
+
+        {children}
+
+      </body>
     </html>
   );
 }
