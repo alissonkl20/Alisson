@@ -12,7 +12,7 @@ import {
 export const profile = {
   name: "Alisson de Almeida",
   title: "Full Stack Developer",
-  experience: "2+ years of experienc",
+  experience: "2+ years of experien",
   description:
     "Full Stack Developer with over 2 years of experience building robust and scalable backend systems, as well as modern and high-performance user interfaces. Passionate about delivering complete solutions that combine technical excellence, clean architecture, and a strong user experience.",
   bio: "I am a Full Stack Developer with over 2 years of experience creating robust and scalable backend solutions, as well as modern and high-performance interfaces. I focus on building complete products with clean architecture, reliable performance, and exceptional user experience.",
