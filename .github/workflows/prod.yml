@@ -34,5 +34,4 @@ jobs:
 
 
       - name: Build Next.js
-        run: npm run buildclear
-        
+        run: npm run build
