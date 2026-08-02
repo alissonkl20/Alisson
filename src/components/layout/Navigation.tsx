@@ -62,7 +62,7 @@ export function Navigation() {
             className="font-mono text-sm tracking-widest text-white/80 transition-colors hover:text-neon-blue"
             aria-label="Ir para início"
           >
-            DEVKISPER
+            Alisson.Dev
           </button>
 
           <div className="hidden items-center gap-8 md:flex">

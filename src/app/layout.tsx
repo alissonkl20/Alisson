@@ -48,7 +48,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-[var(--background)] antialiased">
 
-        <AccessTracker />
+        {/* <AccessTracker /> */}
 
         {children}
 

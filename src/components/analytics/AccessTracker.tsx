@@ -1,48 +1,74 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+
+import {
+  hasPageViewBeenSent,
+  hasSessionEndBeenSent,
+  isAnalyticsConfigured,
+  markPageViewSent,
+  markSessionEndSent,
+  sendPageView,
+  sendSessionEnd,
+} from "@/lib/analytics";
+
+const SESSION_START_KEY = "obs_session_start";
+
+function getSessionStart(): number {
+  const stored = sessionStorage.getItem(SESSION_START_KEY);
+  if (stored) {
+    return Number(stored);
+  }
+
+  const now = Date.now();
+  sessionStorage.setItem(SESSION_START_KEY, String(now));
+  return now;
+}
+
+function getSessionTimeSeconds(startTime: number): number {
+  return Math.max(0, Math.round((Date.now() - startTime) / 1000));
+}
 
 export default function AccessTracker() {
+  const pageViewSentRef = useRef(false);
+  const sessionEndSentRef = useRef(false);
+
   useEffect(() => {
-    const startTime = Date.now();
+    if (!isAnalyticsConfigured()) {
+      return;
+    }
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/access-log`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        page: window.location.pathname,
-        event: "page_view",
-        session_time: 0,
-      }),
-    }).catch(console.error);
+    const page = window.location.pathname;
+    const sessionStart = getSessionStart();
 
-    const sendExitLog = () => {
-      const sessionTime = Math.round((Date.now() - startTime) / 1000);
+    // Evita duplicação no React Strict Mode (dev) e re-mounts
+    if (!pageViewSentRef.current && !hasPageViewBeenSent()) {
+      pageViewSentRef.current = true;
+      markPageViewSent();
 
-      navigator.sendBeacon(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/access-log`,
-        new Blob(
-          [
-            JSON.stringify({
-              page: window.location.pathname,
-              event: "session_end",
-              session_time: sessionTime,
-            }),
-          ],
-          {
-            type: "application/json",
-          }
-        )
-      );
+      sendPageView(page).catch(() => {
+        pageViewSentRef.current = false;
+        sessionStorage.removeItem("obs_page_view_sent");
+      });
+    }
+
+    const dispatchSessionEnd = () => {
+      if (sessionEndSentRef.current || hasSessionEndBeenSent()) {
+        return;
+      }
+
+      sessionEndSentRef.current = true;
+      markSessionEndSent();
+
+      sendSessionEnd(page, getSessionTimeSeconds(sessionStart));
     };
 
-    window.addEventListener("beforeunload", sendExitLog);
+    window.addEventListener("beforeunload", dispatchSessionEnd);
+    window.addEventListener("pagehide", dispatchSessionEnd);
 
     return () => {
-      sendExitLog();
-      window.removeEventListener("beforeunload", sendExitLog);
+      window.removeEventListener("beforeunload", dispatchSessionEnd);
+      window.removeEventListener("pagehide", dispatchSessionEnd);
     };
   }, []);
 
