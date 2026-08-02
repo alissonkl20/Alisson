@@ -1,4 +1,6 @@
-"""Cliente de analytics para comunicação com a API de observabilidade."""
+/**
+ * Cliente de analytics para comunicação com a API de observabilidade.
+ */
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const API_KEY = process.env.NEXT_PUBLIC_OBSERVABILITY_API_KEY ?? "";
@@ -67,17 +69,27 @@ export async function sendPageView(page: string): Promise<void> {
   });
 }
 
-export function sendSessionEnd(page: string, sessionTime: number): boolean {
+export function sendSessionEnd(
+  page: string,
+  sessionTime: number
+): boolean {
   const body = buildAccessBody({
     page,
     event: "session_end",
     session_time: sessionTime,
   });
 
-  return navigator.sendBeacon(`${API_URL}/api/access-log`, new Blob([body], { type: "application/json" }));
+  return navigator.sendBeacon(
+    `${API_URL}/api/access-log`,
+    new Blob([body], {
+      type: "application/json",
+    })
+  );
 }
 
-export async function sendCustomEvent(payload: EventPayload): Promise<void> {
+export async function sendCustomEvent(
+  payload: EventPayload
+): Promise<void> {
   await fetch(`${API_URL}/api/event`, {
     method: "POST",
     headers: getHeaders(),
