@@ -4,12 +4,11 @@ export const LOADING_STEPS = [
 
 export const SECTIONS = [
   { id: "home", label: "Home" },
-  { id: "about", label: "Sobre" },
-  { id: "experience", label: "Experiência" },
-  { id: "stacks", label: "Stacks" },
-  { id: "projects", label: "Projetos" },
-  { id: "contact", label: "Contato" },
-] as const;
+  { id: "about", label: "About" },     
+  { id: "experience", label: "Experience" }, 
+  { id: "stacks", label: "Projects" },    
+  { id: "contact", label: "Contact" },    
+];
 
 export const COLORS = {
   bg: "#000000",
