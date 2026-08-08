@@ -108,7 +108,7 @@ export interface Project {
   icon: LucideIcon;
 }
 
-export const projects: Project[] = 
+export const projects: Project[] = [
   {
     id: "1",
     title: "Automação de E-mail e WhatsApp",

@@ -15,26 +15,6 @@ const categoryIcons: Record<string, React.ReactNode> = {
   Ferramentas: <Wrench className="h-5 w-5 text-neon-pink" strokeWidth={1.8} />,
 };
 
-// Estilos apenas com cores – sem transições ou efeitos hover
-const categoryStyles: Record<string, { border: string; bg: string }> = {
-  "Back-end": {
-    border: "border-neon-blue/40",
-    bg: "bg-neon-blue/10",
-  },
-  "Front-end": {
-    border: "border-neon-purple/40",
-    bg: "bg-neon-purple/10",
-  },
-  "Banco de Dados": {
-    border: "border-neon-green/40",
-    bg: "bg-neon-green/10",
-  },
-  Ferramentas: {
-    border: "border-neon-pink/40",
-    bg: "bg-neon-pink/10",
-  },
-};
-
 export function About() {
   return (
     <section id="about" className="relative px-6 py-32 md:py-40">
@@ -42,7 +22,6 @@ export function About() {
         <SectionTitle subtitle="01 — About">About Me</SectionTitle>
 
         <div className="grid items-center gap-16 lg:grid-cols-2">
-          {/* Foto – mantive a animação de entrada, mas você pode remover se quiser */}
           <motion.div
             className="relative mx-auto aspect-square w-full max-w-md"
             initial={{ opacity: 0, y: 24 }}

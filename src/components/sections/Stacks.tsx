@@ -36,9 +36,7 @@ function StackCard({
           >
             {stack.name.slice(0, 2).toUpperCase()}
           </div>
-          <span className="font-mono text-xs text-white/30">
-            {stack.level}%
-          </span>
+
         </div>
 
         <h3 className="mb-2 text-lg font-semibold text-white">{stack.name}</h3>
@@ -57,7 +55,6 @@ function StackCard({
               boxShadow: `0 0 10px ${stack.color}40`,
             }}
             initial={{ width: 0 }}
-            whileInView={{ width: `${stack.level}%` }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           />

@@ -82,7 +82,7 @@ export function Experience() {
       />
 
       <div className="relative z-20 mx-auto max-w-4xl">
-        <SectionTitle subtitle="02 — Experiência">Experiência</SectionTitle>
+        <SectionTitle subtitle="02 — Experience">Experience</SectionTitle>
 
         <div ref={timelineRef} className="relative">
           <div className="absolute left-6 top-0 h-full w-[1px] bg-gradient-to-b from-neon-blue/50 via-neon-purple/30 to-transparent md:left-1/2 md:-translate-x-1/2" />

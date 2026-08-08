@@ -21,7 +21,7 @@ export function Contact() {
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-4xl">
-        <SectionTitle subtitle="05 — Contato">Contato</SectionTitle>
+        <SectionTitle subtitle="05 — Contact">Contact</SectionTitle>
 
         <motion.div
           className="glass-card rounded-3xl p-8 md:p-10"
@@ -31,17 +31,18 @@ export function Contact() {
           transition={{ duration: 0.8 }}
         >
          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-  <div>
-    <h3 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
-      <NeonText color="blue" ledSign flicker>
-        Let's talk
-      </NeonText>
-    </h3>
-    <p className="max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
-      I'm open to new projects, collaborations, and opportunities to build
-      impactful, high-performance digital experiences.
-    </p>
-  </div>
+          <div>
+            <h3 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
+              <NeonText color="blue" ledSign flicker>
+                Let&apos;s talk
+              </NeonText>
+            </h3>
+
+            <p className="max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+              I&apos;m open to new projects, collaborations, and opportunities to build
+              impactful, high-performance digital experiences.
+            </p>
+          </div>
 
             <div className="space-y-3">
               <a
