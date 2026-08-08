@@ -24,7 +24,7 @@ function StackCard({
       }}
       style={{ perspective: 1000 }}
     >
-      <GlowCard className="h-full">
+      <GlowCard className="h-full bg-white/5 backdrop-blur-sm border border-white/10">
         <div className="mb-4 flex items-center justify-between">
           <div
             className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold"
@@ -41,7 +41,13 @@ function StackCard({
           </span>
         </div>
 
-        <h3 className="mb-3 text-lg font-semibold text-white">{stack.name}</h3>
+        <h3 className="mb-2 text-lg font-semibold text-white">{stack.name}</h3>
+
+        {stack.description && (
+          <p className="mb-4 text-sm text-white/60 leading-relaxed">
+            {stack.description}
+          </p>
+        )}
 
         <div className="relative h-1.5 overflow-hidden rounded-full bg-white/5">
           <motion.div
@@ -67,7 +73,7 @@ export function Stacks() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neon-blue/5 via-transparent to-transparent" />
 
       <div className="mx-auto max-w-6xl">
-        <SectionTitle subtitle="03 — Tecnologias">Stacks</SectionTitle>
+        <SectionTitle subtitle="03 — Projects">Projects</SectionTitle>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {stacks.map((stack, i) => (

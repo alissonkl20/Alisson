@@ -30,18 +30,18 @@ export function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div>
-              <h3 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
-                <NeonText color="blue" ledSign flicker>
-                  Vamos conversar
-                </NeonText>
-              </h3>
-              <p className="max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
-                Estou aberto a novos projetos, colaborações e oportunidades para construir
-                experiências digitais impactantes e de alto desempenho.
-              </p>
-            </div>
+         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+  <div>
+    <h3 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
+      <NeonText color="blue" ledSign flicker>
+        Let's talk
+      </NeonText>
+    </h3>
+    <p className="max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
+      I'm open to new projects, collaborations, and opportunities to build
+      impactful, high-performance digital experiences.
+    </p>
+  </div>
 
             <div className="space-y-3">
               <a

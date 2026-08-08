@@ -8,8 +8,12 @@
   --neon-glow: rgba(255, 255, 255, 0.18);
   --glass: rgba(0, 0, 0, 0.025);
   --glass-border: rgba(0, 0, 0, 0.08);
+  /* Cores neon mais intensas */
+  --neon-blue: #4b9eff;
+  --neon-purple: #b388ff;
+  --neon-green: #00e676;
+  --neon-pink: #ff4081;
 }
-
 
 * {
   box-sizing: border-box;
@@ -50,7 +54,30 @@ body {
   color: #ffffff;
 }
 
-/* Noise overlay — mais sutil em fundo preto forte */
+/* Blocos de categoria – sem pseudo-elementos ou animações */
+.category-block {
+  position: relative;
+  overflow: hidden;
+  /* NENHUMA TRANSITION */
+}
+
+/* Estilo adicional para os blocos (opcional, pode ser via Tailwind) */
+.tech-category-title {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+}
+
+.tech-tag {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(218, 5, 5, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== FIM DOS ESTILOS DO ABOUT ===== */
+
+/* Noise overlay — mais sutil */
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -98,93 +125,26 @@ body {
     0 0 132px rgba(255, 255, 255, 0.08);
 }
 
-@keyframes led-sign-breathe {
-  0%, 100% {
-    text-shadow:
-      0 0 1px #ffffff,
-      0 0 2px #ffffff,
-      0 0 8px #ffffff,
-      0 0 16px rgba(255, 255, 255, 1),
-      0 0 28px rgba(255, 255, 255, 0.9),
-      0 0 56px rgba(255, 255, 255, 0.32),
-      0 0 92px rgba(255, 255, 255, 0.16),
-      0 0 132px rgba(255, 255, 255, 0.08);
-    filter: brightness(1.08);
-  }
-  50% {
-    text-shadow:
-      0 0 2px #ffffff,
-      0 0 4px #ffffff,
-      0 0 10px #ffffff,
-      0 0 22px rgba(255, 255, 255, 1),
-      0 0 40px rgba(255, 255, 255, 0.96),
-      0 0 70px rgba(255, 255, 255, 0.36),
-      0 0 108px rgba(255, 255, 255, 0.18),
-      0 0 150px rgba(255, 255, 255, 0.1);
-    filter: brightness(1.16);
-  }
-}
-
-@keyframes led-sign-flicker {
-  0%, 100% { opacity: 1; }
-  4% { opacity: 1; }
-  4.5% { opacity: 0.92; }
-  5% { opacity: 1; }
-  5.5% { opacity: 0.88; }
-  6% { opacity: 1; }
-  50% { opacity: 1; }
-  50.5% { opacity: 0.95; }
-  51% { opacity: 1; }
-  89% { opacity: 1; }
-  89.5% { opacity: 0.9; }
-  90% { opacity: 1; }
-}
+/* REMOVIDAS AS ANIMAÇÕES led-sign-breathe, led-sign-flicker e led-flicker, led-pulse */
+/* Se quiser manter animações em outros elementos, pode mantê-las, mas para o About, não serão usadas */
 
 .led-sign-flicker {
-  animation:
-    led-sign-breathe 2s ease-in-out infinite,
-    led-sign-flicker 4.8s linear infinite;
-}
-
-/* LED flicker genérico */
-@keyframes led-flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.85; }
-  94% { opacity: 1; }
-  96% { opacity: 0.9; }
-  97% { opacity: 1; }
+  /* SEM ANIMAÇÃO */
 }
 
 .led-flicker {
-  animation: led-flicker 3s infinite;
-}
-
-@keyframes led-pulse {
-  0%, 100% {
-    text-shadow:
-      0 0 4px rgba(255, 255, 255, 0.9),
-      0 0 12px rgba(255, 255, 255, 0.72),
-      0 0 24px rgba(255, 255, 255, 0.16);
-  }
-  50% {
-    text-shadow:
-      0 0 6px rgba(255, 255, 255, 1),
-      0 0 18px rgba(255, 255, 255, 0.78),
-      0 0 36px rgba(255, 255, 255, 0.24);
-  }
+  /* SEM ANIMAÇÃO */
 }
 
 .led-pulse {
-  animation: led-pulse 2s ease-in-out infinite, led-flicker 4s infinite;
+  /* SEM ANIMAÇÃO */
 }
 
 /* Glass card — mais escuro */
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(0, 0, 0);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Glow button */
@@ -229,7 +189,7 @@ body {
   background: rgba(255, 255, 255, 0.34);
 }
 
-/* Loader animado */
+/* Loader animado (mantido) */
 .loader {
   --color-1: #fff;
   --size: 1px;

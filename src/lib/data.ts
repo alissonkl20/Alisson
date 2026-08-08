@@ -12,10 +12,10 @@ import {
 export const profile = {
   name: "Alisson de Almeida",
   title: "Full Stack Developer",
-  experience: "2+ years of experience",
+  experience: "3+ years of experience",
   description:
-    "Full Stack Developer with over 2 years of experience building robust and scalable backend systems, as well as modern and high-performance user interfaces. Passionate about delivering complete solutions that combine technical excellence, clean architecture, and a strong user experience.",
-  bio: "I am a Full Stack Developer with over 2 years of experience creating robust and scalable backend solutions, as well as modern and high-performance interfaces. I focus on building complete products with clean architecture, reliable performance, and exceptional user experience.",
+    "Full Stack Developer with over 3 years of experience in web application development, specializing in building robust and scalable backends, efficient APIs, and modern, responsive interfaces. Focused on architecture, performance, code quality, and delivering complete solutions.",
+  bio: "I’m a Full Stack Developer with over 3 years of experience building web applications, with a focus on scalable backends, modern interfaces, performance, and security. Experienced in developing APIs, refactoring legacy systems, optimizing applications, and implementing RPA and workflow automation solutions. I’m passionate about solving complex problems and building reliable, maintainable, and high-performance software",
   email: "alisson@email.com",
   github: "https://github.com/alissonkl20",
   linkedin: "https://www.linkedin.com/in/alisson-almeida-de-oliveira-3406bb347",
@@ -64,21 +64,37 @@ export const experiences: Experience[] = [
 
 export interface StackItem {
   name: string;
-  level: number;
-  category: "backend" | "frontend" | "database" | "tools";
-  color: string;
+  category: string; 
+  color: string; 
+  description?: string; 
 }
 
+export type StackCategory = 
+  | "backend" | "frontend" | "database" | "tools"
+  | "finanças" | "chatbot" | "automação";
+
 export const stacks: StackItem[] = [
-  { name: "PHP", level: 50, category: "backend", color: "#777bb4" },
-  { name: "Python", level: 60, category: "backend", color: "#3776ab" },
-  { name: "Java", level: 70, category: "backend", color: "#f89820" },
-  { name: "JavaScript", level: 55, category: "frontend", color: "#f7df1e" },
-  { name: "TypeScript", level: 70, category: "frontend", color: "#3178c6" },
-  { name: "React", level: 80, category: "frontend", color: "#61dafb" },
-  { name: "Next.js", level: 40, category: "frontend", color: "#ffffff" },
-  { name: "Vue.js", level: 70, category: "frontend", color: "#42b883" },
-  { name: "Laravel", level: 60, category: "backend", color: "#ff2d20" },
+  {
+    name: "Finance AI",
+    category: "finance",
+    color: "from-green-600/40 to-blue-600/40",
+    description:
+      "Personal financial manager that processes bank statements via local LLM (5B params) with RAG. Generates detailed reports on income, expenses, and spending categorization (leisure, bills, investments).",
+  },
+  {
+    name: "Chatbot Self-Service",
+    category: "chatbot",
+    color: "from-purple-600/40 to-pink-600/40",
+    description:
+      "Chatbot with local LLM (3B params) and comprehensive RAG for humanized self-service, with custom training to answer queries empathetically.",
+  },
+  {
+    name: "RPA Invoice Issuance for MEI",
+    category: "automation",
+    color: "from-orange-600/40 to-red-600/40",
+    description:
+      "Invoice issuance automation for MEI (Brazilian micro-entrepreneur) using Flask, requests, and HTML element mapping, ensuring 100% pre-programmed accuracy.",
+  },
 ];
 
 export interface Project {
@@ -159,13 +175,6 @@ export const projects: Project[] = [
     gradient: "from-indigo-600/40 to-violet-600/40",
     icon: Code2,
   },
-];
-
-export const aboutStats = [
-  { label: "Anos de Experiência", value: "2+" },
-  { label: "Projetos Entregues", value: "8+" },
-  { label: "Clientes Atendidos", value: "6+" },
-  { label: "Tecnologias", value: "9+" },
 ];
 
 export const techCategories = [
