@@ -96,18 +96,11 @@ export const stacks: StackItem[] = [
 export const techCategories = [
   {
     title: "Back-end",
-    items: ["PHP", "Python", "Java", "Node.js"],
+    items: ["Laravel", "PHP", "Flask", "Python"],
   },
   {
     title: "Front-end",
-    items: [
-      "React",
-      "Next.js",
-      "Vue.js",
-      "JavaScript",
-      "TypeScript",
-      "TailwindCSS",
-    ],
+    items: ["React", "Next.js", "Vue.js", "NestJS", "HTML", "CSS", "TypeScript"],
   },
   {
     title: "Banco de Dados",
@@ -116,6 +109,6 @@ export const techCategories = [
   },
   {
     title: "Ferramentas",
-    items: ["Git", "Docker", "REST APIs"],
+    items: ["Git", "REST APIs"],
   },
 ];
