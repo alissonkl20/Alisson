@@ -13,7 +13,7 @@ export const Input = forwardRef<
       "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white",
       "placeholder:text-white/30 backdrop-blur-sm",
       "transition-all duration-300",
-      "focus:border-neon-blue/50 focus:outline-none focus:shadow-[0_0_20px_rgba(0,212,255,0.1)]",
+      "focus:border-neon-orange/50 focus:outline-none focus:shadow-[0_0_20px_rgba(255,94,0,0.12)]",
       className,
     )}
     {...props}
@@ -31,7 +31,7 @@ export const Textarea = forwardRef<
       "w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white",
       "placeholder:text-white/30 backdrop-blur-sm",
       "transition-all duration-300",
-      "focus:border-neon-blue/50 focus:outline-none focus:shadow-[0_0_20px_rgba(0,212,255,0.1)]",
+      "focus:border-neon-orange/50 focus:outline-none focus:shadow-[0_0_20px_rgba(255,94,0,0.12)]",
       className,
     )}
     {...props}

@@ -33,7 +33,7 @@ export function Contact() {
          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
             <h3 className="mb-4 text-2xl font-semibold text-white md:text-3xl">
-              <NeonText color="blue" ledSign flicker>
+              <NeonText color="orange" ledSign flicker>
                 Let&apos;s talk
               </NeonText>
             </h3>

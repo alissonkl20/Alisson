@@ -12,9 +12,17 @@ export const SECTIONS = [
 
 export const COLORS = {
   bg: "#000000",
+  neonOrange: "#ff5e00",
   neonBlue: "#00d4ff",
   neonPurple: "#a855f7",
   neonWhite: "#ffffff",
   gray: "#1a1a1a",
   grayLight: "#888888",
 } as const;
+
+/** Labels de navegação com destaque neon laranja */
+export const NEON_ORANGE_NAV_LABELS = new Set([
+  "Experience",
+  "Projects",
+  "Contact",
+]);
