@@ -28,10 +28,10 @@ export const experiences: Experience[] = [
     id: "1",
     company: "Rauzee",
     role: "Full Stack Developer",
-    period: "Mar 2026 — Present",
+    period: "Mar 2026 — Jul 2026",
     description:
-      "Working as a full stack developer on systems focused on productivity and operational efficiency. I contribute to the optimization of credit analysis workflows for banking correspondents, improving agility, control, and accuracy across approval processes using PHP (Laravel), Vue.js, and AWS.",
-    technologies: ["Laravel", "Vue.js", "PHP", "AWS"],
+      "Worked as a full stack developer on systems focused on productivity and operational efficiency. Contributed to the optimization of credit analysis workflows for banking correspondents, improving agility, control, and accuracy across approval processes using Laravel, Flask, React, Vue.js, Next.js, and AWS.",
+    technologies: ["Laravel", "Flask", "PHP", "Python", "AWS", "Next.js", "React", "Vue.js", "Git", "REST APIs"],
   },
   {
     id: "2",
