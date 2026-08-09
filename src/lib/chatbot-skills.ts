@@ -12,7 +12,7 @@ Backends robustos, seguros e escaláveis; otimização de performance; frontends
 RPAs para nota MEI, consultas automatizadas e disparos de notificações; Finance AI com LLM local para análise de extratos; agentes para agilização de trabalho.
 
 ## Tecnologias (resposta modelo — 1 frase)
-React, Next.js, Node.js, TypeScript, Laravel, Vue.js, PHP, Python, PostgreSQL, Docker e REST APIs.
+Backend com Laravel (PHP) e Flask (Python); frontend com React, Next.js, Vue.js, NestJS, HTML e CSS; PostgreSQL e REST APIs.
 
 ## Políticas obrigatórias
 - Responda SEMPRE em português brasileiro.

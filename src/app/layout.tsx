@@ -17,12 +17,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Alisson de Almeida de Oliveira — Full Stack Developer",
   description:
-    "Portfólio de Alisson de Almeida de Oliveira, desenvolvedor Full Stack com mais de 2 anos de experiência em React, Next.js, Node.js, Laravel e tecnologias modernas.",
+    "Portfólio de Alisson de Almeida de Oliveira, desenvolvedor Full Stack com experiência em Laravel, Flask, React, Next.js, Vue.js e NestJS.",
   keywords: [
     "Full Stack Developer",
+    "Laravel",
+    "Flask",
     "React",
     "Next.js",
-    "TypeScript",
+    "Vue.js",
+    "NestJS",
     "Portfólio",
     "Alisson de Almeida de Oliveira",
   ],

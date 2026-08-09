@@ -30,7 +30,7 @@ const REPLY_PROJECTS =
   "Destaques: RPAs para nota MEI, consultas automatizadas e notificações; Finance AI com LLM local para análise de extratos; e agentes para agilização de trabalho.";
 
 const REPLY_TECH =
-  "Stack principal: React, Next.js, Node.js, TypeScript, Laravel, Vue.js, PostgreSQL, Docker e REST APIs.";
+  "Stack principal: backend com Laravel e Flask; frontend com React, Next.js, Vue.js, NestJS, HTML e CSS; PostgreSQL e REST APIs.";
 
 const REPLY_HELLO =
   "Olá! Pergunte sobre quem é Alisson, experiência, projetos ou tecnologias.";
@@ -62,7 +62,8 @@ const EXPERIENCE_RE =
   /exper\w*|exp\s*prof|trabalho|backend|back\s*end|frontend|front\s*end|rpa|escalab|performanc|otimiz|segur|api\b|automac/;
 const PROJECTS_RE =
   /projeto|project|finance|financ|mei|nota\s*fiscal|notificac|mensag|chatbot|agente|extrato|llm/;
-const TECH_RE = /tecnolog|stack|react|next|node|laravel|vue|typescript|docker|python|postgres/;
+const TECH_RE =
+  /tecnolog|stack|react|next|laravel|vue|nestjs|nest\b|flask|typescript|python|postgres|html|css/;
 const ALISSON_RE =
   /alisson|quem\s+e|quem\s+eh|sobre\s+voce|sobre\s+voc|desenvolvedor\s+full/;
 
