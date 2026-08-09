@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 interface NeonTextProps {
   children: React.ReactNode;
   className?: string;
-  color?: "white" | "blue" | "purple";
+  color?: "white" | "blue" | "purple" | "orange";
   flicker?: boolean;
   ledSign?: boolean;
   as?: "h1" | "h2" | "h3" | "p" | "span";
@@ -24,15 +24,23 @@ export function NeonText({
     white: "neon-text",
     blue: "neon-text-blue",
     purple: "neon-text-purple",
+    orange: "neon-text-orange",
   }[color];
+
+  const ledClass =
+    ledSign && color === "orange"
+      ? "led-sign-orange"
+      : ledSign
+        ? "led-sign"
+        : undefined;
 
   return (
     <Tag
       className={cn(
         colorClass,
-        ledSign && "led-sign",
+        ledClass,
         flicker && !ledSign && "led-pulse led-flicker",
-        flicker && ledSign && "led-sign-flicker",
+        flicker && ledSign && color !== "orange" && "led-sign-flicker",
         className,
       )}
     >
@@ -47,6 +55,7 @@ interface SectionTitleProps {
   className?: string;
 }
 
+/** Títulos de seção com destaque neon laranja */
 export function SectionTitle({ children, subtitle, className }: SectionTitleProps) {
   return (
     <motion.div
@@ -57,12 +66,12 @@ export function SectionTitle({ children, subtitle, className }: SectionTitleProp
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       {subtitle && (
-        <span className="mb-4 block text-sm font-mono uppercase tracking-[0.3em] text-neon-blue/80">
+        <span className="mb-4 block text-sm font-mono uppercase tracking-[0.3em] text-neon-orange/80">
           {subtitle}
         </span>
       )}
       <h2 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-        <NeonText color="blue">{children}</NeonText>
+        <NeonText color="orange">{children}</NeonText>
       </h2>
     </motion.div>
   );

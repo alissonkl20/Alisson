@@ -1,13 +1,4 @@
-import {
-  Code2,
-  Database,
-  Globe,
-  Layers,
-  Server,
-  ShoppingCart,
-  Smartphone,
-  type LucideIcon,
-} from "lucide-react";
+import { Database } from "lucide-react";
 
 export const profile = {
   name: "Alisson de Almeida",
@@ -20,7 +11,7 @@ export const profile = {
   github: "https://github.com/alissonkl20",
   linkedin: "https://www.linkedin.com/in/alisson-almeida-de-oliveira-3406bb347",
   whatsapp: "https://wa.me/5546999420574",
-  cvUrl: "/cv/index.html"
+  cvUrl: "/cv/index.html",
 };
 
 export interface Experience {
@@ -64,116 +55,41 @@ export const experiences: Experience[] = [
 
 export interface StackItem {
   name: string;
-  category: string; 
-  color: string; 
-  description?: string; 
+  category: string;
+  color: string;
+  description?: string;
 }
 
-export type StackCategory = 
-  | "backend" | "frontend" | "database" | "tools"
-  | "finanças" | "chatbot" | "automação";
+export type StackCategory =
+  | "backend"
+  | "frontend"
+  | "database"
+  | "tools"
+  | "finanças"
+  | "chatbot"
+  | "automação";
 
 export const stacks: StackItem[] = [
   {
     name: "Finance AI",
     category: "finance",
-    color: "from-green-600/40 to-blue-600/40",
+    color: "#00e676",
     description:
       "Personal financial manager that processes bank statements via local LLM (5B params) with RAG. Generates detailed reports on income, expenses, and spending categorization (leisure, bills, investments).",
   },
   {
     name: "Chatbot Self-Service",
     category: "chatbot",
-    color: "from-purple-600/40 to-pink-600/40",
+    color: "#b388ff",
     description:
       "Chatbot with local LLM (3B params) and comprehensive RAG for humanized self-service, with custom training to answer queries empathetically.",
   },
   {
     name: "RPA Invoice Issuance for MEI",
     category: "automation",
-    color: "from-orange-600/40 to-red-600/40",
+    color: "#ff5e00",
     description:
       "Invoice issuance automation for MEI (Brazilian micro-entrepreneur) using Flask, requests, and HTML element mapping, ensuring 100% pre-programmed accuracy.",
-  },
-];
-
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  github: string;
-  deploy: string;
-  gradient: string;
-  icon: LucideIcon;
-}
-
-export const projects: Project[] = [
-  {
-    id: "1",
-    title: "Automação de E-mail e WhatsApp",
-    description:
-      "Automação de e-mail que captura mensagens, verifica palavras-chave e gera relatório, com disparo automático de mensagem WhatsApp.",
-    technologies: ["Next.js", "Laravel", "PostgreSQL", "Stripe"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-blue-600/40 to-purple-600/40",
-    icon: ShoppingCart,
-  },
-  {
-    id: "2",
-    title: "Dashboard Analítico SaaS",
-    description:
-      "Dashboard analítico com gráficos em tempo real, autenticação e gestão de usuários multi-tenant.",
-    technologies: ["React", "Node.js", "MySQL", "Docker"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-cyan-600/40 to-blue-600/40",
-    icon: Layers,
-  },
-  {
-    id: "3",
-    title: "Gateway de APIs",
-    description:
-      "Gateway de APIs com rate limiting, autenticação JWT e documentação Swagger automática.",
-    technologies: ["Express", "TypeScript", "Redis", "Docker"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-purple-600/40 to-pink-600/40",
-    icon: Server,
-  },
-  {
-    id: "4",
-    title: "Aviso de Compromisso",
-    description:
-      "Projeto pessoal para amigo secreto com aviso de compromisso, design mobile-first e suporte para notificações.",
-    technologies: ["Vue.js", "PWA", "TailwindCSS", "Firebase"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-green-600/40 to-teal-600/40",
-    icon: Smartphone,
-  },
-  {
-    id: "5",
-    title: "CMS Headless",
-    description:
-      "Sistema de gerenciamento de conteúdo headless com API GraphQL e editor visual.",
-    technologies: ["Next.js", "GraphQL", "PostgreSQL", "Prisma"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-orange-600/40 to-red-600/40",
-    icon: Globe,
-  },
-  {
-    id: "6",
-    title: "DevTools Suite",
-    description:
-      "Suite de ferramentas para desenvolvedores com formatadores, validadores e geradores de código.",
-    technologies: ["React", "TypeScript", "WebAssembly", "Vite"],
-    github: "https://github.com/alisson",
-    deploy: "https://example.com/",
-    gradient: "from-indigo-600/40 to-violet-600/40",
-    icon: Code2,
   },
 ];
 

@@ -35,10 +35,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <NeonText
-            color="white"
-            className="bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-transparent"
-          >
+          <NeonText color="orange" ledSign>
             {profile.name}
           </NeonText>
         </motion.h1>

@@ -8,9 +8,9 @@ import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { Stacks } from "@/components/sections/Stacks";
-// import { Projects } from "@/components/sections/Projects";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 export default function Home() {
   return (
@@ -27,10 +27,9 @@ export default function Home() {
       <About />
       <Experience />
       <Stacks />
-      {/* Projects section temporarily hidden */}
-      {/* <Projects /> */}
       <Contact />
       <Footer />
+      <ChatWidget />
     </motion.main>
   );
 }

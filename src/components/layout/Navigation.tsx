@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { SECTIONS } from "@/lib/constants";
+import { NEON_ORANGE_NAV_LABELS, SECTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export function Navigation() {
@@ -66,27 +66,42 @@ export function Navigation() {
           </button>
 
           <div className="hidden items-center gap-8 md:flex">
-            {SECTIONS.map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => handleClick(id)}
-                className={cn(
-                  "relative text-sm transition-colors duration-300",
-                  activeSection === id
-                    ? "text-white"
-                    : "text-white/40 hover:text-white/70",
-                )}
-              >
-                {label}
-                {activeSection === id && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-[1px] bg-neon-blue"
-                    layoutId="nav-indicator"
-                    style={{ boxShadow: "0 0 10px rgba(0,212,255,0.5)" }}
-                  />
-                )}
-              </button>
-            ))}
+            {SECTIONS.map(({ id, label }) => {
+              const isOrangeLabel = NEON_ORANGE_NAV_LABELS.has(label);
+
+              return (
+                <button
+                  key={id}
+                  onClick={() => handleClick(id)}
+                  className={cn(
+                    "relative text-sm transition-colors duration-300",
+                    isOrangeLabel
+                      ? activeSection === id
+                        ? "text-neon-orange neon-text-orange"
+                        : "text-neon-orange/50 hover:text-neon-orange/80"
+                      : activeSection === id
+                        ? "text-white"
+                        : "text-white/40 hover:text-white/70",
+                  )}
+                >
+                  {label}
+                  {activeSection === id && (
+                    <motion.div
+                      className={cn(
+                        "absolute -bottom-1 left-0 right-0 h-[1px]",
+                        isOrangeLabel ? "bg-neon-orange" : "bg-neon-blue",
+                      )}
+                      layoutId="nav-indicator"
+                      style={{
+                        boxShadow: isOrangeLabel
+                          ? "0 0 10px rgba(255,94,0,0.5)"
+                          : "0 0 10px rgba(0,212,255,0.5)",
+                      }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           <button
@@ -111,7 +126,12 @@ export function Navigation() {
               <motion.button
                 key={id}
                 onClick={() => handleClick(id)}
-                className="text-2xl text-white/70 transition-colors hover:text-neon-blue"
+                className={cn(
+                  "text-2xl transition-colors",
+                  NEON_ORANGE_NAV_LABELS.has(label)
+                    ? "text-neon-orange/80 hover:text-neon-orange neon-text-orange"
+                    : "text-white/70 hover:text-neon-blue",
+                )}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
