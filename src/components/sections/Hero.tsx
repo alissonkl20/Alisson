@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24"
+      className="relative flex min-h-[100dvh] min-h-screen items-center justify-center overflow-hidden px-4 pt-20 sm:px-6 sm:pt-24"
     >
       <TechGrid />
 
@@ -19,18 +19,18 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto max-w-6xl text-center">
         <motion.p
-          className="mb-6 font-mono text-sm uppercase tracking-[0.4em] text-neon-blue/70"
+          className="mb-4 sm:mb-6 font-mono text-xs uppercase tracking-[0.2em] text-neon-blue/70 sm:text-sm sm:tracking-[0.35em]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <NeonText color="white" ledSign className="text-sm uppercase tracking-[0.4em]">
+          <NeonText color="white" ledSign className="text-xs uppercase tracking-[0.2em] sm:text-sm sm:tracking-[0.35em]">
             {profile.experience}
           </NeonText>
         </motion.p>
 
         <motion.h1
-          className="mb-4 text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl"
+          className="mb-4 text-4xl font-bold tracking-tighter break-words sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
           initial={{ opacity: 0, y: 60, filter: "blur(20px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
@@ -52,7 +52,7 @@ export function Hero() {
         </motion.p>
 
         <motion.p
-          className="mx-auto mb-12 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg"
+          className="mx-auto mb-8 sm:mb-12 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base md:text-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}

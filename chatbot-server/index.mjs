@@ -1,7 +1,5 @@
 /**
- * Template de backend Express para o chatbot do portfólio.
- * Rode com: npm install && npm start
- * Configure NEXT_PUBLIC_CHATBOT_API_URL=http://localhost:4000 no frontend.
+ * Template Express — respostas alinhadas com src/lib/chatbot-responses.ts
  */
 
 import cors from "cors";
@@ -13,43 +11,44 @@ const PORT = Number(process.env.PORT ?? 4000);
 app.use(cors({ origin: process.env.CORS_ORIGIN ?? "*" }));
 app.use(express.json());
 
-type ChatRole = "user" | "assistant";
+const REPLY_ALISSON =
+  "Alisson de Almeida é desenvolvedor Full Stack com mais de 3 anos de experiência profissional e mais de 5 anos estudando e inserido na área de tecnologia. Atua com stacks novas e legadas.";
 
-interface ChatRequestBody {
-  message?: string;
-  history?: Array<{ role: ChatRole; content: string }>;
-}
+const REPLY_EXPERIENCE =
+  "Experiência em backends robustos, seguros e escaláveis; otimização de performance; frontend moderno e responsivo; landing pages e projetos personalizados; RPA web server-side ou no-code com simulação de ação humanizada.";
 
-function buildRuleBasedReply(message: string): string {
+const REPLY_PROJECTS =
+  "RPAs para nota MEI, consultas automatizadas, notificações e mensagens; Finance AI com LLM local para análise de extratos; agentes para agilização de trabalho, entre outros.";
+
+function buildRuleBasedReply(message) {
   const text = message.toLowerCase().trim();
 
   if (/^(oi|olá|ola|hey|hi|hello)\b/.test(text)) {
-    return "Olá! Como posso ajudar? Pergunte sobre experiência, projetos ou contato.";
+    return "Olá! Pergunte sobre Alisson, experiência ou projetos.";
   }
 
   if (text.includes("alisson") || text.includes("quem")) {
-    return "Alisson de Almeida é desenvolvedor Full Stack com mais de 3 anos de experiência.";
+    return REPLY_ALISSON;
   }
 
-  if (text.includes("experiência") || text.includes("experience")) {
-    return "Experiência em Rauzee, freelancing e WhaticketSaaS com Node.js, React e PostgreSQL.";
+  if (
+    text.includes("experiência") ||
+    text.includes("experience") ||
+    text.includes("backend") ||
+    text.includes("frontend") ||
+    text.includes("rpa")
+  ) {
+    return REPLY_EXPERIENCE;
   }
 
-  if (text.includes("projeto") || text.includes("project")) {
-    return "Projetos: Finance AI, Chatbot Self-Service e automação RPA para MEI.";
+  if (text.includes("projeto") || text.includes("project") || text.includes("finance")) {
+    return REPLY_PROJECTS;
   }
 
-  if (text.includes("contato") || text.includes("contact")) {
-    return "Use a seção Contact do site ou os links de e-mail e WhatsApp.";
-  }
-
-  return "Posso ajudar com experiência, projetos ou contato. Reformule sua pergunta!";
+  return "Pergunte sobre quem é Alisson, experiência, projetos ou tecnologias.";
 }
 
-async function buildAiReply(
-  message: string,
-  history: ChatRequestBody["history"],
-): Promise<string | null> {
+async function buildAiReply(message, history) {
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
 
@@ -59,7 +58,7 @@ async function buildAiReply(
     {
       role: "system",
       content:
-        "Assistente do portfólio de Alisson de Almeida. Respostas curtas em português.",
+        "Assistente do portfólio de Alisson de Almeida. Respostas em português. Não ofereça contato.",
     },
     ...(history ?? []).map((entry) => ({ role: entry.role, content: entry.content })),
     { role: "user", content: message },
@@ -71,15 +70,12 @@ async function buildAiReply(
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 280 }),
+    body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 400 }),
   });
 
   if (!response.ok) return null;
 
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
-  };
-
+  const data = await response.json();
   return data.choices?.[0]?.message?.content?.trim() ?? null;
 }
 
@@ -88,8 +84,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.post("/api/chat", async (req, res) => {
-  const body = req.body as ChatRequestBody;
-  const message = body.message?.trim();
+  const message = req.body?.message?.trim();
 
   if (!message) {
     res.status(400).json({ error: "message is required" });
@@ -97,7 +92,7 @@ app.post("/api/chat", async (req, res) => {
   }
 
   try {
-    const aiReply = await buildAiReply(message, body.history);
+    const aiReply = await buildAiReply(message, req.body.history);
 
     if (aiReply) {
       res.json({ reply: aiReply, source: "ai" });
@@ -106,10 +101,7 @@ app.post("/api/chat", async (req, res) => {
 
     res.json({ reply: buildRuleBasedReply(message), source: "rules" });
   } catch {
-    res.status(500).json({
-      reply: "Erro interno. Tente novamente.",
-      source: "fallback",
-    });
+    res.status(500).json({ reply: "Erro interno. Tente novamente.", source: "fallback" });
   }
 });
 

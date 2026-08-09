@@ -1,4 +1,25 @@
+import { generateText } from "ai";
+import { createGroq } from "@ai-sdk/groq";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import {
+  buildRuleBasedReply,
+  CHATBOT_SYSTEM_PROMPT,
+  detectIntent,
+  getIntentHint,
+} from "@/lib/chatbot-responses";
+import {
+  CHAT_COOLDOWN_MS,
+  CHAT_LIMIT_REPLY,
+  CHAT_POLICY_REPLY,
+  CHAT_USAGE_COOKIE,
+  createFreshUsageSession,
+  getRemainingQuestions,
+  isLimitReached,
+  isPolicyViolation,
+  normalizeUsageSession,
+  type ChatUsageSession,
+} from "@/lib/chatbot-limits";
 
 type ChatRole = "user" | "assistant";
 
@@ -7,83 +28,88 @@ interface ChatRequestBody {
   history?: Array<{ role: ChatRole; content: string }>;
 }
 
-/** Respostas pré-definidas — estrutura pronta para integração com IA externa */
-function buildRuleBasedReply(message: string): string {
-  const text = message.toLowerCase().trim();
+const DEFAULT_GROQ_MODEL = "llama-3.1-8b-instant";
 
-  if (/^(oi|olá|ola|hey|hi|hello)\b/.test(text)) {
-    return "Olá! Como posso ajudar? Pergunte sobre experiência, projetos ou contato.";
+async function readUsageFromCookie(): Promise<ChatUsageSession> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(CHAT_USAGE_COOKIE)?.value;
+
+  if (!raw) return createFreshUsageSession();
+
+  try {
+    return normalizeUsageSession(JSON.parse(raw) as ChatUsageSession);
+  } catch {
+    return createFreshUsageSession();
   }
-
-  if (text.includes("alisson") || text.includes("quem")) {
-    return "Alisson de Almeida é desenvolvedor Full Stack com mais de 3 anos de experiência em backends escaláveis, APIs e interfaces modernas.";
-  }
-
-  if (text.includes("experiência") || text.includes("experience") || text.includes("trabalho")) {
-    return "Alisson trabalhou em Rauzee (Full Stack), como freelancer em SaaS WhatsApp e no projeto WhaticketSaaS com Node.js, React e PostgreSQL.";
-  }
-
-  if (text.includes("projeto") || text.includes("project") || text.includes("stack")) {
-    return "Destaques: Finance AI (gestão financeira com LLM local), Chatbot Self-Service com RAG e automação RPA para emissão de notas MEI.";
-  }
-
-  if (
-    text.includes("contato") ||
-    text.includes("contact") ||
-    text.includes("email") ||
-    text.includes("whatsapp")
-  ) {
-    return "Você pode entrar em contato pela seção Contact do site, por e-mail ou WhatsApp. Role até o final da página!";
-  }
-
-  if (text.includes("tecnologia") || text.includes("tech") || text.includes("stack")) {
-    return "Principais tecnologias: React, Next.js, Node.js, TypeScript, Laravel, Vue.js, PostgreSQL e Docker.";
-  }
-
-  return "Não encontrei uma resposta exata, mas posso ajudar com experiência, projetos, tecnologias ou contato. Tente reformular a pergunta!";
 }
 
-/**
- * Integração opcional com API de IA (OpenAI-compatible).
- * Defina OPENAI_API_KEY e OPENAI_MODEL no ambiente para ativar.
- */
-async function buildAiReply(message: string, history: ChatRequestBody["history"]): Promise<string | null> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const model = process.env.OPENAI_MODEL ?? "gpt-4o-mini";
+function attachUsageCookie(response: NextResponse, session: ChatUsageSession): void {
+  response.cookies.set(CHAT_USAGE_COOKIE, JSON.stringify(session), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: Math.floor(CHAT_COOLDOWN_MS / 1000),
+    path: "/",
+  });
+}
 
+function jsonWithUsage(
+  body: Record<string, unknown>,
+  session: ChatUsageSession,
+): NextResponse {
+  const response = NextResponse.json({
+    ...body,
+    usage: {
+      count: session.count,
+      remaining: getRemainingQuestions(session),
+      limitReached: isLimitReached(session),
+      windowStart: session.windowStart,
+    },
+  });
+  attachUsageCookie(response, session);
+  return response;
+}
+
+async function buildGroqReply(
+  message: string,
+  history: ChatRequestBody["history"],
+): Promise<string | null> {
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return null;
 
-  const messages = [
+  const modelId = process.env.GROQ_MODEL ?? DEFAULT_GROQ_MODEL;
+  const groq = createGroq({ apiKey });
+  const intent = detectIntent(message);
+  const intentHint = getIntentHint(intent);
+
+  const contextNote = intentHint
+    ? `[${intentHint} Máximo 2-3 frases. Sem listas longas.]`
+    : "[Resposta curta: máximo 2-3 frases.]";
+
+  const messages: Array<{ role: "user" | "assistant"; content: string }> = [
+    ...(history ?? []).slice(-4).map((entry) => ({
+      role: entry.role,
+      content: entry.content,
+    })),
     {
-      role: "system",
-      content:
-        "Você é o assistente virtual do portfólio de Alisson de Almeida, desenvolvedor Full Stack. Responda em português, breve e profissional.",
+      role: "user",
+      content: `${contextNote}\n\nPergunta: ${message}`,
     },
-    ...(history ?? []).map((entry) => ({ role: entry.role, content: entry.content })),
-    { role: "user", content: message },
   ];
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
+  try {
+    const result = await generateText({
+      model: groq(modelId),
+      system: CHATBOT_SYSTEM_PROMPT,
       messages,
-      temperature: 0.6,
-      max_tokens: 280,
-    }),
-  });
+      temperature: 0.4,
+      maxOutputTokens: 180,
+    });
 
-  if (!response.ok) return null;
-
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
-  };
-
-  return data.choices?.[0]?.message?.content?.trim() ?? null;
+    return result.text?.trim() || null;
+  } catch {
+    return null;
+  }
 }
 
 export async function POST(request: Request) {
@@ -95,23 +121,46 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "message is required" }, { status: 400 });
     }
 
-    const aiReply = await buildAiReply(message, body.history);
+    const session = await readUsageFromCookie();
 
-    if (aiReply) {
-      return NextResponse.json({ reply: aiReply, source: "ai" });
+    if (isLimitReached(session)) {
+      return jsonWithUsage(
+        { reply: CHAT_LIMIT_REPLY, source: "limit" },
+        session,
+      );
     }
 
-    return NextResponse.json({
-      reply: buildRuleBasedReply(message),
-      source: "rules",
-    });
+    if (isPolicyViolation(message)) {
+      const updated: ChatUsageSession = {
+        windowStart: session.windowStart,
+        count: session.count + 1,
+      };
+      return jsonWithUsage(
+        { reply: CHAT_POLICY_REPLY, source: "policy" },
+        updated,
+      );
+    }
+
+    const aiReply = await buildGroqReply(message, body.history);
+    const reply = aiReply ?? buildRuleBasedReply(message);
+
+    const updated: ChatUsageSession = {
+      windowStart: session.windowStart,
+      count: session.count + 1,
+    };
+
+    return jsonWithUsage(
+      { reply, source: aiReply ? "ai" : "rules" },
+      updated,
+    );
   } catch {
-    return NextResponse.json(
+    const session = await readUsageFromCookie();
+    return jsonWithUsage(
       {
         reply: "Ocorreu um erro ao processar sua mensagem. Tente novamente em instantes.",
         source: "fallback",
       },
-      { status: 200 },
+      session,
     );
   }
 }

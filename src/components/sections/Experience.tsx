@@ -65,7 +65,7 @@ export function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative overflow-hidden px-6 py-32 md:py-40"
+      className="relative overflow-hidden px-4 py-20 sm:px-6 sm:py-32 md:py-40"
     >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-neon-purple/5 to-transparent" />
 
@@ -85,18 +85,18 @@ export function Experience() {
         <SectionTitle subtitle="02 — Experience">Experience</SectionTitle>
 
         <div ref={timelineRef} className="relative">
-          <div className="absolute left-6 top-0 h-full w-[1px] bg-gradient-to-b from-neon-blue/50 via-neon-purple/30 to-transparent md:left-1/2 md:-translate-x-1/2" />
+          <div className="absolute left-4 top-0 h-full w-[1px] bg-gradient-to-b from-neon-blue/50 via-neon-purple/30 to-transparent sm:left-6 md:left-1/2 md:-translate-x-1/2" />
 
           {experiences.map((exp, i) => (
             <div
               key={exp.id}
               data-exp-item
-              className={`relative mb-16 flex ${
+              className={`relative mb-10 sm:mb-16 flex ${
                 i % 2 === 0 ? "md:justify-start" : "md:justify-end"
               }`}
             >
               <div
-                className={`ml-12 w-full md:ml-0 md:w-[calc(50%-2rem)] ${
+                className={`ml-10 w-full sm:ml-12 md:ml-0 md:w-[calc(50%-2rem)] ${
                   i % 2 === 0 ? "md:pr-8" : "md:pl-8"
                 }`}
               >
@@ -126,7 +126,7 @@ export function Experience() {
                 </GlowCard>
               </div>
 
-              <div className="absolute left-6 top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-neon-blue bg-black shadow-[0_0_15px_rgba(0,212,255,0.5)] md:left-1/2" />
+              <div className="absolute left-4 top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-neon-blue bg-black shadow-[0_0_15px_rgba(0,212,255,0.5)] sm:left-6 md:left-1/2" />
             </div>
           ))}
         </div>

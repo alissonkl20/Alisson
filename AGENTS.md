@@ -30,7 +30,7 @@ Portfólio pessoal de Alisson de Almeida (Full Stack Developer). Site single-pag
 │   ├── hooks/useMousePosition.ts
 │   └── lib/
 │       ├── chatbot.ts          # Cliente HTTP e tipos do chat
-│       ├── constants.ts        # SECTIONS, COLORS, NEON_ORANGE_NAV_LABELS
+│       ├── constants.ts        # SECTIONS, COLORS
 │       ├── data.ts             # profile, experiences, stacks, techCategories
 │       └── utils.ts            # cn() (clsx + tailwind-merge)
 ├── chatbot-server/             # Backend Express opcional (template)
@@ -79,9 +79,9 @@ cd chatbot-server && npm install && npm start  # http://localhost:4000
 
 | Variável | Onde | Descrição |
 |----------|------|-----------|
-| `NEXT_PUBLIC_CHATBOT_API_URL` | Frontend | URL do servidor Express (ex: `http://localhost:4000`). Se vazio, usa `/api/chat`. |
-| `OPENAI_API_KEY` | Next.js / Express | Ativa respostas com IA no chatbot |
-| `OPENAI_MODEL` | Next.js / Express | Modelo OpenAI (padrão: `gpt-4o-mini`) |
+| `GROQ_API_KEY` | Next.js (Vercel) | Chave Groq — tier gratuito, recomendado |
+| `GROQ_MODEL` | Next.js | Modelo Groq (padrão: `llama-3.1-8b-instant`) |
+| `NEXT_PUBLIC_CHATBOT_API_URL` | Frontend | URL do Express opcional |
 | `PORT` | chatbot-server | Porta do Express (padrão: 4000) |
 | `CORS_ORIGIN` | chatbot-server | Origem CORS permitida |
 
@@ -99,7 +99,7 @@ cd chatbot-server && npm install && npm start  # http://localhost:4000
 1. `npm install`
 2. `npm run dev`
 3. (Opcional) `cd chatbot-server && npm install && npm start`
-4. (Opcional) `.env.local` com `NEXT_PUBLIC_CHATBOT_API_URL` e/ou `OPENAI_API_KEY`
+4. (Opcional) `.env.local` com `GROQ_API_KEY` — na Vercel, adicione a mesma variável em Settings → Environment Variables
 
 ## Componentes principais
 

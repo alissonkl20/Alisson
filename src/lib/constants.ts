@@ -19,10 +19,3 @@ export const COLORS = {
   gray: "#1a1a1a",
   grayLight: "#888888",
 } as const;
-
-/** Labels de navegação com destaque neon laranja */
-export const NEON_ORANGE_NAV_LABELS = new Set([
-  "Experience",
-  "Projects",
-  "Contact",
-]);

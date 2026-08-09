@@ -10,7 +10,7 @@ export const Input = forwardRef<
   <input
     ref={ref}
     className={cn(
-      "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white",
+      "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white sm:text-sm",
       "placeholder:text-white/30 backdrop-blur-sm",
       "transition-all duration-300",
       "focus:border-neon-orange/50 focus:outline-none focus:shadow-[0_0_20px_rgba(255,94,0,0.12)]",
@@ -28,7 +28,7 @@ export const Textarea = forwardRef<
   <textarea
     ref={ref}
     className={cn(
-      "w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white",
+      "w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white sm:text-sm",
       "placeholder:text-white/30 backdrop-blur-sm",
       "transition-all duration-300",
       "focus:border-neon-orange/50 focus:outline-none focus:shadow-[0_0_20px_rgba(255,94,0,0.12)]",
