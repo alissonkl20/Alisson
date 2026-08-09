@@ -59,7 +59,7 @@ interface SectionTitleProps {
 export function SectionTitle({ children, subtitle, className }: SectionTitleProps) {
   return (
     <motion.div
-      className={cn("mb-16 md:mb-20", className)}
+      className={cn("mb-12 md:mb-16 lg:mb-20", className)}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
@@ -70,7 +70,7 @@ export function SectionTitle({ children, subtitle, className }: SectionTitleProp
           {subtitle}
         </span>
       )}
-      <h2 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
+      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
         <NeonText color="orange">{children}</NeonText>
       </h2>
     </motion.div>

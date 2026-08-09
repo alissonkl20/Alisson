@@ -57,6 +57,21 @@ body {
   color: #f5f5f5;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Safe area (notch / home indicator) */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+.safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.safe-x {
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
 }
 
 ::selection {

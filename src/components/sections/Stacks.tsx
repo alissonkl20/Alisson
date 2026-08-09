@@ -66,7 +66,7 @@ function StackCard({
 
 export function Stacks() {
   return (
-    <section id="stacks" className="relative px-6 py-32 md:py-40">
+    <section id="stacks" className="relative px-4 py-20 sm:px-6 sm:py-32 md:py-40">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neon-blue/5 via-transparent to-transparent" />
 
       <div className="mx-auto max-w-6xl">

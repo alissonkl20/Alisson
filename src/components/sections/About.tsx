@@ -17,13 +17,13 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 export function About() {
   return (
-    <section id="about" className="relative px-6 py-32 md:py-40">
+    <section id="about" className="relative px-4 py-20 sm:px-6 sm:py-32 md:py-40">
       <div className="mx-auto max-w-6xl">
         <SectionTitle subtitle="01 — About">About Me</SectionTitle>
 
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <motion.div
-            className="relative mx-auto aspect-square w-full max-w-md"
+            className="relative mx-auto aspect-square w-full max-w-[280px] sm:max-w-md"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
