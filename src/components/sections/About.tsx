@@ -31,13 +31,13 @@ export function About() {
           >
             <div className="group relative h-full w-full">
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 blur-2xl transition-all duration-500 group-hover:blur-3xl" />
-              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02]">
+              <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02]">
                 <Image
                   src="/foto.png"
                   alt={profile.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  sizes="(max-width: 640px) 280px, 448px"
+                  className="object-cover object-[center_22%]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               </div>
