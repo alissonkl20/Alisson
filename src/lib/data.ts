@@ -7,7 +7,7 @@ export const profile = {
   description:
     "Full Stack Developer with over 3 years of experience in web application development, specializing in building robust and scalable backends, efficient APIs, and modern, responsive interfaces. Focused on architecture, performance, code quality, and delivering complete solutions.",
   bio: "I’m a Full Stack Developer with over 3 years of experience building web applications, with a focus on scalable backends, modern interfaces, performance, and security. Experienced in developing APIs, refactoring legacy systems, optimizing applications, and implementing RPA and workflow automation solutions. I’m passionate about solving complex problems and building reliable, maintainable, and high-performance software",
-  email: "alisson@email.com",
+  email: "almeidadeoliveiraalisson04@gmail.com",
   github: "https://github.com/alissonkl20",
   linkedin: "https://www.linkedin.com/in/alisson-almeida-de-oliveira-3406bb347",
   whatsapp: "https://wa.me/5546999420574",
