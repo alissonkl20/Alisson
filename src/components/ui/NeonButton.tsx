@@ -17,10 +17,11 @@ interface NeonButtonProps {
 
 const variants = {
   primary:
-    "bg-white/5 border border-white/10 hover:border-neon-blue/50 hover:shadow-[0_0_30px_rgba(0,212,255,0.2)]",
+    "bg-neon-red border border-neon-red text-white hover:bg-neon-red-bright hover:border-neon-red-bright hover:shadow-[0_0_24px_rgba(220,38,38,0.45),0_0_48px_rgba(220,38,38,0.15)]",
   outline:
-    "bg-transparent border border-white/20 hover:border-neon-blue/60 hover:shadow-[0_0_20px_rgba(0,212,255,0.15)]",
-  ghost: "bg-transparent border border-transparent hover:bg-white/5",
+    "bg-transparent border border-[var(--border-neon)] text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-neon-hover)] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)]",
+  ghost:
+    "bg-transparent border border-transparent text-[var(--text-secondary)] hover:bg-white/5 hover:border-[var(--border-neon)]",
 };
 
 const sizes = {
@@ -44,7 +45,7 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
     ref,
   ) => {
     const classes = cn(
-      "glow-button relative inline-flex items-center justify-center gap-2 rounded-full font-medium text-white transition-all duration-300 cursor-pointer",
+      "glow-button relative inline-flex items-center justify-center gap-2 rounded-lg font-[family-name:var(--font-space-grotesk)] font-semibold transition-all duration-300",
       variants[variant],
       sizes[size],
       disabled && "pointer-events-none opacity-50",
@@ -58,8 +59,9 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
           target="_blank"
           rel="noopener noreferrer"
           className={classes}
-          whileHover={{ scale: 1.03 }}
+          whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}
+          data-cursor-hover
         >
           {children}
         </motion.a>
@@ -71,10 +73,11 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
         ref={ref}
         type={type}
         className={classes}
-        whileHover={{ scale: disabled ? 1 : 1.03 }}
+        whileHover={{ scale: disabled ? 1 : 1.03, y: disabled ? 0 : -2 }}
         whileTap={{ scale: disabled ? 1 : 0.97 }}
         onClick={onClick}
         disabled={disabled}
+        data-cursor-hover
       >
         {children}
       </motion.button>

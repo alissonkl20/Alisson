@@ -3,82 +3,86 @@
 import { motion } from "framer-motion";
 import { Download } from "lucide-react";
 import { profile } from "@/lib/data";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { NeonButton } from "@/components/ui/NeonButton";
-import { NeonText } from "@/components/ui/NeonText";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TechGrid } from "@/components/effects/TechGrid";
 
 export function Hero() {
+  const title = useTypewriter({ text: profile.title });
+
   return (
     <section
       id="home"
-      className="relative flex min-h-[100dvh] min-h-screen items-center justify-center overflow-hidden px-4 pt-20 sm:px-6 sm:pt-24"
+      className="relative flex min-h-[100dvh] items-center overflow-hidden px-4 pt-[var(--nav-height)] sm:px-6"
     >
       <TechGrid />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-neon-blue/[0.02] via-transparent to-neon-purple/[0.02]" />
+      <div className="relative z-10 mx-auto w-full max-w-6xl">
+        <div>
+          <ScrollReveal>
+              <p className="mb-2 text-sm tracking-wide text-[var(--text-secondary)]">
+                Hello, I&apos;m
+              </p>
+            </ScrollReveal>
 
-      <div className="relative z-10 mx-auto max-w-6xl text-center">
-        <motion.p
-          className="mb-4 sm:mb-6 font-mono text-xs uppercase tracking-[0.2em] text-neon-blue/70 sm:text-sm sm:tracking-[0.35em]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-        >
-          <NeonText color="white" ledSign className="text-xs uppercase tracking-[0.2em] sm:text-sm sm:tracking-[0.35em]">
-            {profile.experience}
-          </NeonText>
-        </motion.p>
+            <ScrollReveal delay={1}>
+              <h1 className="mb-4 font-[family-name:var(--font-space-grotesk)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                Alisson{" "}
+                <span className="text-neon-red-bright drop-shadow-[0_0_40px_rgba(220,38,38,0.15)]">
+                  de Almeida
+                </span>
+              </h1>
+            </ScrollReveal>
 
-        <motion.h1
-          className="mb-4 text-4xl font-bold tracking-tighter break-words sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
-          initial={{ opacity: 0, y: 60, filter: "blur(20px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <NeonText color="orange" ledSign>
-            {profile.name}
-          </NeonText>
-        </motion.h1>
+            <ScrollReveal delay={2}>
+              <div className="mb-5 flex min-h-[2.5rem] flex-wrap items-center gap-1">
+                <span className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold sm:text-2xl md:text-3xl">
+                  {title}
+                </span>
+                <span className="typewriter-cursor" aria-hidden="true" />
+              </div>
+            </ScrollReveal>
 
-        <motion.p
-          className="mb-8 text-xl font-light text-white/60 md:text-2xl"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-        >
-          <NeonText color="white" ledSign className="text-xl md:text-2xl">
-            {profile.title}
-          </NeonText>
-        </motion.p>
+            <ScrollReveal delay={2}>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--border-neon)] bg-[rgba(220,38,38,0.08)] px-3.5 py-1.5 text-xs font-medium text-neon-red sm:text-sm">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neon-red-bright shadow-[0_0_6px_rgba(220,38,38,0.45)]" />
+                {profile.experience}
+              </div>
+            </ScrollReveal>
 
-        <motion.p
-          className="mx-auto mb-8 sm:mb-12 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base md:text-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
-        >
-          {profile.description}
-        </motion.p>
+            <ScrollReveal delay={3}>
+              <p className="mb-8 max-w-xl text-sm leading-relaxed text-[var(--text-secondary)] sm:text-base">
+                {profile.description}
+              </p>
+            </ScrollReveal>
 
-        <motion.div
-          className="flex flex-wrap items-center justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          <NeonButton href={profile.cvUrl} variant="primary">
-            <Download size={16} />
-            Download CV
-          </NeonButton>
-        </motion.div>
+            <ScrollReveal delay={3}>
+              <div className="flex flex-wrap gap-4">
+                <NeonButton href={profile.cvUrl} variant="primary">
+                  <Download size={16} />
+                  Download CV
+                </NeonButton>
+                <NeonButton
+                  variant="outline"
+                  onClick={() =>
+                    document.getElementById("stacks")?.scrollIntoView({ behavior: "smooth" })
+                  }
+                >
+                  View Projects
+                </NeonButton>
+              </div>
+            </ScrollReveal>
+        </div>
       </div>
 
       <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
+        aria-hidden="true"
       >
-        <div className="h-10 w-[1px] bg-gradient-to-b from-transparent via-white/30 to-transparent" />
+        <div className="h-10 w-px bg-gradient-to-b from-transparent via-neon-red/40 to-transparent" />
       </motion.div>
     </section>
   );

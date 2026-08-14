@@ -24,8 +24,8 @@ export function GlowCard({ children, className, tilt = true }: GlowCardProps) {
     const centerY = rect.height / 2;
 
     setRotate({
-      x: ((y - centerY) / centerY) * -8,
-      y: ((x - centerX) / centerX) * 8,
+      x: ((y - centerY) / centerY) * -12,
+      y: ((x - centerX) / centerX) * 12,
     });
     setGlow({
       x: (x / rect.width) * 100,
@@ -42,28 +42,31 @@ export function GlowCard({ children, className, tilt = true }: GlowCardProps) {
     <motion.div
       ref={ref}
       className={cn(
-        "glass-card group relative overflow-hidden rounded-2xl p-6 transition-shadow duration-500",
-        "hover:shadow-[0_0_40px_rgba(0,212,255,0.1)]",
+        "glass-card group relative overflow-hidden rounded-2xl p-6",
+        "hover:shadow-[0_0_32px_rgba(220,38,38,0.15),0_8px_32px_rgba(0,0,0,0.4)]",
         className,
       )}
       style={{
         transform: tilt
-          ? `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`
+          ? `perspective(800px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`
           : undefined,
-        transition: "transform 0.15s ease-out",
+        transition: "transform 0.15s ease-out, border-color 0.35s ease, box-shadow 0.35s ease",
       }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.3 }}
+      data-cursor-hover
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
         style={{
-          background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(0,212,255,0.08), transparent 60%)`,
+          background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(220,38,38,0.12), transparent 60%)`,
         }}
       />
       <div className="relative z-10">{children}</div>
+      <div
+        className="pointer-events-none absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-neon-red to-transparent opacity-0 transition-opacity duration-350 group-hover:opacity-100"
+        aria-hidden="true"
+      />
     </motion.div>
   );
 }

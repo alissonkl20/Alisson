@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Space_Grotesk } from "next/font/google";
 import "./global.css";
 
 const geistSans = Geist({
@@ -8,16 +8,16 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Alisson de Almeida de Oliveira — Full Stack Developer",
+  title: "Alisson de Almeida — Full Stack Developer",
   description:
-    "Portfólio de Alisson de Almeida de Oliveira, desenvolvedor Full Stack com experiência em Laravel, Flask, React, Next.js, Vue.js e NestJS.",
+    "Full Stack Developer with over 3 years of experience building scalable backends, modern interfaces, and high-performance software.",
   keywords: [
     "Full Stack Developer",
     "Laravel",
@@ -26,14 +26,14 @@ export const metadata: Metadata = {
     "Next.js",
     "Vue.js",
     "NestJS",
-    "Portfólio",
-    "Alisson de Almeida de Oliveira",
+    "Portfolio",
+    "Alisson de Almeida",
   ],
-  authors: [{ name: "Alisson de Almeida de Oliveira" }],
+  authors: [{ name: "Alisson de Almeida" }],
   openGraph: {
-    title: "Alisson de Almeida de Oliveira — Full Stack Developer",
+    title: "Alisson de Almeida — Full Stack Developer",
     description:
-      "Desenvolvedor Full Stack apaixonado por criar experiências digitais premium.",
+      "Full Stack Developer passionate about building reliable, maintainable, and high-performance software.",
     type: "website",
   },
 };
@@ -51,8 +51,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+      lang="en"
+      className={`${geistSans.variable} ${spaceGrotesk.variable} h-full`}
     >
       <body className="min-h-full bg-[var(--background)] antialiased">
         {children}

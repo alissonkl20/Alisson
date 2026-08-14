@@ -130,9 +130,9 @@ export function ChatWidget() {
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "fixed z-[9990] flex items-center gap-2 rounded-full border border-neon-orange/40",
-          "bg-[#1a1a1a] text-white shadow-[0_0_24px_rgba(255,94,0,0.25)]",
-          "transition-colors hover:border-neon-orange hover:shadow-[0_0_32px_rgba(255,94,0,0.4)]",
+          "fixed z-[9990] flex items-center gap-2 rounded-full border border-neon-red/40",
+          "bg-[#1a1a1a] text-white shadow-[0_0_24px_rgba(220,38,38,0.25)]",
+          "transition-colors hover:border-neon-red hover:shadow-[0_0_32px_rgba(220,38,38,0.4)]",
           "bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))]",
           "px-3 py-2.5 sm:px-5 sm:py-3",
         )}
@@ -142,11 +142,11 @@ export function ChatWidget() {
         aria-expanded={open}
       >
         {open ? (
-          <X size={20} className="text-neon-orange shrink-0" />
+          <X size={20} className="text-neon-red shrink-0" />
         ) : (
-          <MessageCircle size={20} className="text-neon-orange shrink-0" />
+          <MessageCircle size={20} className="text-neon-red shrink-0" />
         )}
-        <span className="hidden text-sm font-medium text-neon-orange neon-text-orange sm:inline">
+        <span className="hidden text-sm font-medium text-neon-red neon-text-orange sm:inline">
           Fale conosco
         </span>
       </motion.button>
@@ -166,8 +166,8 @@ export function ChatWidget() {
 
             <motion.div
               className={cn(
-                "fixed z-[9989] flex flex-col overflow-hidden border border-neon-orange/30 bg-[#0a0a0a]",
-                "shadow-[0_0_40px_rgba(255,94,0,0.15)]",
+                "fixed z-[9989] flex flex-col overflow-hidden border border-neon-red/30 bg-[#0a0a0a]",
+                "shadow-[0_0_40px_rgba(220,38,38,0.15)]",
                 "inset-x-0 bottom-0 max-h-[min(92dvh,100%)] rounded-t-2xl",
                 "pb-[env(safe-area-inset-bottom)]",
                 "sm:inset-x-auto sm:bottom-[calc(5.5rem+env(safe-area-inset-bottom))]",
@@ -182,9 +182,9 @@ export function ChatWidget() {
               aria-label="Chat de atendimento"
               aria-modal="true"
             >
-              <header className="flex shrink-0 items-center justify-between border-b border-neon-orange/20 bg-[#111] px-4 py-3 safe-top">
+              <header className="flex shrink-0 items-center justify-between border-b border-neon-red/20 bg-[#111] px-4 py-3 safe-top">
                 <div className="min-w-0 pr-2">
-                  <p className="text-sm font-semibold text-neon-orange neon-text-orange truncate">
+                  <p className="text-sm font-semibold text-neon-red neon-text-orange truncate">
                     Assistente Virtual
                   </p>
                   <p className="text-xs text-white/50 truncate">
@@ -196,7 +196,7 @@ export function ChatWidget() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="shrink-0 rounded-lg p-2 text-white/50 transition hover:text-neon-orange touch-manipulation"
+                  className="shrink-0 rounded-lg p-2 text-white/50 transition hover:text-neon-red touch-manipulation"
                   aria-label="Fechar"
                 >
                   <X size={18} />
@@ -218,7 +218,7 @@ export function ChatWidget() {
                     className={cn(
                       "max-w-[92%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed break-words",
                       msg.role === "user"
-                        ? "ml-auto bg-neon-orange text-black rounded-br-md"
+                        ? "ml-auto bg-neon-red text-black rounded-br-md"
                         : "mr-auto border border-white/10 bg-[#1a1a1a] text-white/90 rounded-bl-md",
                     )}
                   >
@@ -228,9 +228,9 @@ export function ChatWidget() {
 
                 {isTyping && (
                   <div className="mr-auto flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-white/10 bg-[#1a1a1a] px-4 py-3">
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-orange [animation-delay:0ms]" />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-orange [animation-delay:150ms]" />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-orange [animation-delay:300ms]" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-red [animation-delay:0ms]" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-red [animation-delay:150ms]" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-neon-red [animation-delay:300ms]" />
                   </div>
                 )}
 
@@ -246,7 +246,7 @@ export function ChatWidget() {
                       key={suggestion}
                       type="button"
                       onClick={() => handleSend(suggestion)}
-                      className="rounded-full border border-neon-orange/30 px-3 py-1.5 text-xs text-neon-orange/90 transition hover:border-neon-orange hover:bg-neon-orange/10 touch-manipulation"
+                      className="rounded-full border border-neon-red/30 px-3 py-1.5 text-xs text-neon-red/90 transition hover:border-neon-red hover:bg-neon-red/10 touch-manipulation"
                     >
                       {suggestion}
                     </button>
@@ -255,12 +255,12 @@ export function ChatWidget() {
               )}
 
               {limitReached ? (
-                <div className="shrink-0 space-y-3 border-t border-neon-orange/20 bg-[#111] p-4 safe-bottom">
+                <div className="shrink-0 space-y-3 border-t border-neon-red/20 bg-[#111] p-4 safe-bottom">
                   <p className="text-xs leading-relaxed text-white/60">{CHAT_LIMIT_REPLY}</p>
                   <button
                     type="button"
                     onClick={scrollToContact}
-                    className="w-full rounded-xl bg-neon-orange py-3 text-sm font-medium text-black transition hover:bg-neon-orange-bright touch-manipulation"
+                    className="w-full rounded-xl bg-neon-red py-3 text-sm font-medium text-black transition hover:bg-neon-red-bright touch-manipulation"
                   >
                     Ir para Contact
                   </button>
@@ -268,7 +268,7 @@ export function ChatWidget() {
               ) : (
                 <form
                   onSubmit={onSubmit}
-                  className="shrink-0 border-t border-neon-orange/20 bg-[#111] p-3 safe-bottom"
+                  className="shrink-0 border-t border-neon-red/20 bg-[#111] p-3 safe-bottom"
                 >
                   <div className="flex gap-2">
                     <Input
@@ -277,13 +277,13 @@ export function ChatWidget() {
                       onChange={(e) => setInput(e.target.value)}
                       placeholder="Digite sua mensagem..."
                       disabled={isTyping}
-                      className="min-w-0 border-white/10 bg-[#1a1a1a] text-base sm:text-sm focus:border-neon-orange/50 focus:shadow-[0_0_20px_rgba(255,94,0,0.12)]"
+                      className="min-w-0 border-white/10 bg-[#1a1a1a] text-base sm:text-sm focus:border-neon-red/50 focus:shadow-[0_0_20px_rgba(220,38,38,0.12)]"
                       aria-label="Mensagem"
                     />
                     <button
                       type="submit"
                       disabled={!input.trim() || isTyping}
-                      className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-neon-orange text-black transition hover:bg-neon-orange-bright disabled:opacity-40 touch-manipulation"
+                      className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-neon-red text-black transition hover:bg-neon-red-bright disabled:opacity-40 touch-manipulation"
                       aria-label="Enviar mensagem"
                     >
                       <Send size={18} />

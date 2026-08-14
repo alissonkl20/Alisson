@@ -1,13 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { cn } from "@/lib/utils";
 
 interface NeonTextProps {
   children: React.ReactNode;
   className?: string;
-  color?: "white" | "blue" | "purple" | "orange";
-  flicker?: boolean;
+  color?: "white" | "red" | "orange";
   ledSign?: boolean;
   as?: "h1" | "h2" | "h3" | "p" | "span";
 }
@@ -16,63 +15,38 @@ export function NeonText({
   children,
   className,
   color = "white",
-  flicker = false,
   ledSign = false,
   as: Tag = "span",
 }: NeonTextProps) {
   const colorClass = {
     white: "neon-text",
-    blue: "neon-text-blue",
-    purple: "neon-text-purple",
-    orange: "neon-text-orange",
+    red: "neon-text-red",
+    orange: "neon-text-red",
   }[color];
 
-  const ledClass =
-    ledSign && color === "orange"
-      ? "led-sign-orange"
-      : ledSign
-        ? "led-sign"
-        : undefined;
+  const ledClass = ledSign && color !== "white" ? "led-sign-red" : ledSign ? "neon-text" : undefined;
 
-  return (
-    <Tag
-      className={cn(
-        colorClass,
-        ledClass,
-        flicker && !ledSign && "led-pulse led-flicker",
-        flicker && ledSign && color !== "orange" && "led-sign-flicker",
-        className,
-      )}
-    >
-      {children}
-    </Tag>
-  );
+  return <Tag className={cn(colorClass, ledClass, className)}>{children}</Tag>;
 }
 
 interface SectionTitleProps {
   children: React.ReactNode;
+  label?: string;
   subtitle?: string;
   className?: string;
 }
 
-/** Títulos de seção com destaque neon laranja */
-export function SectionTitle({ children, subtitle, className }: SectionTitleProps) {
+export function SectionTitle({ children, label, subtitle, className }: SectionTitleProps) {
+  const displayLabel = label ?? subtitle;
+
   return (
-    <motion.div
-      className={cn("mb-12 md:mb-16 lg:mb-20", className)}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {subtitle && (
-        <span className="mb-4 block text-sm font-mono uppercase tracking-[0.3em] text-neon-orange/80">
-          {subtitle}
-        </span>
-      )}
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-        <NeonText color="orange">{children}</NeonText>
+    <ScrollReveal className={cn("mb-12 md:mb-16", className)}>
+      {displayLabel && <p className="section-label">{displayLabel}</p>}
+      <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+        <NeonText color="red" ledSign>
+          {children}
+        </NeonText>
       </h2>
-    </motion.div>
+    </ScrollReveal>
   );
 }

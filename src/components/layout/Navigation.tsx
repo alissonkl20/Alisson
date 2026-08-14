@@ -8,10 +8,8 @@ import { cn } from "@/lib/utils";
 
 const navLinkClass = (active: boolean) =>
   cn(
-    "relative text-sm transition-colors duration-300",
-    active
-      ? "text-neon-orange neon-text-orange"
-      : "text-neon-orange/50 hover:text-neon-orange/80",
+    "relative px-4 py-2 font-[family-name:var(--font-space-grotesk)] text-sm font-medium transition-colors duration-300",
+    active ? "text-white" : "text-[var(--text-secondary)] hover:text-white",
   );
 
 export function Navigation() {
@@ -20,7 +18,7 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -36,7 +34,10 @@ export function Navigation() {
         ([entry]) => {
           if (entry.isIntersecting) setActiveSection(id);
         },
-        { threshold: 0.3 },
+        {
+          threshold: 0.35,
+          rootMargin: "-72px 0px -45% 0px",
+        },
       );
       observer.observe(el);
       observers.push(observer);
@@ -53,73 +54,76 @@ export function Navigation() {
 
   return (
     <>
-      <motion.nav
+      <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 sm:py-4 safe-top safe-x transition-all duration-500",
+          "fixed top-0 left-0 right-0 z-50 h-[var(--nav-height)] transition-all duration-500 safe-top safe-x",
           scrolled
-            ? "bg-black/60 backdrop-blur-xl border-b border-white/5"
+            ? "border-b border-[var(--border-neon)] bg-black/82 backdrop-blur-xl"
             : "bg-transparent",
         )}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
+        aria-label="Main navigation"
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4 sm:px-6">
           <button
             onClick={() => handleClick("home")}
-            className="font-mono text-xs tracking-widest text-neon-orange/80 transition-colors hover:text-neon-orange neon-text-orange sm:text-sm"
-            aria-label="Ir para início"
+            className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold tracking-tight text-white transition-colors hover:text-neon-red"
+            aria-label="Go to home"
+            data-cursor-hover
           >
-            Alisson.Dev
+            A<span className="text-neon-red">.</span>Almeida
           </button>
 
-          <div className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-1 md:flex">
             {SECTIONS.map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => handleClick(id)}
-                className={navLinkClass(activeSection === id)}
-              >
-                {label}
-                {activeSection === id && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-[1px] bg-neon-orange"
-                    layoutId="nav-indicator"
-                    style={{ boxShadow: "0 0 10px rgba(255,94,0,0.5)" }}
-                  />
-                )}
-              </button>
+              <li key={id}>
+                <button
+                  onClick={() => handleClick(id)}
+                  className={navLinkClass(activeSection === id)}
+                  data-cursor-hover
+                >
+                  {label === "Home" ? "About" : label === "Stacks" ? "Projects" : label}
+                  {activeSection === id && (
+                    <span
+                      className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-neon-red-bright shadow-[0_0_8px_rgba(220,38,38,0.45)]"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <button
-            className="md:hidden text-neon-orange/70 hover:text-neon-orange"
+            className="text-[var(--text-secondary)] transition hover:text-neon-red md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            data-cursor-hover
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 bg-black/95 backdrop-blur-xl safe-top safe-bottom sm:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 border-b border-[var(--border-neon)] bg-black/95 backdrop-blur-xl safe-top safe-bottom md:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
           >
             {SECTIONS.map(({ id, label }, i) => (
               <motion.button
                 key={id}
                 onClick={() => handleClick(id)}
-                className="text-2xl text-neon-orange/80 transition-colors hover:text-neon-orange neon-text-orange"
-                initial={{ opacity: 0, y: 20 }}
+                className="font-[family-name:var(--font-space-grotesk)] text-2xl text-[var(--text-secondary)] transition hover:text-neon-red"
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
+                data-cursor-hover
               >
-                {label}
+                {label === "Home" ? "About" : label === "Stacks" ? "Projects" : label}
               </motion.button>
             ))}
           </motion.div>
