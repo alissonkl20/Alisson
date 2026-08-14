@@ -55,6 +55,7 @@ export const experiences: Experience[] = [
 
 export interface StackItem {
   name: string;
+  shortName: string;
   category: string;
   color: string;
   description?: string;
@@ -72,22 +73,25 @@ export type StackCategory =
 export const stacks: StackItem[] = [
   {
     name: "Finance AI",
+    shortName: "FI",
     category: "finance",
-    color: "#00e676",
+    color: "#dc2626",
     description:
       "Personal financial manager that processes bank statements via local LLM (5B params) with RAG. Generates detailed reports on income, expenses, and spending categorization (leisure, bills, investments).",
   },
   {
     name: "Chatbot Self-Service",
+    shortName: "CH",
     category: "chatbot",
-    color: "#b388ff",
+    color: "#ff0000",
     description:
       "Chatbot with local LLM (3B params) and comprehensive RAG for humanized self-service, with custom training to answer queries empathetically.",
   },
   {
     name: "RPA Invoice Issuance for MEI",
+    shortName: "RP",
     category: "automation",
-    color: "#ff5e00",
+    color: "#e60000",
     description:
       "Invoice issuance automation for MEI (Brazilian micro-entrepreneur) using Flask, requests, and HTML element mapping, ensuring 100% pre-programmed accuracy.",
   },

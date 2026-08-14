@@ -12,10 +12,13 @@ export const SECTIONS = [
 
 export const COLORS = {
   bg: "#000000",
-  neonOrange: "#ff5e00",
-  neonBlue: "#00d4ff",
-  neonPurple: "#a855f7",
+  neonRed: "#dc2626",
+  neonRedBright: "#ff0000",
+  neonOrange: "#dc2626",
+  neonBlue: "#4b9eff",
+  neonPurple: "#b388ff",
   neonWhite: "#ffffff",
+  textSecondary: "#b0b0b0",
   gray: "#1a1a1a",
-  grayLight: "#888888",
+  grayLight: "#b0b0b0",
 } as const;
