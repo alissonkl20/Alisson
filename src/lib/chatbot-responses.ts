@@ -3,13 +3,13 @@ import { CHAT_POLICY_REPLY } from "@/lib/chatbot-limits";
 import { isPolicyViolation } from "@/lib/chatbot-limits";
 
 export const CHAT_GREETING =
-  "Olá! Sou o assistente de Alisson. Você pode fazer até 5 perguntas sobre experiência, projetos ou tecnologias.";
+  "Hi! I'm Alisson's assistant. You can ask up to 5 questions about experience, projects, or technologies.";
 
 export const CHAT_SUGGESTIONS = [
-  "Quem é Alisson?",
-  "Experiência profissional",
-  "Projetos",
-  "Tecnologias",
+  "Who is Alisson?",
+  "Professional experience",
+  "Projects",
+  "Technologies",
 ] as const;
 
 export type ChatIntent =
@@ -21,22 +21,22 @@ export type ChatIntent =
   | "unknown";
 
 const REPLY_ALISSON =
-  "Alisson de Almeida é desenvolvedor Full Stack com mais de 3 anos de experiência profissional e 5 anos na área de tecnologia. Atua com stacks modernas e legadas, com foco em soluções completas, performance e qualidade de código.";
+  "Alisson de Almeida is a Full Stack Developer with 3+ years of professional experience and 5 years in technology. He works with modern and legacy stacks, focusing on complete solutions, performance, and code quality.";
 
 const REPLY_EXPERIENCE =
-  "Experiência em backends robustos e escaláveis, otimização de performance, interfaces modernas e responsivas, e automação com RPA web e no-code. Atuou em Rauzee, freelancing e WhaticketSaaS.";
+  "Experience in robust, scalable backends, performance optimization, modern responsive interfaces, and automation with web RPA and no-code tools. Worked at Rauzee, freelancing, and WhaticketSaaS.";
 
 const REPLY_PROJECTS =
-  "Destaques: RPAs para nota MEI, consultas automatizadas e notificações; Finance AI com LLM local para análise de extratos; e agentes para agilização de trabalho.";
+  "Highlights: MEI invoice RPAs, automated queries and notifications; Finance AI with a local LLM for bank statement analysis; and agents to streamline workflows.";
 
 const REPLY_TECH =
-  "Stack principal: backend com Laravel e Flask; frontend com React, Next.js, Vue.js, NestJS, HTML e CSS; PostgreSQL e REST APIs.";
+  "Core stack: backend with Laravel and Flask; frontend with React, Next.js, Vue.js, NestJS, HTML, and CSS; PostgreSQL and REST APIs.";
 
 const REPLY_HELLO =
-  "Olá! Pergunte sobre quem é Alisson, experiência, projetos ou tecnologias.";
+  "Hi! Ask me about who Alisson is, his experience, projects, or technologies.";
 
 const REPLY_FALLBACK =
-  "Posso ajudar com quem é Alisson, experiência profissional, projetos ou tecnologias. Reformule sua pergunta nesse contexto.";
+  "I can help with who Alisson is, professional experience, projects, or technologies. Please rephrase your question in that context.";
 
 export function normalizeForMatch(text: string): string {
   return text
@@ -50,22 +50,23 @@ export function normalizeForMatch(text: string): string {
 
 function applyTypoAliases(normalized: string): string {
   return normalized
-    .replace(/\bexperencia\b/g, "experiencia")
-    .replace(/\bexp profissional\b/g, "experiencia")
+    .replace(/\bexperencia\b/g, "experience")
+    .replace(/\bexp profissional\b/g, "experience")
     .replace(/\bautomacao\b/g, "rpa")
     .replace(/\bfinancas\b/g, "finance")
     .replace(/\bfinanceiro\b/g, "finance");
 }
 
-const GREETING_RE = /^(oi|ola|hey|hi|hello|bom dia|boa tarde|boa noite)\b/;
+const GREETING_RE =
+  /^(oi|ola|hey|hi|hello|bom dia|boa tarde|boa noite|good morning|good afternoon|good evening)\b/;
 const EXPERIENCE_RE =
-  /exper\w*|exp\s*prof|trabalho|backend|back\s*end|frontend|front\s*end|rpa|escalab|performanc|otimiz|segur|api\b|automac/;
+  /exper\w*|exp\s*prof|trabalho|work|backend|back\s*end|frontend|front\s*end|rpa|escalab|performanc|otimiz|segur|api\b|automac/;
 const PROJECTS_RE =
   /projeto|project|finance|financ|mei|nota\s*fiscal|notificac|mensag|chatbot|agente|extrato|llm/;
 const TECH_RE =
   /tecnolog|stack|react|next|laravel|vue|nestjs|nest\b|flask|typescript|python|postgres|html|css/;
 const ALISSON_RE =
-  /alisson|quem\s+e|quem\s+eh|sobre\s+voce|sobre\s+voc|desenvolvedor\s+full/;
+  /alisson|quem\s+e|quem\s+eh|who\s+is|sobre\s+voce|sobre\s+voc|desenvolvedor\s+full/;
 
 export function detectIntent(message: string): ChatIntent {
   const normalized = applyTypoAliases(normalizeForMatch(message));
@@ -83,10 +84,10 @@ export function detectIntent(message: string): ChatIntent {
 export function getIntentHint(intent: ChatIntent): string | null {
   const hints: Record<ChatIntent, string | null> = {
     greeting: null,
-    alisson: "Resposta curta e profissional sobre quem é Alisson (2 frases).",
-    experience: "Resposta curta sobre experiência (2 frases).",
-    projects: "Resposta curta sobre projetos (2 frases).",
-    tech: "Resposta curta sobre tecnologias (1 frase).",
+    alisson: "Short professional answer about who Alisson is (2 sentences).",
+    experience: "Short answer about experience (2 sentences).",
+    projects: "Short answer about projects (2 sentences).",
+    tech: "Short answer about technologies (1 sentence).",
     unknown: null,
   };
   return hints[intent];

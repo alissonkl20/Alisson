@@ -109,7 +109,7 @@ export function ChatWidget() {
 
         setMessages((prev) => [...prev, createMessage("assistant", result.reply)]);
       } catch {
-        setError("Não foi possível enviar a mensagem. Verifique a conexão.");
+        setError("Could not send the message. Please check your connection.");
       } finally {
         setIsTyping(false);
       }
@@ -138,7 +138,7 @@ export function ChatWidget() {
         )}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.97 }}
-        aria-label={open ? "Fechar chat" : "Abrir chat"}
+        aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
       >
         {open ? (
@@ -147,7 +147,7 @@ export function ChatWidget() {
           <MessageCircle size={20} className="text-neon-red shrink-0" />
         )}
         <span className="hidden text-sm font-medium text-neon-red neon-text-orange sm:inline">
-          Fale conosco
+          Chat with us
         </span>
       </motion.button>
 
@@ -161,7 +161,7 @@ export function ChatWidget() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              aria-label="Fechar chat"
+              aria-label="Close chat"
             />
 
             <motion.div
@@ -177,27 +177,27 @@ export function ChatWidget() {
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.98 }}
-              transition={{ duration: 0.22 }}
+              transition={{ type: "spring", stiffness: 320, damping: 30 }}
               role="dialog"
-              aria-label="Chat de atendimento"
+              aria-label="Support chat"
               aria-modal="true"
             >
               <header className="flex shrink-0 items-center justify-between border-b border-neon-red/20 bg-[#111] px-4 py-3 safe-top">
                 <div className="min-w-0 pr-2">
                   <p className="text-sm font-semibold text-neon-red neon-text-orange truncate">
-                    Assistente Virtual
+                    Virtual Assistant
                   </p>
                   <p className="text-xs text-white/50 truncate">
                     {limitReached
-                      ? "Limite atingido — use Contact"
-                      : `${remaining} de ${MAX_CHAT_QUESTIONS} perguntas restantes`}
+                      ? "Limit reached — use Contact"
+                      : `${remaining} of ${MAX_CHAT_QUESTIONS} questions left`}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   className="shrink-0 rounded-lg p-2 text-white/50 transition hover:text-neon-red touch-manipulation"
-                  aria-label="Fechar"
+                  aria-label="Close"
                 >
                   <X size={18} />
                 </button>
@@ -275,7 +275,7 @@ export function ChatWidget() {
                       ref={inputRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
-                      placeholder="Digite sua mensagem..."
+                      placeholder="Type your message..."
                       disabled={isTyping}
                       className="min-w-0 border-white/10 bg-[#1a1a1a] text-base sm:text-sm focus:border-neon-red/50 focus:shadow-[0_0_20px_rgba(220,38,38,0.12)]"
                       aria-label="Mensagem"
@@ -284,7 +284,7 @@ export function ChatWidget() {
                       type="submit"
                       disabled={!input.trim() || isTyping}
                       className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-neon-red text-black transition hover:bg-neon-red-bright disabled:opacity-40 touch-manipulation"
-                      aria-label="Enviar mensagem"
+                      aria-label="Send message"
                     >
                       <Send size={18} />
                     </button>
