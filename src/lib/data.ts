@@ -35,7 +35,7 @@ export const experiences: Experience[] = [
   },
   {
     id: "2",
-    company: "Autônomo",
+    company: "Self-employed",
     role: "Freelancer",
     period: "Jun 2025 — Sep 2025",
     description:
@@ -114,5 +114,9 @@ export const techCategories = [
   {
     title: "Ferramentas",
     items: ["Git", "REST APIs"],
+  },
+  {
+    title: "Outros Conhecimentos",
+    items: ["Spec-driven", "Modelagem de Estrutura de Projeto"],
   },
 ];

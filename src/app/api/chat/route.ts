@@ -83,8 +83,8 @@ async function buildGroqReply(
   const intentHint = getIntentHint(intent);
 
   const contextNote = intentHint
-    ? `[${intentHint} Máximo 2-3 frases. Sem listas longas.]`
-    : "[Resposta curta: máximo 2-3 frases.]";
+    ? `[${intentHint} Maximum 2-3 sentences. No long lists.]`
+    : "[Short answer: maximum 2-3 sentences.]";
 
   const messages: Array<{ role: "user" | "assistant"; content: string }> = [
     ...(history ?? []).slice(-4).map((entry) => ({
@@ -93,7 +93,7 @@ async function buildGroqReply(
     })),
     {
       role: "user",
-      content: `${contextNote}\n\nPergunta: ${message}`,
+      content: `${contextNote}\n\nQuestion: ${message}`,
     },
   ];
 

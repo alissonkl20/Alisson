@@ -13,10 +13,10 @@ export interface ChatUsageSession {
 }
 
 export const CHAT_LIMIT_REPLY =
-  "Você atingiu o limite de 5 perguntas nesta sessão. Para continuar, entre em contato pela seção Contact no site — role até o final da página ou use os links de e-mail e redes sociais.";
+  "You've reached the limit of 5 questions in this session. To continue, use the Contact section at the bottom of the page or the email and social links there.";
 
 export const CHAT_POLICY_REPLY =
-  "Não posso compartilhar dados pessoais nem detalhes internos de sistemas. Posso ajudar apenas com informações profissionais de Alisson: experiência, projetos e tecnologias.";
+  "I can't share personal data or internal system details. I can only help with Alisson's professional information: experience, projects, and technologies.";
 
 export function createFreshUsageSession(): ChatUsageSession {
   return { count: 0, windowStart: Date.now() };
