@@ -6,7 +6,7 @@ import { ProjectsCarousel } from "@/components/sections/ProjectsCarousel";
 
 export function Stacks() {
   return (
-    <section id="stacks" className="relative overflow-hidden py-20 sm:py-28 md:py-32">
+    <section id="stacks" className="section-spacing relative overflow-hidden">
       <div
         className="pointer-events-none absolute -left-[10%] top-[15%] h-72 w-72 rounded-full bg-[#dc2626]/10 blur-[110px]"
         aria-hidden="true"
@@ -20,10 +20,10 @@ export function Stacks() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto w-[92vw] max-w-7xl">
-        <ScrollReveal className="mb-10 sm:mb-12 md:mb-14">
+      <div className="page-container relative">
+        <ScrollReveal className="mb-8 sm:mb-12 md:mb-14">
           <p className="section-label mb-5">Portfolio</p>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-[clamp(1.75rem,5vw,3.75rem)] font-bold tracking-tight">
             <NeonText color="red" ledSign as="span">
               Projects
             </NeonText>
