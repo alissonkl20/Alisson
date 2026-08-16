@@ -140,7 +140,7 @@ function ExperienceCard({
 
       <motion.article
         className={cn(
-          "glass-card group relative overflow-hidden rounded-2xl transition-shadow duration-500",
+          "glass-card card-transparent-md group relative overflow-hidden rounded-2xl transition-shadow duration-500",
           isInView && "shadow-[0_0_48px_rgba(220,38,38,0.18),0_16px_48px_rgba(0,0,0,0.45)]",
         )}
         whileHover={reduceMotion ? undefined : { y: -8, transition: { type: "spring", stiffness: 280, damping: 22 } }}
@@ -326,14 +326,14 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="relative overflow-hidden py-20 sm:py-28 md:py-32"
+      className="section-spacing relative overflow-hidden"
     >
       <ExperienceBackground reduceMotion={reduceMotion} />
 
-      <div className="relative mx-auto w-[92vw] max-w-5xl px-4 sm:px-0">
-        <ScrollReveal className="mb-12 text-center sm:mb-14 md:mb-16">
+      <div className="page-container page-container--narrow relative">
+        <ScrollReveal className="mb-10 text-center sm:mb-14 md:mb-16">
           <p className="section-label justify-center mb-5">Career</p>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-[clamp(1.75rem,5vw,3.75rem)] font-bold tracking-tight">
             <NeonText color="red" ledSign as="span">
               Experience
             </NeonText>

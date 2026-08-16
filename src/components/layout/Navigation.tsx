@@ -24,26 +24,42 @@ export function Navigation() {
   }, []);
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    let observers: IntersectionObserver[] = [];
 
-    SECTIONS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (!el) return;
+    const setupObservers = () => {
+      observers.forEach((o) => o.disconnect());
+      observers = [];
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        {
-          threshold: 0.35,
-          rootMargin: "-72px 0px -45% 0px",
-        },
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
+      const navHeightRaw = getComputedStyle(document.documentElement)
+        .getPropertyValue("--nav-height")
+        .trim();
+      const navHeight = Number.parseFloat(navHeightRaw) || 72;
+      const rootMargin = `${-navHeight}px 0px -45% 0px`;
 
-    return () => observers.forEach((o) => o.disconnect());
+      SECTIONS.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) setActiveSection(id);
+          },
+          {
+            threshold: 0.35,
+            rootMargin,
+          },
+        );
+        observer.observe(el);
+        observers.push(observer);
+      });
+    };
+
+    setupObservers();
+    window.addEventListener("resize", setupObservers);
+    return () => {
+      window.removeEventListener("resize", setupObservers);
+      observers.forEach((o) => o.disconnect());
+    };
   }, []);
 
   const handleClick = (id: string) => {
@@ -63,7 +79,7 @@ export function Navigation() {
         )}
         aria-label="Main navigation"
       >
-        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between">
           <button
             onClick={() => handleClick("home")}
             className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold tracking-tight text-white transition-colors hover:text-neon-red"
@@ -94,7 +110,7 @@ export function Navigation() {
           </ul>
 
           <button
-            className="text-[var(--text-secondary)] transition hover:text-neon-red md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--text-secondary)] transition hover:text-neon-red touch-manipulation md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
@@ -108,16 +124,25 @@ export function Navigation() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-6 border-b border-[var(--border-neon)] bg-black/95 backdrop-blur-xl safe-top safe-bottom md:hidden"
+            className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-5 border-b border-[var(--border-neon)] bg-black/95 backdrop-blur-xl safe-top safe-bottom px-6 md:hidden"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] flex h-11 w-11 items-center justify-center rounded-lg text-white/60 transition hover:text-neon-red touch-manipulation"
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+
             {SECTIONS.map(({ id, label }, i) => (
               <motion.button
                 key={id}
                 onClick={() => handleClick(id)}
-                className="font-[family-name:var(--font-space-grotesk)] text-2xl text-[var(--text-secondary)] transition hover:text-neon-red"
+                className="min-h-[44px] px-4 py-2 font-[family-name:var(--font-space-grotesk)] text-xl text-[var(--text-secondary)] transition hover:text-neon-red touch-manipulation sm:text-2xl"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}

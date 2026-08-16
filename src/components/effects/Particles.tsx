@@ -29,7 +29,10 @@ export function Particles() {
     };
 
     const create = () => {
-      const count = Math.min(80, Math.floor(window.innerWidth / 18));
+      const isMobile = window.innerWidth < 768;
+      const density = isMobile ? 28 : 18;
+      const maxCount = isMobile ? 35 : 80;
+      const count = Math.min(maxCount, Math.floor(window.innerWidth / density));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -61,11 +64,12 @@ export function Particles() {
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          const linkDistance = window.innerWidth < 768 ? 90 : 120;
+          if (dist < linkDistance) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(120, 10, 10, ${0.08 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(120, 10, 10, ${0.08 * (1 - dist / linkDistance)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -96,7 +100,7 @@ export function Particles() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 opacity-55"
+      className="pointer-events-none fixed inset-0 z-0 opacity-55 max-md:opacity-35"
       aria-hidden="true"
     />
   );

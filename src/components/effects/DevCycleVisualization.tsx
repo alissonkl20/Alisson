@@ -64,13 +64,15 @@ function PanelShell({
   children,
   step,
   accent,
+  className = "",
 }: {
   children: React.ReactNode;
   step: string;
   accent: string;
+  className?: string;
 }) {
   return (
-    <div className="relative px-2 py-4 sm:px-4 sm:py-6">
+    <div className={`relative px-2 py-4 sm:px-4 sm:py-6 ${className}`}>
       <span
         className="mb-4 block font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold uppercase tracking-[0.25em] text-neon-red"
       >
@@ -181,10 +183,592 @@ function AnimatedLine({
   );
 }
 
+/* ─── Mobile layout ─── */
+
+function MobileStepLabel({ step, accent }: { step: string; accent: string }) {
+  return (
+    <div className="mb-4">
+      <span
+        className="block font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold uppercase tracking-[0.22em] text-neon-red"
+      >
+        {step}
+      </span>
+      <div
+        className="mt-3 h-px w-10"
+        style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }}
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+
+function MobilePlanningCard() {
+  const reduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hubPos, setHubPos] = useState<{ x: number; y: number } | null>(null);
+  const [chipPositions, setChipPositions] = useState<
+    Array<{ x: number; y: number }> | null
+  >(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const measure = () => {
+      const rect = container.getBoundingClientRect();
+      const toPct = (el: HTMLElement | null) => {
+        if (!el || !rect.width || !rect.height) return { x: 0, y: 0 };
+        const r = el.getBoundingClientRect();
+        return {
+          x: ((r.left + r.width / 2 - rect.left) / rect.width) * 100,
+          y: ((r.top + r.height / 2 - rect.top) / rect.height) * 100,
+        };
+      };
+
+      setHubPos(toPct(container.querySelector("[data-node='ideation-hub']")));
+      setChipPositions(
+        PLANNING_NODES.map((_, i) =>
+          toPct(container.querySelector(`[data-node='planning-${i}']`)),
+        ),
+      );
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
+  const showLines = hubPos && chipPositions;
+
+  return (
+    <motion.article
+      className="card-transparent overflow-hidden rounded-2xl p-5"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.55, ease: SMOOTH_EASE }}
+    >
+      <MobileStepLabel step="01 — Ideation" accent="#ff6b9d" />
+
+      <div className="mb-5 flex items-start gap-3">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#ff6b9d]/30 bg-[#ff6b9d]/10 text-[#ff6b9d]"
+        >
+          <Brain className="h-5 w-5" strokeWidth={1.75} />
+        </span>
+        <div>
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-white">
+            Planning &amp; Design
+          </h3>
+          <p className="mt-1 text-sm leading-relaxed text-white/65">
+            Specs, tests, and architecture before code.
+          </p>
+        </div>
+      </div>
+
+      <div ref={containerRef} className="relative">
+        {showLines && (
+          <svg
+            className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            {PLANNING_NODES.map((node, i) => (
+              <AnimatedLine
+                key={node.label}
+                x1={hubPos.x}
+                y1={hubPos.y}
+                x2={chipPositions[i].x}
+                y2={chipPositions[i].y}
+                color={node.color}
+                duration={4 + i * 0.15}
+              />
+            ))}
+          </svg>
+        )}
+
+        <div className="relative z-10 mb-4 flex flex-col items-center" data-node="ideation-hub">
+          <motion.div
+            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#ff6b9d]/25 bg-[#ff6b9d]/[0.06]"
+            animate={reduceMotion ? undefined : { scale: [1, 1.05, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            style={{ boxShadow: "0 0 32px rgba(255,107,157,0.12)" }}
+          >
+            <Brain className="h-8 w-8 text-[#ff6b9d]" strokeWidth={1.5} />
+          </motion.div>
+          <p
+            className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em]"
+            style={{ color: "#ff6b9d" }}
+          >
+            Ideation hub
+          </p>
+        </div>
+
+        <div className="relative z-10 grid grid-cols-2 gap-2">
+          {PLANNING_NODES.map((node, i) => (
+            <motion.span
+              key={node.label}
+              data-node={`planning-${i}`}
+              className="flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium"
+              style={{
+                color: node.color,
+                borderColor: `${node.color}35`,
+                backgroundColor: `${node.color}10`,
+              }}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: reduceMotion ? 0 : i * 0.04, duration: 0.4, ease: SMOOTH_EASE }}
+            >
+              <span
+                className="h-1.5 w-1.5 shrink-0 rounded-full"
+                style={{ backgroundColor: node.color }}
+              />
+              <span className="leading-tight">{node.label}</span>
+            </motion.span>
+          ))}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function MobileLayerCard({
+  title,
+  icon: Icon,
+  color,
+  techs,
+  index,
+  nodeId,
+}: {
+  title: string;
+  icon: typeof Monitor;
+  color: string;
+  techs: string[];
+  index: number;
+  nodeId: string;
+}) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <motion.article
+      data-node={nodeId}
+      className="relative z-10 card-transparent overflow-hidden rounded-2xl p-4"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{
+        delay: reduceMotion ? 0 : index * 0.06,
+        duration: 0.5,
+        ease: SMOOTH_EASE,
+      }}
+    >
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <span
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+            style={{
+              color,
+              borderColor: `${color}35`,
+              backgroundColor: `${color}12`,
+            }}
+          >
+            <Icon className="h-5 w-5" strokeWidth={1.75} />
+          </span>
+          <span
+            className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold"
+            style={{ color }}
+          >
+            {title}
+          </span>
+        </div>
+        <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider">
+          <motion.span
+            className="h-1.5 w-1.5 rounded-full bg-emerald-400/80"
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <span style={{ color: "#6ee7a0" }}>live</span>
+        </span>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5">
+        {techs.map((tech) => (
+          <span
+            key={tech}
+            className="rounded-md border px-2.5 py-1 text-xs font-medium"
+            style={{
+              color,
+              borderColor: `${color}30`,
+              backgroundColor: `${color}08`,
+            }}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </motion.article>
+  );
+}
+
+function MobileFlowConnector({
+  label,
+  color = "#5eb8ff",
+  dual,
+  nodeId,
+}: {
+  label?: string;
+  color?: string;
+  dual?: { left: string; right: string };
+  nodeId?: string;
+}) {
+  return (
+    <div
+      className="relative z-10 flex flex-col items-center py-1"
+      data-node={nodeId}
+      aria-hidden={!label && !dual}
+    >
+      {label && (
+        <span
+          className="my-1.5 flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider"
+          style={{
+            color,
+            borderColor: `${color}40`,
+            backgroundColor: `${color}10`,
+          }}
+        >
+          <Server className="h-3 w-3" strokeWidth={2} />
+          {label}
+        </span>
+      )}
+      {dual && (
+        <div className="my-1.5 grid w-full grid-cols-2 gap-2 px-1">
+          <span
+            className="text-center text-[10px] font-medium uppercase tracking-wide"
+            style={{ color: "#ff8c5a" }}
+          >
+            {dual.left}
+          </span>
+          <span
+            className="text-center text-[10px] font-medium uppercase tracking-wide"
+            style={{ color: "#ff8c5a" }}
+          >
+            {dual.right}
+          </span>
+        </div>
+      )}
+      {!label && !dual && (
+        <div className="h-4 w-px" aria-hidden="true" />
+      )}
+    </div>
+  );
+}
+
+function MobileSectionBridge() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className="flex items-center gap-3 py-5" aria-hidden="true">
+      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-neon-red/35 to-transparent" />
+      <motion.span
+        className="shrink-0 text-[10px] font-bold uppercase tracking-[0.2em] text-neon-red-bright"
+        animate={reduceMotion ? undefined : { opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        idea → build
+      </motion.span>
+      <ArrowRight className="h-4 w-4 shrink-0 text-neon-red/60" strokeWidth={1.5} />
+      <div className="h-px flex-1 bg-gradient-to-l from-transparent via-neon-red/35 to-transparent" />
+    </div>
+  );
+}
+
+function MobileExecutionPipeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [paths, setPaths] = useState<{
+    git: { x: number; y: number };
+    frontend: { x: number; y: number };
+    backend: { x: number; y: number };
+    database: { x: number; y: number };
+    restApi: { x: number; y: number };
+  } | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const measure = () => {
+      const rect = container.getBoundingClientRect();
+      const toPct = (el: HTMLElement | null) => {
+        if (!el || !rect.width || !rect.height) return { x: 0, y: 0 };
+        const r = el.getBoundingClientRect();
+        return {
+          x: ((r.left + r.width / 2 - rect.left) / rect.width) * 100,
+          y: ((r.top + r.height / 2 - rect.top) / rect.height) * 100,
+        };
+      };
+
+      setPaths({
+        git: toPct(container.querySelector("[data-node='mobile-git']")),
+        frontend: toPct(container.querySelector("[data-node='mobile-frontend']")),
+        backend: toPct(container.querySelector("[data-node='mobile-backend']")),
+        database: toPct(container.querySelector("[data-node='mobile-database']")),
+        restApi: toPct(container.querySelector("[data-node='mobile-rest-api']")),
+      });
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
+  const layers = [
+    { key: "git", nodeId: "mobile-git", ...SYSTEM_NODES.git },
+    { key: "frontend", nodeId: "mobile-frontend", ...SYSTEM_NODES.frontend },
+    { key: "backend", nodeId: "mobile-backend", ...SYSTEM_NODES.backend },
+    { key: "database", nodeId: "mobile-database", ...SYSTEM_NODES.database },
+  ] as const;
+
+  return (
+    <div ref={containerRef} className="relative space-y-0">
+      {paths && (
+        <svg
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {/* Git → Frontend / Backend (CI/CD) */}
+          <AnimatedLine
+            x1={paths.git.x}
+            y1={paths.git.y}
+            x2={paths.frontend.x}
+            y2={paths.frontend.y}
+            color={SYSTEM_NODES.git.color}
+            dashed
+            particle={false}
+          />
+          <AnimatedLine
+            x1={paths.git.x}
+            y1={paths.git.y}
+            x2={paths.backend.x}
+            y2={paths.backend.y}
+            color={SYSTEM_NODES.git.color}
+            dashed
+            particle={false}
+          />
+
+          {/* Frontend ↔ Backend via REST */}
+          <AnimatedLine
+            x1={paths.frontend.x}
+            y1={paths.frontend.y}
+            x2={paths.restApi.x}
+            y2={paths.restApi.y}
+            color={SYSTEM_NODES.frontend.color}
+            duration={3.2}
+          />
+          <AnimatedLine
+            x1={paths.restApi.x}
+            y1={paths.restApi.y}
+            x2={paths.backend.x}
+            y2={paths.backend.y}
+            color={SYSTEM_NODES.backend.color}
+            duration={3.2}
+          />
+          <AnimatedLine
+            x1={paths.backend.x}
+            y1={paths.backend.y}
+            x2={paths.restApi.x}
+            y2={paths.restApi.y}
+            color={SYSTEM_NODES.backend.color}
+            reverse
+            duration={3.4}
+          />
+          <AnimatedLine
+            x1={paths.restApi.x}
+            y1={paths.restApi.y}
+            x2={paths.frontend.x}
+            y2={paths.frontend.y}
+            color={SYSTEM_NODES.frontend.color}
+            reverse
+            duration={3.4}
+          />
+
+          {/* Data flow to database */}
+          <AnimatedLine
+            x1={paths.backend.x}
+            y1={paths.backend.y}
+            x2={paths.database.x}
+            y2={paths.database.y}
+            color={SYSTEM_NODES.database.color}
+            duration={4}
+          />
+          <AnimatedLine
+            x1={paths.frontend.x}
+            y1={paths.frontend.y}
+            x2={paths.database.x}
+            y2={paths.database.y}
+            color={SYSTEM_NODES.database.color}
+            reverse
+            duration={4.2}
+          />
+        </svg>
+      )}
+
+      <MobileLayerCard
+        title={layers[0].title}
+        icon={layers[0].icon}
+        color={layers[0].color}
+        techs={layers[0].techs}
+        index={0}
+        nodeId={layers[0].nodeId}
+      />
+
+      <MobileFlowConnector color={SYSTEM_NODES.git.color} nodeId="mobile-conn-git-fe" />
+
+      <MobileLayerCard
+        title={layers[1].title}
+        icon={layers[1].icon}
+        color={layers[1].color}
+        techs={layers[1].techs}
+        index={1}
+        nodeId={layers[1].nodeId}
+      />
+
+      <MobileFlowConnector label="REST API" color="#5eb8ff" nodeId="mobile-rest-api" />
+
+      <MobileLayerCard
+        title={layers[2].title}
+        icon={layers[2].icon}
+        color={layers[2].color}
+        techs={layers[2].techs}
+        index={2}
+        nodeId={layers[2].nodeId}
+      />
+
+      <MobileFlowConnector
+        dual={{ left: "fetch data", right: "sql query" }}
+        nodeId="mobile-conn-data"
+      />
+
+      <MobileLayerCard
+        title={layers[3].title}
+        icon={layers[3].icon}
+        color={layers[3].color}
+        techs={layers[3].techs}
+        index={3}
+        nodeId={layers[3].nodeId}
+      />
+    </div>
+  );
+}
+
+function MobileDevCycle() {
+  const mobileRootRef = useRef<HTMLDivElement>(null);
+  const [bridgePaths, setBridgePaths] = useState<{
+    ideation: { x: number; y: number };
+    git: { x: number; y: number };
+  } | null>(null);
+
+  useEffect(() => {
+    const root = mobileRootRef.current;
+    if (!root) return;
+
+    const measure = () => {
+      const rect = root.getBoundingClientRect();
+      const toPct = (el: HTMLElement | null) => {
+        if (!el || !rect.width || !rect.height) return { x: 0, y: 0 };
+        const r = el.getBoundingClientRect();
+        return {
+          x: ((r.left + r.width / 2 - rect.left) / rect.width) * 100,
+          y: ((r.top + r.height / 2 - rect.top) / rect.height) * 100,
+        };
+      };
+
+      setBridgePaths({
+        ideation: toPct(root.querySelector("[data-node='ideation-hub']")),
+        git: toPct(root.querySelector("[data-node='mobile-git']")),
+      });
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(root);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={mobileRootRef} className="relative space-y-0">
+      {bridgePaths && (
+        <svg
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <AnimatedLine
+            x1={bridgePaths.ideation.x}
+            y1={bridgePaths.ideation.y}
+            x2={bridgePaths.git.x}
+            y2={bridgePaths.git.y}
+            color="#ff6b9d"
+            duration={5}
+          />
+          <AnimatedLine
+            x1={bridgePaths.ideation.x}
+            y1={bridgePaths.ideation.y}
+            x2={bridgePaths.git.x}
+            y2={bridgePaths.git.y}
+            color="#5eb8ff"
+            reverse
+            duration={5.2}
+          />
+        </svg>
+      )}
+
+      <MobilePlanningCard />
+      <MobileSectionBridge />
+
+      <motion.article
+        className="relative z-10 card-transparent overflow-hidden rounded-2xl p-5"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.55, ease: SMOOTH_EASE }}
+      >
+        <MobileStepLabel step="02 — Execution" accent="#5eb8ff" />
+
+        <div className="mb-5 flex items-start gap-3">
+          <span
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#5eb8ff]/30 bg-[#5eb8ff]/10 text-[#5eb8ff]"
+          >
+            <Workflow className="h-5 w-5" strokeWidth={1.75} />
+          </span>
+          <div>
+            <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-white">
+              System in Production
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-white/65">
+              Frontend, backend, database, and tooling working together.
+            </p>
+          </div>
+        </div>
+
+        <MobileExecutionPipeline />
+      </motion.article>
+    </div>
+  );
+}
+
+/* ─── Desktop layout ─── */
+
 function PlanningMind() {
   const reduceMotion = useReducedMotion();
   const nodePositions = PLANNING_NODES.map((_, i) =>
-    polarToPercent((i / PLANNING_NODES.length) * 360 - 90)
+    polarToPercent((i / PLANNING_NODES.length) * 360 - 90),
   );
 
   return (
@@ -236,9 +820,7 @@ function PlanningMind() {
         <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center">
           <motion.div
             className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-transparent sm:h-16 sm:w-16"
-            style={{
-              boxShadow: "0 0 40px rgba(255,107,157,0.15)",
-            }}
+            style={{ boxShadow: "0 0 40px rgba(255,107,157,0.15)" }}
             animate={reduceMotion ? undefined : { scale: [1, 1.04, 1] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -378,18 +960,15 @@ function RestApiBridge() {
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         data-node="rest-api"
       >
-        {/* Glow do servidor */}
         <div
           className="pointer-events-none absolute -inset-1 rounded-lg bg-[#5eb8ff]/10 blur-sm"
           aria-hidden="true"
         />
 
-        {/* Chassis — mini server rack */}
         <div
           className="relative w-[40px] rounded-md border border-[#5eb8ff]/25 bg-transparent p-1 sm:w-[44px]"
           style={{ boxShadow: "0 0 14px rgba(94,184,255,0.1)" }}
         >
-          {/* Topo — LEDs de status */}
           <div className="mb-1 flex items-center justify-between px-0.5">
             <div className="flex gap-0.5">
               {[0, 1, 2].map((i) => (
@@ -400,9 +979,7 @@ function RestApiBridge() {
                     backgroundColor: i === 0 ? "#6ee7a0" : i === 1 ? "#5eb8ff" : "#ffd700",
                   }}
                   animate={
-                    reduceMotion
-                      ? undefined
-                      : { opacity: [0.35, 1, 0.35] }
+                    reduceMotion ? undefined : { opacity: [0.35, 1, 0.35] }
                   }
                   transition={{
                     duration: 2,
@@ -413,15 +990,11 @@ function RestApiBridge() {
                 />
               ))}
             </div>
-            <span
-              className="text-[6px] font-bold sm:text-[7px]"
-              style={{ color: "#5eb8ff" }}
-            >
+            <span className="text-[6px] font-bold sm:text-[7px]" style={{ color: "#5eb8ff" }}>
               SRV
             </span>
           </div>
 
-          {/* Slots de servidor */}
           <div className="mb-1 space-y-0.5">
             {[0, 1].map((slot) => (
               <div
@@ -431,9 +1004,7 @@ function RestApiBridge() {
                 <motion.span
                   className="h-0.5 w-0.5 shrink-0 rounded-full bg-[#5eb8ff]/70"
                   animate={
-                    reduceMotion
-                      ? undefined
-                      : { opacity: slot === 1 ? [0.3, 1, 0.3] : 0.4 }
+                    reduceMotion ? undefined : { opacity: slot === 1 ? [0.3, 1, 0.3] : 0.4 }
                   }
                   transition={{
                     duration: 1.8,
@@ -447,7 +1018,6 @@ function RestApiBridge() {
             ))}
           </div>
 
-          {/* Label REST API na frente do servidor */}
           <div className="rounded border border-[#5eb8ff]/20 bg-transparent px-0.5 py-0.5 text-center">
             <Server
               className="mx-auto mb-px h-2.5 w-2.5 text-[#5eb8ff]/80 sm:h-3 sm:w-3"
@@ -467,7 +1037,6 @@ function RestApiBridge() {
             </p>
           </div>
 
-          {/* Base / pés do rack */}
           <div className="mt-1 flex justify-center gap-1.5" aria-hidden="true">
             <span className="h-px w-1.5 rounded-full bg-white/10" />
             <span className="h-px w-1.5 rounded-full bg-white/10" />
@@ -595,7 +1164,6 @@ function SystemArchitecture() {
           </svg>
         )}
 
-        {/* Git */}
         <div data-node="git" className="relative z-10 mx-auto max-w-[200px]">
           <SystemCard
             title={SYSTEM_NODES.git.title}
@@ -605,7 +1173,6 @@ function SystemArchitecture() {
           />
         </div>
 
-        {/* Frontend ↔ Backend */}
         <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
           <div data-node="frontend">
             <SystemCard
@@ -626,7 +1193,6 @@ function SystemArchitecture() {
           </div>
         </div>
 
-        {/* Fluxo de dados */}
         <div className="relative z-10 grid grid-cols-2 gap-4 px-2 py-1">
           <p
             className="text-center text-[10px] font-medium uppercase tracking-wider sm:text-[11px]"
@@ -642,7 +1208,6 @@ function SystemArchitecture() {
           </p>
         </div>
 
-        {/* Database */}
         <div data-node="database" className="relative z-10 mx-auto max-w-[220px]">
           <SystemCard
             title={SYSTEM_NODES.database.title}
@@ -656,41 +1221,12 @@ function SystemArchitecture() {
   );
 }
 
-function FlowBridge({ vertical = false }: { vertical?: boolean }) {
+function FlowBridge() {
   const reduceMotion = useReducedMotion();
-
-  if (vertical) {
-    return (
-      <div
-        className="flex flex-col items-center gap-3 py-4 lg:hidden"
-        aria-hidden="true"
-      >
-        <motion.div
-          className="h-8 w-px bg-gradient-to-b from-white/10 to-white/20"
-          animate={reduceMotion ? undefined : { opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neon-red-bright drop-shadow-[0_0_16px_rgba(220,38,38,0.3)]">
-          idea → build
-        </span>
-        <motion.div
-          animate={reduceMotion ? undefined : { y: [0, 4, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowRight className="h-4 w-4 rotate-90 text-neon-red/70" strokeWidth={1.5} />
-        </motion.div>
-        <motion.div
-          className="h-8 w-px bg-gradient-to-b from-white/20 to-transparent"
-          animate={reduceMotion ? undefined : { opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-        />
-      </div>
-    );
-  }
 
   return (
     <div
-      className="hidden flex-col items-center justify-center gap-3 self-center px-2 lg:flex"
+      className="flex flex-col items-center justify-center gap-3 self-center px-2"
       aria-hidden="true"
     >
       <motion.div
@@ -716,14 +1252,24 @@ function FlowBridge({ vertical = false }: { vertical?: boolean }) {
   );
 }
 
+function DesktopDevCycle() {
+  return (
+    <div className="grid items-start lg:grid-cols-[1fr_auto_1fr] lg:gap-0">
+      <PlanningMind />
+      <FlowBridge />
+      <SystemArchitecture />
+    </div>
+  );
+}
+
 export function DevCycleVisualization() {
   return (
     <div className="relative">
-      <div className="grid items-start gap-2 lg:grid-cols-[1fr_auto_1fr] lg:gap-0">
-        <PlanningMind />
-        <FlowBridge vertical />
-        <FlowBridge />
-        <SystemArchitecture />
+      <div className="lg:hidden">
+        <MobileDevCycle />
+      </div>
+      <div className="hidden lg:block">
+        <DesktopDevCycle />
       </div>
     </div>
   );

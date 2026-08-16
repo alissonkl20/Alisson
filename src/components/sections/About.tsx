@@ -8,7 +8,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden py-20 sm:py-28 md:py-32"
+      className="section-spacing relative overflow-x-hidden"
     >
       <div
         className="pointer-events-none absolute -left-[10%] top-[18%] h-72 w-72 rounded-full bg-[#00d4ff]/8 blur-[100px]"
@@ -23,10 +23,10 @@ export function About() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto w-[92vw] max-w-7xl">
-        <ScrollReveal className="mb-10 text-center sm:mb-12 md:mb-14">
+      <div className="page-container relative">
+        <ScrollReveal className="mb-8 text-center sm:mb-12 md:mb-14">
           <p className="section-label justify-center mb-5">Tech Stack</p>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-[clamp(1.75rem,5vw,3.75rem)] font-bold tracking-tight">
             <NeonText color="red" ledSign as="span">
               Skills &amp; Tools
             </NeonText>

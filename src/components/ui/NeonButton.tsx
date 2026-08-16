@@ -45,7 +45,7 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
     ref,
   ) => {
     const classes = cn(
-      "glow-button relative inline-flex items-center justify-center gap-2 rounded-lg font-[family-name:var(--font-space-grotesk)] font-semibold transition-all duration-300",
+      "glow-button relative inline-flex items-center justify-center gap-2 rounded-lg font-[family-name:var(--font-space-grotesk)] font-semibold transition-all duration-300 touch-manipulation",
       variants[variant],
       sizes[size],
       disabled && "pointer-events-none opacity-50",

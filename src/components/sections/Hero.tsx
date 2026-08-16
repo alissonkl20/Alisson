@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Download } from "lucide-react";
 import { profile } from "@/lib/data";
 import { useTypewriter } from "@/hooks/useTypewriter";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { TechGrid } from "@/components/effects/TechGrid";
@@ -13,6 +14,7 @@ import { TechGrid } from "@/components/effects/TechGrid";
 export function Hero() {
   const title = useTypewriter({ text: profile.title });
   const containerRef = useRef<HTMLElement>(null);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -33,17 +35,21 @@ export function Hero() {
     <section
       ref={containerRef}
       id="home"
-      className="relative h-[200vh]"
+      className="relative h-[200vh] max-md:h-auto max-md:min-h-[100dvh]"
     >
-      <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden px-4 pt-[var(--nav-height)] sm:px-6">
+      <div className="sticky top-0 isolate flex h-[100dvh] items-center overflow-hidden pt-[var(--nav-height)] max-md:relative max-md:min-h-[100dvh]">
         <motion.div
-          className="pointer-events-none absolute inset-0 -z-20 overflow-hidden"
-          style={{
-            scale: backgroundScale,
-            opacity: backgroundOpacity,
-            filter: backgroundBlur,
-            willChange: "transform, filter, opacity",
-          }}
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+          style={
+            isDesktop
+              ? {
+                  scale: backgroundScale,
+                  opacity: backgroundOpacity,
+                  filter: backgroundBlur,
+                  willChange: "transform, filter, opacity",
+                }
+              : { willChange: "transform" }
+          }
           aria-hidden="true"
         >
           <Image
@@ -51,7 +57,6 @@ export function Hero() {
             alt=""
             fill
             priority
-            quality={100}
             sizes="100vw"
             unoptimized
             className="object-cover object-center brightness-[1.05] contrast-[1.08] saturate-[1.05]"
@@ -59,15 +64,21 @@ export function Hero() {
         </motion.div>
 
         <div
-          className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-black/30 to-black/65"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/50 via-black/35 to-black/70"
           aria-hidden="true"
         />
 
-        <TechGrid />
+        <div className="pointer-events-none absolute inset-0 z-[2]">
+          <TechGrid />
+        </div>
 
         <motion.div
-          className="relative z-10 mx-auto w-full max-w-6xl"
-          style={{ opacity: contentOpacity, y: contentY }}
+          className="page-container relative z-10 w-full"
+          style={
+            isDesktop
+              ? { opacity: contentOpacity, y: contentY }
+              : undefined
+          }
         >
           <ScrollReveal>
               <p className="mb-2 text-sm tracking-wide text-[var(--text-secondary)]">
@@ -76,7 +87,7 @@ export function Hero() {
             </ScrollReveal>
 
             <ScrollReveal delay={1}>
-              <h1 className="mb-4 font-[family-name:var(--font-space-grotesk)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="mb-4 font-[family-name:var(--font-space-grotesk)] text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.1] tracking-tight">
                 Alisson{" "}
                 <span className="text-neon-red-bright drop-shadow-[0_0_40px_rgba(220,38,38,0.15)]">
                   de Almeida
@@ -86,7 +97,7 @@ export function Hero() {
 
             <ScrollReveal delay={2}>
               <div className="mb-5 flex min-h-[2.5rem] flex-wrap items-center gap-1">
-                <span className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold sm:text-2xl md:text-3xl">
+                <span className="font-[family-name:var(--font-space-grotesk)] text-[clamp(1.125rem,4vw,1.875rem)] font-semibold">
                   {title}
                 </span>
                 <span className="typewriter-cursor" aria-hidden="true" />
@@ -107,13 +118,14 @@ export function Hero() {
             </ScrollReveal>
 
             <ScrollReveal delay={3}>
-              <div className="flex flex-wrap gap-4">
-                <NeonButton href={profile.cvUrl} variant="primary">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+                <NeonButton href={profile.cvUrl} variant="primary" className="w-full sm:w-auto">
                   <Download size={16} />
                   Download CV
                 </NeonButton>
                 <NeonButton
                   variant="outline"
+                  className="w-full sm:w-auto"
                   onClick={() =>
                     document.getElementById("stacks")?.scrollIntoView({ behavior: "smooth" })
                   }
@@ -125,7 +137,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+          className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-1/2 z-10 -translate-x-1/2 max-md:bottom-6"
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true"
