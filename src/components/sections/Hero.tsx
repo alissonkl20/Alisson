@@ -119,7 +119,12 @@ export function Hero() {
 
             <ScrollReveal delay={3}>
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-                <NeonButton href={profile.cvUrl} variant="primary" className="w-full sm:w-auto">
+                <NeonButton
+                  href={profile.cvUrl}
+                  download="Alisson_Almeida_CV.pdf"
+                  variant="primary"
+                  className="w-full sm:w-auto"
+                >
                   <Download size={16} />
                   Download CV
                 </NeonButton>

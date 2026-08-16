@@ -8,6 +8,7 @@ interface NeonButtonProps {
   variant?: "primary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   href?: string;
+  download?: string;
   className?: string;
   children?: ReactNode;
   type?: "button" | "submit" | "reset";
@@ -38,6 +39,7 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
       size = "md",
       children,
       href,
+      download,
       type = "button",
       disabled,
       onClick,
@@ -56,8 +58,9 @@ export const NeonButton = forwardRef<HTMLButtonElement, NeonButtonProps>(
       return (
         <motion.a
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+          download={download}
+          target={download ? undefined : "_blank"}
+          rel={download ? undefined : "noopener noreferrer"}
           className={classes}
           whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}

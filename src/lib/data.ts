@@ -11,7 +11,7 @@ export const profile = {
   github: "https://github.com/alissonkl20",
   linkedin: "https://www.linkedin.com/in/alisson-almeida-de-oliveira-3406bb347",
   whatsapp: "https://wa.me/5546999420574",
-  cvUrl: "/cv/index.html",
+  cvUrl: "/cv/Alisson_Almeida_CV.pdf",
 };
 
 export interface Experience {
