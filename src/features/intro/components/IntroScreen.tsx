@@ -90,7 +90,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
     <motion.div
       className="intro-screen"
       aria-live="polite"
-      aria-label={`Introdução ${INTRO_TEXT}`}
+      aria-label={`Introduction ${INTRO_TEXT}`}
       initial={{ opacity: 1, scale: 1 }}
       animate={
         phase === "exit" ? { opacity: 0, scale: 1.02 } : { opacity: 1, scale: 1 }
@@ -117,7 +117,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={0}
-        aria-label="Progresso da introdução"
+        aria-label="Introduction progress"
       >
         <div ref={progressFillRef} className="intro-progress__fill" />
       </div>

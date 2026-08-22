@@ -12,7 +12,7 @@ import "./ScrambleTextReveal.css";
 
 export function AboutSection() {
   return (
-    <section id="about" className="about-section" aria-label="Sobre mim">
+    <section id="about" className="about-section" aria-label="About me">
       <div className="about-section__bg" aria-hidden />
 
       {/* Texto primeiro: título + bio montam imediatamente com o chunk. */}

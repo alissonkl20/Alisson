@@ -146,6 +146,23 @@
   .scramble-reveal__text {
     max-width: 34rem;
   }
+
+  .profile-actions {
+    gap: 0.5rem;
+  }
+
+  .profile-actions__btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-actions__btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    justify-content: center;
+    min-width: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

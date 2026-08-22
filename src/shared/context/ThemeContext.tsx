@@ -29,7 +29,11 @@ function getInitialTheme(): ThemeMode {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>(getInitialTheme);
+  const [theme, setThemeState] = useState<ThemeMode>("dark");
+
+  useEffect(() => {
+    setThemeState(getInitialTheme());
+  }, []);
 
   useEffect(() => {
     applyTheme(theme);

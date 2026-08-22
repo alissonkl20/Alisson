@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
 
@@ -16,24 +16,32 @@ const MainPortfolio = dynamic(
 
 const INTRO_KEY = "dev-kisper-intro-seen";
 
-function getIntroState() {
-  if (typeof window === "undefined") {
-    return { initialized: false, showIntro: true, portfolioReady: false };
-  }
+type IntroState = {
+  initialized: boolean;
+  showIntro: boolean;
+  portfolioReady: boolean;
+};
 
-  const seen = sessionStorage.getItem(INTRO_KEY);
-  if (!seen) void import("./MainPortfolio");
-
-  return {
-    initialized: true,
-    showIntro: !seen,
-    portfolioReady: Boolean(seen),
-  };
-}
+const INTRO_SSR_STATE: IntroState = {
+  initialized: false,
+  showIntro: true,
+  portfolioReady: false,
+};
 
 export function HomeClient() {
   const [{ initialized, showIntro, portfolioReady }, setIntroState] =
-    useState(getIntroState);
+    useState(INTRO_SSR_STATE);
+
+  useEffect(() => {
+    const seen = sessionStorage.getItem(INTRO_KEY);
+    if (!seen) void import("./MainPortfolio");
+
+    setIntroState({
+      initialized: true,
+      showIntro: !seen,
+      portfolioReady: Boolean(seen),
+    });
+  }, []);
 
   // Preload progressivo (About → Experience → Projects) começa junto com a
   // intro: a animação é leve e lenta, então os chunks chegam prontos antes

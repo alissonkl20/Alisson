@@ -30,7 +30,7 @@ export function TimelineControls() {
               }`}
               style={{ background: GLOW_THEMES[key].primary }}
               onClick={() => setGlowTheme(key)}
-              aria-label={`Tema ${GLOW_THEMES[key].label}`}
+              aria-label={`${GLOW_THEMES[key].label} theme`}
               title={GLOW_THEMES[key].label}
             />
           ))}
@@ -38,7 +38,7 @@ export function TimelineControls() {
       </div>
 
       <label className="timeline-controls__slider">
-        <span>Intensidade {config.glowIntensity}%</span>
+        <span>Intensity {config.glowIntensity}%</span>
         <input
           type="range"
           min={0}
@@ -49,7 +49,7 @@ export function TimelineControls() {
       </label>
 
       <label className="timeline-controls__slider">
-        <span>Curvatura {(config.curveShape * 100).toFixed(0)}%</span>
+        <span>Curvature {(config.curveShape * 100).toFixed(0)}%</span>
         <input
           type="range"
           min={40}

@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { DataFlowScene } from "./DataFlowScene";
+import { DATA_FLOW_SUMMARY } from "../lib/dataFlowContent";
 import { DataFlowThemeProvider } from "../context/DataFlowThemeProvider";
 import "./ExperienceSection.css";
 
@@ -22,13 +23,12 @@ const FLOW_REVEAL = {
 export function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [flowActive, setFlowActive] = useState(false);
-  const [viewportH, setViewportH] = useState(() =>
-    typeof window !== "undefined" ? window.innerHeight : 900,
-  );
+  const [viewportH, setViewportH] = useState(900);
   const reducedMotion = useReducedMotion() ?? false;
 
   useEffect(() => {
     const onResize = () => setViewportH(window.innerHeight);
+    onResize();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
@@ -80,8 +80,10 @@ export function ExperienceSection() {
         aria-label="Data Flow"
       >
         <header className="experience-header experience-header--flow">
-          <p className="section-eyebrow">Imersão</p>
-          <h2 className="experience-title section-title">Data Flow</h2>
+          <p className="section-eyebrow">Immersion</p>
+          <h2 className="experience-title section-title">
+          Software Development Cycle</h2>
+          <p className="experience-subtitle">{DATA_FLOW_SUMMARY}</p>
         </header>
 
         <div className="experience-track experience-track--flow">

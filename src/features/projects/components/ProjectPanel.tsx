@@ -86,7 +86,7 @@ export function ProjectPanel({
         <p className="timeline-panel__desc">{project.description}</p>
         {project.link && (
           <a href={project.link} className="timeline-panel__link">
-            {project.linkLabel ?? "Ver projeto"} →
+            {project.linkLabel ?? "View project"} →
           </a>
         )}
       </div>

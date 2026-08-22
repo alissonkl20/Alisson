@@ -124,7 +124,7 @@ export function CareerNarrative() {
               data-career-bridge
               aria-hidden
             />
-            <h2 className="experience-title section-title">Últimos trabalhos</h2>
+            <h2 className="experience-title section-title">Recent Work</h2>
           </header>
 
           {experienceData.map((exp, i) => {

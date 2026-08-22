@@ -1,19 +1,19 @@
 export const profile = {
   name: "Alisson de Almeida de Oliveira",
   title: "Full-Stack Developer",
-  bio: "Sou Alisson de Almeida de Oliveira, 23 anos, desenvolvedor full stack com mais de 3 anos de experiência na criação e evolução de sistemas web — de APIs e backends escaláveis a interfaces modernas e landing pages com design premium. Atuo em todo o ciclo de desenvolvimento e também trabalho como freelancer em projetos sob demanda.",
+  bio: "Hi, I'm Alisson de Almeida de Oliveira. I'm 23 and have been working as a full-stack developer for over 3 years building and evolving web systems — from scalable APIs and backends to modern interfaces and premium-design landing pages. I work across the full development cycle with robust, secure, and scalable backends; beautiful, modern, responsive, and optimized interfaces; and premium landing pages with no generic identity — interactive experiences that convey your brand's emotion.",
   avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
   email: "almeidadeoliveiraalisson04@gmail.com",
   cv: "/cv/Alisson_Almeida_CV.pdf",
   social: {
     github: "https://github.com/alissonkl20",
     linkedin:
-      "https://www.linkedin.com/in/alisson-almeida-de-oliveira-3406bb347",
+      "https://www.linkedin.com/in/alissonalmeida9/",
     twitter: "https://twitter.com",
   },
 };
 
-/** Projetos para a timeline scroll-driven (modo demo usa demoData.ts) */
+/** Scroll-driven timeline projects (demo mode uses demoData.ts) */
 export const timelineProjects = [
   {
     id: 1,
