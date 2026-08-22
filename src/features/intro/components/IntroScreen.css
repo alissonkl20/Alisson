@@ -1,0 +1,91 @@
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  --intro-bg: #000000;
+  background: var(--intro-bg);
+  overflow: hidden;
+}
+
+.intro-stage {
+  position: relative;
+  flex-shrink: 0;
+  width: 60vw;
+  height: 60vh;
+  max-width: 60vw;
+  max-height: 60vh;
+  overflow: hidden;
+  isolation: isolate;
+  container-type: size;
+  background: var(--intro-bg);
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  background: var(--intro-bg);
+  border: none;
+  outline: none;
+}
+
+.intro-progress {
+  position: absolute;
+  right: 1.75rem;
+  bottom: 1.75rem;
+  width: 3rem;
+  height: 2px;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  overflow: hidden;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.intro-progress__fill {
+  height: 100%;
+  width: 100%;
+  background: #ffd000;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.intro-progress--pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px -8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  animation: intro-pulse 2.4s cubic-bezier(0.65, 0.05, 0.35, 1) infinite;
+}
+
+@keyframes intro-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scaleX(0.85);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-progress--pulse::after {
+    animation: none;
+  }
+}

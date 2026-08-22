@@ -1,0 +1,14 @@
+/* ── About — Mask Reveal + Premium Timeline ── */
+
+.about-section {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+.about-section .career-narrative {
+  margin-top: clamp(0.5rem, 2vh, 1.5rem);
+  background: var(--theme-bg);
+}
