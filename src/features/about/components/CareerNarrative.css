@@ -1,0 +1,276 @@
+.career-narrative {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: visible;
+  color: var(--theme-text);
+  background: linear-gradient(
+    180deg,
+    var(--theme-bg) 0%,
+    var(--theme-bg-alt) 40%,
+    var(--theme-bg) 100%
+  );
+}
+
+.career-narrative__header {
+  max-width: var(--section-max-width);
+  margin: 0 auto;
+  padding: var(--section-padding-y) var(--section-padding-x) 2rem;
+  text-align: center;
+}
+
+.career-narrative__track {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.career-narrative__rows {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-stack-gap);
+  max-width: var(--section-max-width);
+  margin: 0 auto;
+  padding: 1rem var(--section-padding-x) clamp(4rem, 10vh, 8rem);
+  overflow: visible;
+}
+
+.career-narrative__line-layer {
+  position: absolute;
+  left: var(--section-padding-x);
+  right: var(--section-padding-x);
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.career-narrative__line-layer .premium-timeline__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.career-narrative__row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.5rem minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+  padding: 0.75rem 0;
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+  overflow: visible;
+}
+
+.career-narrative__slot {
+  display: flex;
+  min-width: 0;
+}
+
+.career-narrative__slot--left {
+  justify-content: flex-end;
+}
+
+.career-narrative__slot--right {
+  justify-content: flex-start;
+}
+
+.career-narrative__slot .premium-timeline__card,
+.career-narrative__slot .experience-card {
+  width: 100%;
+  max-width: var(--card-max-width);
+  grid-column: unset;
+  justify-self: unset;
+}
+
+.career-narrative__line-anchor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  padding-top: 2.75rem;
+  z-index: 2;
+}
+
+.career-narrative__node-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.career-narrative__node-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--pt-glow, var(--theme-brand));
+  pointer-events: none;
+}
+
+.career-narrative__node {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 14px;
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.career-narrative__node-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.career-narrative__node-face--base {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.22);
+}
+
+.career-narrative__node-face--passed {
+  background: color-mix(in srgb, var(--pt-glow, var(--theme-brand)) 35%, rgba(255, 255, 255, 0.12));
+  border: 2px solid color-mix(in srgb, var(--pt-glow, var(--theme-brand)) 55%, rgba(255, 255, 255, 0.3));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--pt-glow, var(--theme-brand)) 30%, transparent);
+}
+
+.career-narrative__node-face--lead {
+  background: var(--pt-glow, var(--theme-brand));
+  border: 2px solid #ffffff;
+  box-shadow:
+    0 0 12px var(--pt-glow, var(--theme-brand)),
+    0 0 28px color-mix(in srgb, var(--pt-accent, var(--theme-accent)) 50%, transparent);
+}
+
+.career-narrative__node-label {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--pt-accent, var(--theme-accent));
+}
+
+/* Zona Carreira — linha fica suave atrás do texto */
+.career-narrative__experience-header {
+  position: relative;
+  z-index: 3;
+  isolation: isolate;
+  max-width: none;
+  margin: clamp(1.5rem, 4vh, 2.5rem) 0 0.5rem;
+  padding: clamp(2.5rem, 6vh, 3.5rem) clamp(1rem, 4vw, 2rem) 1.25rem;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--theme-bg) 0%, transparent) 100%,
+    color-mix(in srgb, var(--theme-bg-alt) 0%, transparent) 100%,
+    color-mix(in srgb, var(--theme-bg-alt) 0%, transparent) 0%,
+    color-mix(in srgb, var(--theme-bg) 0%, transparent) 0%
+  );
+}
+
+.career-narrative__experience-header .section-eyebrow,
+.career-narrative__experience-header .experience-title,
+.career-narrative__experience-header .experience-subtitle {
+  position: relative;
+  z-index: 1;
+}
+
+.career-narrative__bridge-anchor {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.career-narrative__experience-header::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 2px;
+  height: clamp(1.75rem, 4vh, 2.5rem);
+  margin-top: -clamp(1.75rem, 4vh, 2.5rem);
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pt-glow, var(--theme-brand)) 45%, transparent),
+    rgba(255, 255, 255, 0.08)
+  );
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.career-narrative__experience-header::after {
+  content: "";
+  position: absolute;
+  inset: 0 -8%;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 50%,
+    color-mix(in srgb, var(--theme-bg-alt) 82%, transparent) 0%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .career-narrative__line-layer {
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .career-narrative__rows {
+    gap: clamp(2rem, 8vh, 3.5rem);
+    padding: 0.5rem 1rem clamp(3rem, 8vh, 5rem);
+  }
+
+  .career-narrative__row {
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  .career-narrative__slot--left {
+    display: none;
+  }
+
+  .career-narrative__slot--right {
+    grid-column: 2;
+    justify-content: stretch;
+  }
+
+  .career-narrative__line-anchor {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 2rem;
+  }
+
+  .career-narrative__slot .premium-timeline__card,
+  .career-narrative__slot .experience-card {
+    max-width: 100%;
+  }
+
+  .career-narrative__experience-header {
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .career-narrative__node {
+    transition: none;
+  }
+
+  .career-narrative__node-ring {
+    display: none;
+  }
+}

@@ -1,63 +1,54 @@
-import type { Metadata, Viewport } from "next";
-import { Geist, Space_Grotesk } from "next/font/google";
-import "./global.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
+import type { Metadata } from "next";
+import { Space_Grotesk, Geist_Mono, Just_Me_Again_Down_Here } from "next/font/google";
+import { ThemeProvider } from "@/shared/context/ThemeContext";
+import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const handwriting = Just_Me_Again_Down_Here({
+  variable: "--font-handwriting",
+  weight: "400",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Alisson de Almeida — Full Stack Developer",
+  title: "Alisson de Almeida de Oliveira — Full-Stack Developer",
   description:
-    "Full Stack Developer with over 3 years of experience building scalable backends, modern interfaces, and high-performance software.",
-  keywords: [
-    "Full Stack Developer",
-    "Laravel",
-    "Flask",
-    "React",
-    "Next.js",
-    "Vue.js",
-    "NestJS",
-    "Portfolio",
-    "Alisson de Almeida",
-  ],
-  authors: [{ name: "Alisson de Almeida" }],
-  openGraph: {
-    title: "Alisson de Almeida — Full Stack Developer",
-    description:
-      "Full Stack Developer passionate about building reliable, maintainable, and high-performance software.",
-    type: "website",
-  },
+    "Portfólio de desenvolvedor web com animações imersivas em Canvas e experiências interativas.",
 };
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  viewportFit: "cover",
-  themeColor: "#000000",
-};
+const themeScript = `
+  (function() {
+    try {
+      var t = localStorage.getItem('portfolio-theme');
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+`;
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${spaceGrotesk.variable} h-full`}
+      lang="pt-BR"
+      className={`${spaceGrotesk.variable} ${geistMono.variable} ${handwriting.variable} scroll-smooth`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full bg-[var(--background)] antialiased">
-        {children}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="bg-theme-bg font-sans text-theme-text antialiased">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
