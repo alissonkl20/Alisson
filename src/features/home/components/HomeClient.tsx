@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
 
@@ -15,6 +15,7 @@ const MainPortfolio = dynamic(
 );
 
 const INTRO_KEY = "dev-kisper-intro-seen";
+const INTRO_CHANGE_EVENT = "portfolio-intro-change";
 
 type IntroState = {
   initialized: boolean;
@@ -28,33 +29,38 @@ const INTRO_SSR_STATE: IntroState = {
   portfolioReady: false,
 };
 
+function readIntroState(): IntroState {
+  if (typeof window === "undefined") return INTRO_SSR_STATE;
+
+  const seen = sessionStorage.getItem(INTRO_KEY);
+  return {
+    initialized: true,
+    showIntro: !seen,
+    portfolioReady: Boolean(seen),
+  };
+}
+
+function subscribeIntro(onStoreChange: () => void) {
+  window.addEventListener(INTRO_CHANGE_EVENT, onStoreChange);
+  return () => window.removeEventListener(INTRO_CHANGE_EVENT, onStoreChange);
+}
+
 export function HomeClient() {
-  const [{ initialized, showIntro, portfolioReady }, setIntroState] =
-    useState(INTRO_SSR_STATE);
+  const { initialized, showIntro, portfolioReady } = useSyncExternalStore(
+    subscribeIntro,
+    readIntroState,
+    () => INTRO_SSR_STATE,
+  );
 
   useEffect(() => {
-    const seen = sessionStorage.getItem(INTRO_KEY);
-    if (!seen) void import("./MainPortfolio");
-
-    setIntroState({
-      initialized: true,
-      showIntro: !seen,
-      portfolioReady: Boolean(seen),
-    });
+    if (!sessionStorage.getItem(INTRO_KEY)) void import("./MainPortfolio");
   }, []);
 
-  // Preload progressivo (About → Experience → Projects) começa junto com a
-  // intro: a animação é leve e lenta, então os chunks chegam prontos antes
-  // dela terminar — sem gargalo na montagem.
   useLazyLoadSections(initialized);
 
   const handleIntroComplete = useCallback(() => {
     sessionStorage.setItem(INTRO_KEY, "1");
-    setIntroState({
-      initialized: true,
-      showIntro: false,
-      portfolioReady: true,
-    });
+    window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
   }, []);
 
   if (!initialized) {

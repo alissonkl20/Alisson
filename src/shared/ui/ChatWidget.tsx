@@ -45,13 +45,21 @@ export function ChatWidget() {
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (!open || initialized) return;
-
+  const ensureInitialized = () => {
+    if (initialized) return;
     const stored = loadStoredMessages();
     setMessages(stored?.length ? stored : [createWelcomeMessage()]);
     setInitialized(true);
-  }, [open, initialized]);
+  };
+
+  const toggleOpen = () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    ensureInitialized();
+    setOpen(true);
+  };
 
   useEffect(() => {
     storeMessages(messages);
@@ -172,7 +180,7 @@ export function ChatWidget() {
 
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={toggleOpen}
         className="flex h-14 w-14 items-center justify-center rounded-full border border-theme-border bg-theme-brand text-black shadow-[0_8px_24px_var(--theme-brand-glow)] transition hover:scale-105 hover:opacity-95"
         aria-expanded={open}
         aria-label={open ? "Close chat" : "Open chat"}
