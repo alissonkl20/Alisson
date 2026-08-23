@@ -25,6 +25,14 @@ export const metadata: Metadata = {
   title: "Alisson de Almeida de Oliveira — Full-Stack Developer",
   description:
     "Web developer portfolio with immersive Canvas animations and interactive experiences.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
+  },
 };
 
 const themeScript = `
