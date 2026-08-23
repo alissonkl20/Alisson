@@ -17,8 +17,8 @@ export function GitHubSection() {
         <p className="section-eyebrow">Open Source</p>
         <h2 className="section-title">Atividade no GitHub</h2>
         <p className="section-subtitle">
-          Commits, linhas de código e linguagens dos últimos 30 dias — atualizado diariamente
-          direto da API do GitHub.
+          Commits, linhas de código e linguagens dos últimos 30 dias. Snapshot em cache —
+          o GitHub só é consultado a cada 6 horas.
         </p>
       </header>
 
@@ -67,10 +67,10 @@ export function GitHubSection() {
                 </motion.div>
               )}
             </div>
-
-            <AsciiVideo />
           </>
         )}
+
+        <AsciiVideo />
       </div>
     </section>
   );

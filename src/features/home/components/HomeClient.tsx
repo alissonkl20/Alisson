@@ -29,15 +29,25 @@ const INTRO_SSR_STATE: IntroState = {
   portfolioReady: false,
 };
 
+let introSnapshot: IntroState = INTRO_SSR_STATE;
+
 function readIntroState(): IntroState {
   if (typeof window === "undefined") return INTRO_SSR_STATE;
 
   const seen = sessionStorage.getItem(INTRO_KEY);
-  return {
-    initialized: true,
-    showIntro: !seen,
-    portfolioReady: Boolean(seen),
-  };
+  const showIntro = !seen;
+  const portfolioReady = Boolean(seen);
+
+  if (
+    introSnapshot.initialized &&
+    introSnapshot.showIntro === showIntro &&
+    introSnapshot.portfolioReady === portfolioReady
+  ) {
+    return introSnapshot;
+  }
+
+  introSnapshot = { initialized: true, showIntro, portfolioReady };
+  return introSnapshot;
 }
 
 function subscribeIntro(onStoreChange: () => void) {

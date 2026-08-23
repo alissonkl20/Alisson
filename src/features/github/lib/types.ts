@@ -19,4 +19,6 @@ export interface GitHubStats {
     totalAdditions: number;
     totalDeletions: number;
   };
+  /** ISO do snapshot no servidor — o gráfico só reconsulta o GitHub a cada 6h. */
+  updatedAt: string;
 }
