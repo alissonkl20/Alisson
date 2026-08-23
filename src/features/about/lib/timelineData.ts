@@ -11,27 +11,27 @@ export const timelineData: TimelineItem[] = [
     number: "01",
     title: "Backend",
     description:
-      "Experiência profissional usando PHP Laravel e Python com Flask, criando APIs robustas e escaláveis. Atuo na evolução de projetos e soluções tecnológicas de alta performance.",
+      "I build robust, scalable APIs focused on security and performance, using PHP with Laravel and Python with Flask on the backend.",
   },
   {
     id: "frontend",
     number: "02",
     title: "Frontend",
     description:
-      "Experiência profissional usando React e Next.js, criando interfaces de usuário modernas e responsivas, com soluções de alta performance e escalabilidade.",
+      "I build performant, optimized interfaces with beautiful, modern design, componentization, and best practices, using React, Next.js, Vue, Tailwind, and Bootstrap.",
   },
   {
     id: "database",
     number: "03",
-    title: "Banco de Dados",
+    title: "Databases",
     description:
-      "Experiência profissional com MySQL e PostgreSQL, criando soluções de alta performance e escalabilidade na evolução de projetos e soluções tecnológicas.",
+      "Experience with MySQL and PostgreSQL building high-performance, scalable solutions, contributing to the evolution of projects and technological solutions.",
   },
   {
     id: "devops",
     number: "04",
-    title: "Git e DevOps",
+    title: "Git & DevOps",
     description:
-      "Experiência profissional usando Git e DevOps, criando soluções de alta performance e escalabilidade e atuando na evolução de projetos e soluções tecnológicas.",
+      "Experience with code versioning, branch conflicts, CI/CD, deployment, and cloud computing.",
   },
 ];

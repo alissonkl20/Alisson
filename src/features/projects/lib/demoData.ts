@@ -7,7 +7,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "Web App",
     date: "2025",
     description:
-      "Dashboard analítico em tempo real com visualizações WebGL e alertas preditivos para equipes de produto.",
+      "Real-time analytics dashboard with WebGL visualizations and predictive alerts for product teams.",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=560&fit=crop",
   },
@@ -17,7 +17,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "E-commerce",
     date: "2024",
     description:
-      "Checkout headless com microinterações premium e funil otimizado para conversão mobile-first.",
+      "Headless checkout with premium micro-interactions and a mobile-first conversion funnel.",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=560&fit=crop",
   },
@@ -27,7 +27,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "Mobile",
     date: "2024",
     description:
-      "Feed social com áudio, transcrição ao vivo e animações de reação sincronizadas ao scroll.",
+      "Social feed with audio, live transcription, and scroll-synced reaction animations.",
     image:
       "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=900&h=560&fit=crop",
   },
@@ -37,7 +37,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "Design Tool",
     date: "2023",
     description:
-      "Editor colaborativo com canvas infinito, temas dinâmicos e exportação vetorial em um clique.",
+      "Collaborative editor with infinite canvas, dynamic themes, and one-click vector export.",
     image:
       "https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&h=560&fit=crop",
   },
@@ -47,7 +47,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "Fintech",
     date: "2023",
     description:
-      "Plataforma de investimentos com gráficos animados, KYC fluido e painéis glassmorphism.",
+      "Investment platform with animated charts, seamless KYC, and glassmorphism dashboards.",
     image:
       "https://images.unsplash.com/photo-1642790106117-e829e14a794f?w=900&h=560&fit=crop",
   },
@@ -57,7 +57,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "Health Tech",
     date: "2022",
     description:
-      "App de telemedicina com onboarding gamificado e timeline clínica scroll-driven.",
+      "Telemedicine app with gamified onboarding and a scroll-driven clinical timeline.",
     image:
       "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&h=560&fit=crop",
   },
@@ -67,7 +67,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     category: "SaaS",
     date: "2022",
     description:
-      "CMS modular com preview instantâneo, versionamento visual e API GraphQL unificada.",
+      "Modular CMS with instant preview, visual versioning, and a unified GraphQL API.",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&h=560&fit=crop",
   },

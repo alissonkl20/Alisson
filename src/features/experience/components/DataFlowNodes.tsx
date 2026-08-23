@@ -54,11 +54,16 @@ function UserFigure({
   color,
   labelColor,
   showLabel,
+  scale = 1,
 }: {
   color: string;
   labelColor: string;
   showLabel: boolean;
+  scale?: number;
 }) {
+  const figureW = Math.round(52 * scale);
+  const figureH = Math.round(68 * scale);
+
   return (
     <div className="data-flow-user">
       <svg
@@ -66,6 +71,8 @@ function UserFigure({
         viewBox="0 0 48 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        width={figureW}
+        height={figureH}
         aria-hidden
       >
         <circle cx="24" cy="12" r="9" stroke={color} strokeWidth="2.5" fill={`${color}22`} />
@@ -107,8 +114,8 @@ function FlowNode({
   const enterDelay = reducedMotion ? 0 : index * 0.045;
 
   if (node.type === "user") {
-    const userW = 56;
-    const userH = showLabel ? 92 : 68;
+    const userW = Math.round(56 * size);
+    const userH = Math.round((showLabel ? 92 : 68) * size);
 
     return (
       <motion.div
@@ -125,7 +132,12 @@ function FlowNode({
           ease: NODE_ENTER.ease,
         }}
       >
-        <UserFigure color={theme.primary} labelColor={theme.textColor} showLabel={showLabel} />
+        <UserFigure
+          color={theme.primary}
+          labelColor={theme.textColor}
+          showLabel={showLabel}
+          scale={size}
+        />
       </motion.div>
     );
   }
@@ -133,7 +145,8 @@ function FlowNode({
   const Icon = ICONS[node.icon] ?? Activity;
   const isProcessing = node.type === "center" || node.type === "server";
   const base = (node.type === "server" ? 92 : isProcessing ? 88 : 72) * size;
-  const iconSize = node.type === "server" ? 40 : isProcessing ? 28 : 22;
+  const iconBase = node.type === "server" ? 40 : isProcessing ? 28 : 22;
+  const iconSize = Math.round(iconBase * size);
 
   return (
     <motion.div
@@ -222,7 +235,7 @@ export function DataFlowNodes({
   reducedMotion: boolean;
 }) {
   const { config, theme } = useDataFlowTheme();
-  const { nodes, width, height } = layout;
+  const { nodes, width, height, nodeSize } = layout;
 
   return (
     <div
@@ -235,7 +248,7 @@ export function DataFlowNodes({
           key={node.id}
           node={node}
           index={index}
-          size={config.nodeSize}
+          size={nodeSize}
           showLabel={config.showLabels}
           theme={theme}
           active={active}

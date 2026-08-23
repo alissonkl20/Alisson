@@ -8,7 +8,8 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+      aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+      suppressHydrationWarning
       className="flex h-9 w-9 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-accent transition hover:bg-theme-surface-hover"
     >
       {theme === "dark" ? (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Space_Grotesk, Geist_Mono, Just_Me_Again_Down_Here } from "next/font/google";
 import { ThemeProvider } from "@/shared/context/ThemeContext";
 import "./globals.css";
@@ -23,7 +24,7 @@ const handwriting = Just_Me_Again_Down_Here({
 export const metadata: Metadata = {
   title: "Alisson de Almeida de Oliveira — Full-Stack Developer",
   description:
-    "Portfólio de desenvolvedor web com animações imersivas em Canvas e experiências interativas.",
+    "Web developer portfolio with immersive Canvas animations and interactive experiences.",
 };
 
 const themeScript = `
@@ -40,14 +41,16 @@ const themeScript = `
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="pt-BR"
+      lang="en"
       className={`${spaceGrotesk.variable} ${geistMono.variable} ${handwriting.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="bg-theme-bg font-sans text-theme-text antialiased">
+        <Script
+          id="portfolio-theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

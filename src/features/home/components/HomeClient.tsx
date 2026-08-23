@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
 
@@ -15,38 +15,62 @@ const MainPortfolio = dynamic(
 );
 
 const INTRO_KEY = "dev-kisper-intro-seen";
+const INTRO_CHANGE_EVENT = "portfolio-intro-change";
 
-function getIntroState() {
-  if (typeof window === "undefined") {
-    return { initialized: false, showIntro: true, portfolioReady: false };
-  }
+type IntroState = {
+  initialized: boolean;
+  showIntro: boolean;
+  portfolioReady: boolean;
+};
+
+const INTRO_SSR_STATE: IntroState = {
+  initialized: false,
+  showIntro: true,
+  portfolioReady: false,
+};
+
+let introSnapshot: IntroState = INTRO_SSR_STATE;
+
+function readIntroState(): IntroState {
+  if (typeof window === "undefined") return INTRO_SSR_STATE;
 
   const seen = sessionStorage.getItem(INTRO_KEY);
-  if (!seen) void import("./MainPortfolio");
+  const showIntro = !seen;
+  const portfolioReady = Boolean(seen);
 
-  return {
-    initialized: true,
-    showIntro: !seen,
-    portfolioReady: Boolean(seen),
-  };
+  if (
+    introSnapshot.initialized &&
+    introSnapshot.showIntro === showIntro &&
+    introSnapshot.portfolioReady === portfolioReady
+  ) {
+    return introSnapshot;
+  }
+
+  introSnapshot = { initialized: true, showIntro, portfolioReady };
+  return introSnapshot;
+}
+
+function subscribeIntro(onStoreChange: () => void) {
+  window.addEventListener(INTRO_CHANGE_EVENT, onStoreChange);
+  return () => window.removeEventListener(INTRO_CHANGE_EVENT, onStoreChange);
 }
 
 export function HomeClient() {
-  const [{ initialized, showIntro, portfolioReady }, setIntroState] =
-    useState(getIntroState);
+  const { initialized, showIntro, portfolioReady } = useSyncExternalStore(
+    subscribeIntro,
+    readIntroState,
+    () => INTRO_SSR_STATE,
+  );
 
-  // Preload progressivo (About → Experience → Projects) começa junto com a
-  // intro: a animação é leve e lenta, então os chunks chegam prontos antes
-  // dela terminar — sem gargalo na montagem.
+  useEffect(() => {
+    if (!sessionStorage.getItem(INTRO_KEY)) void import("./MainPortfolio");
+  }, []);
+
   useLazyLoadSections(initialized);
 
   const handleIntroComplete = useCallback(() => {
     sessionStorage.setItem(INTRO_KEY, "1");
-    setIntroState({
-      initialized: true,
-      showIntro: false,
-      portfolioReady: true,
-    });
+    window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
   }, []);
 
   if (!initialized) {

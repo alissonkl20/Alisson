@@ -5,9 +5,11 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
 } from "react";
 import { type ThemeMode, THEME_STORAGE_KEY } from "@/shared/config/theme";
+
+const THEME_CHANGE_EVENT = "portfolio-theme-change";
 
 interface ThemeContextValue {
   theme: ThemeMode;
@@ -28,17 +30,26 @@ function getInitialTheme(): ThemeMode {
   return stored === "light" || stored === "dark" ? stored : "dark";
 }
 
+function subscribeTheme(onStoreChange: () => void) {
+  window.addEventListener(THEME_CHANGE_EVENT, onStoreChange);
+  return () => window.removeEventListener(THEME_CHANGE_EVENT, onStoreChange);
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>(getInitialTheme);
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    getInitialTheme,
+    () => "dark" as ThemeMode,
+  );
 
   useEffect(() => {
     applyTheme(theme);
   }, [theme]);
 
   const setTheme = useCallback((mode: ThemeMode) => {
-    setThemeState(mode);
     localStorage.setItem(THEME_STORAGE_KEY, mode);
     applyTheme(mode);
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }, []);
 
   const toggleTheme = useCallback(() => {

@@ -142,7 +142,7 @@ function TimelineDesktop({
   return (
     <section id="projects" className="timeline-section">
       <header className="timeline-header">
-        <p className="section-eyebrow">Portfólio</p>
+        <p className="section-eyebrow">Portfolio</p>
         <h2 className="timeline-title section-title text-theme-title">Projects</h2>
         {showControls && <TimelineControls />}
       </header>
@@ -225,7 +225,7 @@ function TimelineMobile({
   return (
     <section id="projects" className="timeline-section">
       <header className="timeline-header">
-        <p className="section-eyebrow">Portfólio</p>
+        <p className="section-eyebrow">Portfolio</p>
         <h2 className="timeline-title section-title text-theme-title">Projects</h2>
         {showControls && <TimelineControls />}
       </header>

@@ -3,10 +3,12 @@
 import { Suspense } from "react";
 import { Navbar } from "@/shared/ui/Navbar";
 import { CustomCursor } from "@/shared/ui/CustomCursor";
+import { ChatWidget } from "@/shared/ui/ChatWidget";
 import { DeferredSection } from "@/shared/ui/DeferredSection";
 import {
   LazyAboutSection,
   LazyExperienceSection,
+  LazyGitHubSection,
   LazyProjectsSection,
 } from "../hooks/useLazyLoadSections";
 
@@ -40,7 +42,13 @@ export function MainPortfolio() {
             <LazyProjectsSection />
           </Suspense>
         </DeferredSection>
+        <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
+          <Suspense fallback={<SectionFallback />}>
+            <LazyGitHubSection />
+          </Suspense>
+        </DeferredSection>
       </main>
+      <ChatWidget />
     </>
   );
 }

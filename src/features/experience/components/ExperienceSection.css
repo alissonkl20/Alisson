@@ -27,7 +27,7 @@
 
 .experience-subtitle {
   margin: 0 auto;
-  max-width: 40rem;
+  max-width: 42rem;
 }
 
 .experience-track {
@@ -276,7 +276,7 @@
   justify-content: center;
 }
 
-/* Layout horizontal (deitado) — 80% da largura útil entre margens */
+/* Layout horizontal (landscape) — wide canvas on tablet/desktop */
 .data-flow-stage__canvas {
   position: relative;
   width: 80%;
@@ -478,12 +478,6 @@
     padding-inline: 1rem;
   }
 
-  .data-flow-stage__canvas {
-    width: 88%;
-    aspect-ratio: 3 / 4;
-    max-height: min(62vh, 620px);
-  }
-
   .timeline-panel {
     width: min(20rem, 88vw);
     max-width: 88vw;
@@ -491,6 +485,35 @@
 
   .data-flow-node__label {
     font-size: 0.6rem;
+  }
+}
+
+/* Mobile only — portrait canvas + vertical node pipeline */
+@media (max-width: 639px) {
+  .experience-header--flow {
+    padding-bottom: clamp(2rem, 8vh, 4rem);
+  }
+
+  .experience-track--flow {
+    padding-top: clamp(1.5rem, 6vh, 3rem);
+  }
+
+  .data-flow-stage__canvas {
+    width: min(92%, 22rem);
+    aspect-ratio: 3 / 5;
+    max-height: min(70vh, 680px);
+  }
+
+  .data-flow-node__ring--outer {
+    inset: -10px;
+  }
+
+  .data-flow-node__ring--inner {
+    inset: -6px;
+  }
+
+  .data-flow-user__label {
+    font-size: 0.62rem;
   }
 }
 

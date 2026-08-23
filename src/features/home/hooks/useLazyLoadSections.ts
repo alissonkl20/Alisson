@@ -13,6 +13,9 @@ export const LazyExperienceSection = lazy(() =>
 export const LazyProjectsSection = lazy(() =>
   import("@/features/projects").then((m) => ({ default: m.ProjectsSection })),
 );
+export const LazyGitHubSection = lazy(() =>
+  import("@/features/github").then((m) => ({ default: m.GitHubSection })),
+);
 
 function idle(): Promise<void> {
   return new Promise((resolve) => {
@@ -49,6 +52,10 @@ export function useLazyLoadSections(enabled: boolean): void {
       await idle();
       if (cancelled) return;
       await import("@/features/projects");
+      if (cancelled) return;
+      await idle();
+      if (cancelled) return;
+      await import("@/features/github");
     })();
 
     return () => {
