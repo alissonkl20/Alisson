@@ -46,10 +46,30 @@ export const timelineProjects = [
     link: "#",
     linkLabel: "Case study",
   },
+  {
+    id: 4,
+    title: "Ponto Web",
+    category: "Automation",
+    initials: "PW",
+    description:
+      "Web time-tracking system for companies with clock-in/out control, overtime, days off, and absences.",
+    link: "#",
+    linkLabel: "Case study",
+  },
+  {
+    id: 5,
+    title: "Mini ERP for a Restaurant",
+    category: "Automation",
+    initials: "MR",
+    description:
+      "Lightweight ERP for a restaurant with inventory, sales, customers, suppliers, staff, and more.",
+    link: "#",
+    linkLabel: "Case study",
+  },
 ];
 
 export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-];
+] as const;

@@ -37,10 +37,11 @@ type ProfileActionsProps = {
 
 export function ProfileActions({ visible = true }: ProfileActionsProps) {
   return (
-    <nav
-      className={`profile-actions${visible ? " profile-actions--visible" : ""}`}
-      aria-label="Contact and resume links"
-    >
+    <div className="profile-actions-wrap">
+      <nav
+        className={`profile-actions${visible ? " profile-actions--visible" : ""}`}
+        aria-label="Contact and resume links"
+      >
       <a
         href={profile.cv}
         download="Alisson_Almeida_CV.pdf"
@@ -81,6 +82,7 @@ export function ProfileActions({ visible = true }: ProfileActionsProps) {
         <Mail size={16} aria-hidden />
         <span>Email</span>
       </a>
-    </nav>
+      </nav>
+    </div>
   );
 }

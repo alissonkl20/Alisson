@@ -20,14 +20,14 @@ export const INTRO_PARTICLE_RGB_LIGHT = { r: 255, g: 232, b: 120 } as const;
 export const INTRO_LETTER_SPACING = "-0.04em";
 
 /** Durações (ms). */
-export const INTRO_HOLD_MS = 700;
-export const INTRO_EXIT_MS = 600;
+export const INTRO_HOLD_MS = 350;
+export const INTRO_EXIT_MS = 300;
 
 export const INTRO_MAX_DPR = 1.5;
 
 export const INTRO_FORMED_RATIO = 0.92;
-export const INTRO_SETTLE_FRAMES = 45;
+export const INTRO_SETTLE_FRAMES = 22;
 
-export const INTRO_PARTICLE_SPEED_MIN = 1.6;
-export const INTRO_PARTICLE_SPEED_MAX = 3.4;
+export const INTRO_PARTICLE_SPEED_MIN = 3.2;
+export const INTRO_PARTICLE_SPEED_MAX = 6.4;
 export const INTRO_TRAIL_ALPHA = 0.08;

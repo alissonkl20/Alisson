@@ -2,6 +2,16 @@ import type { DataFlowNodeLayout } from "../types";
 
 export type FlowLayoutMode = "mobile" | "tablet" | "desktop";
 
+/** Node + icon scale on mobile portrait pipeline */
+export const MOBILE_NODE_SCALE = 0.82;
+
+export function getEffectiveNodeSize(
+  layoutMode: FlowLayoutMode,
+  nodeSize: number,
+): number {
+  return layoutMode === "mobile" ? nodeSize * MOBILE_NODE_SCALE : nodeSize;
+}
+
 export interface FlowPath {
   id: string;
   from: { x: number; y: number };
@@ -32,6 +42,88 @@ function inputNodeExtents(nodeSize: number, label: string) {
   const labelH = label.length > 12 ? 34 : 17;
 
   return { half, labelGap, labelH, footprint: nodeH + labelGap + labelH };
+}
+
+function nodeVerticalExtents(
+  item: Pick<DataFlowNodeLayout, "type" | "label">,
+  nodeSize: number,
+) {
+  const labelGap = 8;
+  const labelH = item.label.length > 12 ? 34 : 17;
+
+  if (item.type === "user") {
+    const nodeH = 68;
+    const half = nodeH / 2;
+    return { half, labelGap, labelH, footprint: nodeH + labelGap + labelH };
+  }
+
+  const nodeH =
+    item.type === "server"
+      ? 92 * nodeSize
+      : item.type === "center"
+        ? 88 * nodeSize
+        : 72 * nodeSize;
+  const half = nodeH / 2;
+
+  return { half, labelGap, labelH, footprint: nodeH + labelGap + labelH };
+}
+
+/** Stacks nodes top → bottom with even spacing inside the band */
+function layoutVerticalPipeline(
+  x: number,
+  bandTop: number,
+  bandBottom: number,
+  items: Array<Omit<DataFlowNodeLayout, "x" | "y">>,
+  nodeSize: number,
+  minGap = 14,
+): DataFlowNodeLayout[] {
+  const extents = items.map((item) => nodeVerticalExtents(item, nodeSize));
+
+  const buildCenters = (gap: number) => {
+    const centers = [0];
+    for (let i = 0; i < items.length - 1; i++) {
+      const current = extents[i];
+      const next = extents[i + 1];
+      const step =
+        current.half + current.labelGap + current.labelH + gap + next.half;
+      centers.push(centers[i] + step);
+    }
+    return centers;
+  };
+
+  const columnHeight = (centers: number[]) => {
+    const last = items.length - 1;
+    const top = centers[0] - extents[0].half;
+    const bottom =
+      centers[last] +
+      extents[last].half +
+      extents[last].labelGap +
+      extents[last].labelH;
+    return bottom - top;
+  };
+
+  let gap = minGap;
+  let centers = buildCenters(gap);
+  const bandHeight = bandBottom - bandTop;
+  let height = columnHeight(centers);
+
+  if (height > bandHeight && items.length > 1) {
+    gap = Math.max(
+      8,
+      minGap - (height - bandHeight) / (items.length - 1),
+    );
+    centers = buildCenters(gap);
+    height = columnHeight(centers);
+  }
+
+  const top = centers[0] - extents[0].half;
+  const offsetY = bandTop + Math.max(0, (bandHeight - height) / 2) - top;
+
+  return items.map((item, index) => ({
+    ...item,
+    x,
+    y: centers[index] + offsetY,
+  }));
 }
 
 /** Empilha SDD → TDD → System Design → Analytics com gap livre entre ícone e texto */
@@ -98,16 +190,16 @@ function inputNodesById(nodes: DataFlowNodeLayout[]) {
   ) as Record<string, DataFlowNodeLayout>;
 }
 
-/** Breakpoints — canvas largo (deitado) usa layout desktop horizontal */
+/** Breakpoints — mobile uses a portrait, top-to-bottom pipeline */
 export function getFlowLayoutMode(width: number, height?: number): FlowLayoutMode {
-  const isLandscape = height != null && height > 0 && width / height >= 1.35;
+  if (width < 640) return "mobile";
 
-  if (isLandscape) {
-    if (width < 520) return "mobile";
+  const isLandscape = height != null && height > 0 && width / height >= 1.35;
+  if (isLandscape && width >= 640) {
+    if (width < 1024) return "tablet";
     return "desktop";
   }
 
-  if (width < 640) return "mobile";
   if (width < 1024) return "tablet";
   return "desktop";
 }
@@ -135,6 +227,7 @@ export interface DataFlowSceneLayout {
   width: number;
   height: number;
   layoutMode: FlowLayoutMode;
+  nodeSize: number;
 }
 
 /** Layout único — nós, paths e partículas compartilham as mesmas coordenadas */
@@ -146,10 +239,11 @@ export function createDataFlowSceneLayout(
   if (width <= 0 || height <= 0) return null;
 
   const layoutMode = getFlowLayoutMode(width, height);
-  const nodes = getNodeLayouts(width, height, layoutMode, nodeSize);
-  const paths = buildFlowPaths(nodes, layoutMode, nodeSize);
+  const effectiveNodeSize = getEffectiveNodeSize(layoutMode, nodeSize);
+  const nodes = getNodeLayouts(width, height, layoutMode, effectiveNodeSize);
+  const paths = buildFlowPaths(nodes, layoutMode, effectiveNodeSize);
 
-  return { nodes, paths, width, height, layoutMode };
+  return { nodes, paths, width, height, layoutMode, nodeSize: effectiveNodeSize };
 }
 
 function safeBox(w: number, h: number) {
@@ -193,30 +287,37 @@ export function getNodeLayouts(
   mode: FlowLayoutMode,
   nodeSize = 1,
 ): DataFlowNodeLayout[] {
-  const { padX, padY, innerW, innerH, cx } = safeBox(w, h);
+  const { padY, innerW, innerH, cx } = safeBox(w, h);
   const y = (t: number) => padY + innerH * t;
 
   if (mode === "mobile") {
-    const colL = padX + innerW * 0.14;
-    const colR = padX + innerW * 0.86;
-    const inputs = layoutVerticalInputStack(
-      colL,
-      padY + innerH * 0.02,
-      padY + innerH * 0.54,
-      nodeSize,
-    );
-    const byId = inputNodesById(inputs);
-    const frontendY = (byId.sdd.y + byId.tdd.y) / 2;
-    const backendY = (byId.design.y + byId.analytics.y) / 2;
+    const pipeline: Array<Omit<DataFlowNodeLayout, "x" | "y">> = [
+      ...INPUT_ITEMS.map((item) => ({ ...item, type: "input" as const })),
+      {
+        id: "frontend",
+        label: "Frontend",
+        type: "center",
+        icon: "frontend",
+      },
+      {
+        id: "backend",
+        label: "Backend",
+        type: "center",
+        icon: "backend",
+      },
+      { id: "server", label: "Server", type: "server", icon: "server" },
+      { id: "user", label: "User", type: "user", icon: "user" },
+    ];
 
     return centerNodesInViewport(
-      [
-        ...inputs,
-        { id: "frontend", label: "Frontend", x: colR, y: frontendY, type: "center", icon: "frontend" },
-        { id: "backend", label: "Backend", x: colR, y: backendY, type: "center", icon: "backend" },
-        { id: "server", label: "Server", x: cx, y: y(0.64), type: "server", icon: "server" },
-        { id: "user", label: "User", x: cx, y: y(0.88), type: "user", icon: "user" },
-      ],
+      layoutVerticalPipeline(
+        cx,
+        padY + innerH * 0.02,
+        padY + innerH * 0.98,
+        pipeline,
+        nodeSize,
+        12,
+      ),
       w,
       h,
     );

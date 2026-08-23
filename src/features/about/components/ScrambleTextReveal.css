@@ -32,6 +32,10 @@
   text-wrap: balance;
 }
 
+.profile-actions-wrap {
+  width: 100%;
+}
+
 .profile-actions {
   display: flex;
   flex-wrap: wrap;

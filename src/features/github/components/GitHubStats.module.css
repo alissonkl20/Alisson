@@ -1,0 +1,287 @@
+.section {
+  composes: section-shell from global;
+}
+
+.body {
+  position: relative;
+  z-index: 2;
+  max-width: var(--section-max-width);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-x) var(--section-padding-y);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* ── Cards de estatísticas ─────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.statCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border-radius: var(--card-radius);
+  background: var(--card-surface-bg);
+  border: 1px solid var(--card-neon-border-soft);
+  box-shadow: var(--card-neon-glow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.statCard:hover {
+  border-color: var(--card-neon-border);
+  box-shadow: var(--card-neon-glow-focused);
+  transform: translateY(-2px);
+}
+
+.statIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.625rem;
+  background: var(--card-inner-bg);
+  color: var(--theme-brand);
+  margin-bottom: 0.25rem;
+}
+
+.statCard--highlight .statIcon {
+  color: var(--theme-highlight);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1;
+  color: var(--theme-title);
+  font-variant-numeric: tabular-nums;
+}
+
+.statSuffix {
+  font-size: 0.5em;
+  font-weight: 500;
+  color: var(--theme-text-muted);
+  margin-left: 0.25rem;
+}
+
+.statLabel {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+}
+
+/* ── Gráfico ───────────────────────────────────────────── */
+.chartShell {
+  position: relative;
+  padding: clamp(0.75rem, 2.5vw, 2rem);
+  border-radius: var(--card-radius);
+  background: var(--card-surface-bg);
+  border: 1px solid var(--card-neon-border-soft);
+  box-shadow: var(--card-neon-glow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+.chartResponsive {
+  width: 100%;
+  height: clamp(200px, 42vw, 320px);
+}
+
+.chartGlow {
+  position: absolute;
+  inset: -40% 30% auto;
+  height: 60%;
+  background: radial-gradient(ellipse at center, var(--theme-brand-glow), transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* ── Tooltip ───────────────────────────────────────────── */
+.tooltip {
+  padding: 0.75rem 1rem;
+  border-radius: 0.875rem;
+  background: var(--theme-nav-bg);
+  border: 1px solid var(--theme-glass-border);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: var(--text-body-sm);
+}
+
+.tooltipDate {
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  color: var(--theme-text-muted);
+}
+
+.tooltipRow {
+  margin: 0.15rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--theme-title);
+  font-variant-numeric: tabular-nums;
+}
+
+.tooltipDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tooltipDot[data-kind="commits"] {
+  background: var(--theme-brand);
+  box-shadow: 0 0 8px var(--theme-brand-glow);
+}
+
+.tooltipDot[data-kind="additions"] {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.tooltipDot[data-kind="deletions"] {
+  background: var(--theme-highlight);
+  box-shadow: 0 0 8px rgba(255, 8, 68, 0.5);
+}
+
+/* ── Gráfico + linguagens (bloco unificado) ────────────── */
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Linguagens ────────────────────────────────────────── */
+.languagesRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.languageChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: var(--theme-glass);
+  border: 1px solid var(--theme-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: var(--text-body-sm);
+  color: var(--theme-title);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.languageChip:hover {
+  border-color: var(--card-neon-border);
+  transform: translateY(-1px);
+}
+
+.languageCount {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--theme-brand-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Estados de loading/erro ───────────────────────────── */
+.stateBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 16rem;
+  border-radius: var(--card-radius);
+  border: 1px dashed var(--theme-border);
+  color: var(--theme-text-muted);
+  font-size: var(--text-body);
+}
+
+.skeletonBar {
+  height: 16rem;
+  border-radius: var(--card-radius);
+  background: linear-gradient(
+    100deg,
+    var(--theme-surface) 40%,
+    var(--theme-surface-hover) 50%,
+    var(--theme-surface) 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonBar {
+    animation: none;
+  }
+}
+
+/* ── Mobile ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .body {
+    gap: clamp(1.25rem, 3vh, 2rem);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.625rem;
+  }
+
+  .statCard {
+    padding: 0.875rem;
+  }
+
+  .statValue {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+  }
+
+  .statLabel {
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+  }
+
+  .chartResponsive {
+    height: clamp(180px, 48vw, 240px);
+  }
+
+  .languagesRow {
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .languageChip {
+    padding: 0.35rem 0.7rem;
+    font-size: var(--text-xs);
+  }
+}
+
+@media (max-width: 380px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
