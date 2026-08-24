@@ -110,7 +110,7 @@ export function ChatWidget() {
     <div className={`fixed bottom-4 z-[60] sm:bottom-6 ${positionClass}`}>
       {open && (
         <div
-          className="mb-3 flex w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-2xl border border-theme-border bg-theme-nav-bg shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:w-96"
+          className="mb-3 flex max-h-[calc(100dvh-6rem)] w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-2xl border border-theme-border bg-theme-nav-bg shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:w-96 lg:max-h-none"
           role="dialog"
           aria-label={ui.title}
         >
@@ -122,7 +122,7 @@ export function ChatWidget() {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text transition hover:bg-theme-surface-hover"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text transition hover:bg-theme-surface-hover lg:h-8 lg:w-8"
               aria-label="Close chat"
             >
               <X size={16} />
@@ -131,7 +131,7 @@ export function ChatWidget() {
 
           <div
             ref={listRef}
-            className="flex max-h-80 flex-col gap-3 overflow-y-auto px-4 py-4"
+            className="flex max-h-[min(20rem,calc(100dvh-14rem))] flex-col gap-3 overflow-y-auto px-4 py-4 lg:max-h-80"
           >
             {messages.map((message) => (
               <div
@@ -164,12 +164,12 @@ export function ChatWidget() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder={ui.placeholder}
-              className="min-w-0 flex-1 rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-sm text-theme-text outline-none transition placeholder:text-theme-text-muted focus:border-theme-brand"
+              className="min-h-11 min-w-0 flex-1 rounded-xl border border-theme-border bg-theme-surface px-3 py-2 text-sm text-theme-text outline-none transition placeholder:text-theme-text-muted focus:border-theme-brand lg:min-h-0"
             />
             <button
               type="submit"
               disabled={!input.trim()}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-theme-brand text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-theme-brand text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 lg:h-10 lg:w-10"
               aria-label={ui.sendLabel}
             >
               <Send size={16} />

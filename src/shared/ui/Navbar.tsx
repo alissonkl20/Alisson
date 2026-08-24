@@ -16,9 +16,29 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    const previousOverflow = document.body.style.overflow;
+    if (menuOpen) document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const closeMenu = () => setMenuOpen(false);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    desktopQuery.addEventListener("change", closeMenu);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      desktopQuery.removeEventListener("change", closeMenu);
     };
   }, [menuOpen]);
 
@@ -42,13 +62,13 @@ export function Navbar() {
         <a
           href="#about"
           onClick={(e) => handleClick(e, "#about")}
-          className="text-lg font-bold tracking-tight text-theme-text"
+          className="flex min-h-11 items-center text-lg font-bold tracking-tight text-theme-text lg:min-h-0"
         >
           Dev<span className="text-theme-brand">.</span><span className="text-theme-brand">Kisper</span>
         </a>
 
         <div className="flex items-center gap-3">
-          <ul className="hidden items-center gap-6 md:flex">
+          <ul className="hidden items-center gap-6 lg:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
@@ -66,7 +86,7 @@ export function Navbar() {
 
           <button
             type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text transition hover:bg-theme-surface-hover md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text transition hover:bg-theme-surface-hover lg:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
@@ -80,7 +100,7 @@ export function Navbar() {
       {menuOpen && (
         <div
           id="mobile-nav"
-          className="border-t border-theme-border bg-theme-nav-bg px-4 py-4 md:hidden"
+          className="border-t border-theme-border bg-theme-nav-bg px-4 py-4 lg:hidden"
         >
           <ul className="flex flex-col gap-1">
             {navLinks.map((link) => (
@@ -88,7 +108,7 @@ export function Navbar() {
                 <a
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
-                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-theme-text-muted transition hover:bg-theme-surface hover:text-theme-brand"
+                  className="flex min-h-11 items-center rounded-lg px-3 py-2.5 text-sm font-medium text-theme-text-muted transition hover:bg-theme-surface hover:text-theme-brand"
                 >
                   {link.label}
                 </a>

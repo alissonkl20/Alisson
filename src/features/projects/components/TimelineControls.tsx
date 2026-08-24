@@ -28,11 +28,17 @@ export function TimelineControls() {
               className={`timeline-controls__swatch ${
                 config.glowTheme === key ? "is-active" : ""
               }`}
-              style={{ background: GLOW_THEMES[key].primary }}
               onClick={() => setGlowTheme(key)}
               aria-label={`${GLOW_THEMES[key].label} theme`}
+              aria-pressed={config.glowTheme === key}
               title={GLOW_THEMES[key].label}
-            />
+            >
+              <span
+                className="timeline-controls__swatch-dot"
+                style={{ background: GLOW_THEMES[key].primary }}
+                aria-hidden
+              />
+            </button>
           ))}
         </div>
       </div>
@@ -70,6 +76,7 @@ export function TimelineControls() {
                 config.pinStyle === style ? "is-active" : undefined
               }
               onClick={() => setPinStyle(style)}
+              aria-pressed={config.pinStyle === style}
             >
               {style === "glass-orb" ? "Glass" : "Diamond"}
             </button>

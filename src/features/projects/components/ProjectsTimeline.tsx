@@ -247,6 +247,7 @@ function TimelineMobile({
               panelWidth={Math.min(config.panelWidth, 420)}
               reducedMotion={reducedMotion}
               parallaxY={0}
+              animateFromSide={false}
             />
           </div>
         ))}

@@ -11,6 +11,7 @@ interface ProjectPanelProps {
   panelWidth: number;
   reducedMotion: boolean;
   parallaxY: number;
+  animateFromSide?: boolean;
 }
 
 export function ProjectPanel({
@@ -20,8 +21,13 @@ export function ProjectPanel({
   panelWidth,
   reducedMotion,
   parallaxY,
+  animateFromSide = true,
 }: ProjectPanelProps) {
-  const xDir = side === "left" ? -48 : 48;
+  const horizontalOffset = animateFromSide
+    ? side === "left"
+      ? -48
+      : 48
+    : 0;
 
   return (
     <motion.article
@@ -36,7 +42,7 @@ export function ProjectPanel({
       initial={false}
       animate={{
         opacity: active ? 1 : 0.22,
-        x: active ? 0 : xDir,
+        x: active ? 0 : horizontalOffset,
         y: active ? 0 : 16,
         rotateX: active ? 0 : 4,
         scale: active ? 1 : 0.96,

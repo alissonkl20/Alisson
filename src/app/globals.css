@@ -317,6 +317,20 @@ body.splash-active header {
   pointer-events: none !important;
 }
 
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-section,
+  .experience-section,
+  .timeline-section {
+    overflow-x: clip;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

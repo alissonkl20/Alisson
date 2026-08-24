@@ -84,6 +84,24 @@
   }
 }
 
+@media (max-width: 768px) {
+  .intro-screen {
+    height: 100dvh;
+  }
+
+  .intro-stage {
+    width: 92vw;
+    max-width: 92vw;
+    height: 60dvh;
+    max-height: 60dvh;
+  }
+
+  .intro-progress {
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .intro-progress--pulse::after {
     animation: none;

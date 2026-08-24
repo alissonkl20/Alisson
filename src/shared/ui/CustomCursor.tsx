@@ -10,13 +10,17 @@ export function CustomCursor() {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const touch = "ontouchstart" in window;
-    if (reduced || touch) return;
+    const hasFinePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+    if (reduced || !hasFinePointer) return;
 
     document.body.style.cursor = "none";
 
     const onMove = (e: MouseEvent) => {
       target.current = { x: e.clientX, y: e.clientY };
+      if (dotRef.current) dotRef.current.style.opacity = "1";
+      if (ringRef.current) ringRef.current.style.opacity = "1";
     };
 
     let raf: number;
@@ -48,13 +52,13 @@ export function CustomCursor() {
     <>
       <div
         ref={dotRef}
-        className="pointer-events-none fixed top-0 left-0 z-[9999] h-2 w-2 rounded-full mix-blend-difference"
+        className="custom-cursor pointer-events-none fixed top-0 left-0 z-[9999] h-2 w-2 rounded-full opacity-0 mix-blend-difference"
         style={{ backgroundColor: "var(--theme-accent)" }}
         aria-hidden
       />
       <div
         ref={ringRef}
-        className="pointer-events-none fixed top-0 left-0 z-[9998] h-8 w-8 rounded-full border mix-blend-difference"
+        className="custom-cursor pointer-events-none fixed top-0 left-0 z-[9998] h-8 w-8 rounded-full border opacity-0 mix-blend-difference"
         style={{ borderColor: "color-mix(in srgb, var(--theme-accent) 50%, transparent)" }}
         aria-hidden
       />
