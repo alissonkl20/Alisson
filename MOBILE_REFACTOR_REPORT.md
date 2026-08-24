@@ -6,6 +6,8 @@
 - Alvos de toque ajustados para no mínimo `44px` no menu, alternância de tema, ações de perfil, chat e controles da timeline.
 - Cursor customizado ocultado em dispositivos sem ponteiro fino, removendo o artefato no canto da tela.
 - Animação lateral dos cards de projetos desativada apenas no fluxo mobile, evitando overflow transitório.
+- Data-flow reorganizado em duas colunas no mobile e em grade horizontal no tablet, sem sobreposição entre os oito nós.
+- Timeline de projetos escolhe o modo mobile no primeiro snapshot do cliente, sem montar a versão desktop antes.
 - Seções animadas passam a recortar overflow horizontal apenas até `768px`.
 - Introdução pesada em Canvas não é montada em dispositivos mobile; o portfólio é exibido diretamente.
 - Preload antecipado de Three.js, timeline e gráfico foi desativado no mobile. Essas seções continuam carregando sob demanda ao se aproximarem do viewport.
@@ -22,6 +24,7 @@
 - A introdução em partículas era o principal bloqueio de CPU no mobile. Ela foi preservada no desktop e removida no mobile para priorizar acesso imediato ao conteúdo.
 - Os círculos de tema mantêm o tamanho visual original; somente sua área clicável cresce no mobile.
 - Os cards de projeto mantêm fade, escala e blur no mobile, mas não usam deslocamento horizontal fora do viewport.
+- O menu e o chat restauram o foco ao botão de origem quando fechados; o menu também move o foco para o primeiro link ao abrir.
 
 ## Validação
 
@@ -32,6 +35,7 @@
   - nenhum controle interativo abaixo de `44px` entre `320px` e `768px`;
   - menu compacto até `768px` e menu desktop em `1024px`;
   - todas as seções carregadas e percorridas durante o teste.
+  - data-flow verificado em `320px`, `640px` e `768px`: oito nós, zero sobreposições e zero nós fora do canvas.
 - Lighthouse mobile em build de produção:
   - Performance: **90**
   - FCP: **1,3 s**

@@ -44,6 +44,8 @@ export function ChatWidget() {
   const [initialized, setInitialized] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
 
   const ensureInitialized = () => {
     if (initialized) return;
@@ -62,8 +64,9 @@ export function ChatWidget() {
   };
 
   useEffect(() => {
+    if (!initialized) return;
     storeMessages(messages);
-  }, [messages]);
+  }, [initialized, messages]);
 
   useEffect(() => {
     if (!open) return;
@@ -71,8 +74,20 @@ export function ChatWidget() {
       top: listRef.current.scrollHeight,
       behavior: "smooth",
     });
-    inputRef.current?.focus();
   }, [open, messages]);
+
+  useEffect(() => {
+    if (open) {
+      wasOpenRef.current = true;
+      inputRef.current?.focus();
+      return;
+    }
+
+    if (wasOpenRef.current) {
+      wasOpenRef.current = false;
+      launcherRef.current?.focus();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -179,6 +194,7 @@ export function ChatWidget() {
       )}
 
       <button
+        ref={launcherRef}
         type="button"
         onClick={toggleOpen}
         className="flex h-14 w-14 items-center justify-center rounded-full border border-theme-border bg-theme-brand text-black shadow-[0_8px_24px_var(--theme-brand-glow)] transition hover:scale-105 hover:opacity-95"

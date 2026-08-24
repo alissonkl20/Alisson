@@ -439,6 +439,11 @@
 }
 
 @media (max-width: 768px) {
+  .experience-track--flow,
+  .data-flow-stage {
+    min-height: calc(100dvh - var(--nav-height));
+  }
+
   .experience-career-line-layer {
     left: 0;
     width: 3rem;
@@ -473,8 +478,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - var(--nav-height));
-    min-height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
+    min-height: calc(100dvh - var(--nav-height));
     padding-inline: 1rem;
   }
 
@@ -501,7 +506,7 @@
   .data-flow-stage__canvas {
     width: min(92%, 22rem);
     aspect-ratio: 3 / 5;
-    max-height: min(70vh, 680px);
+    max-height: min(70dvh, 680px);
   }
 
   .data-flow-node__ring--outer {

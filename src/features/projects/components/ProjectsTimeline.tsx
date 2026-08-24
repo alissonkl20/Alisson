@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -20,6 +26,17 @@ import "./ProjectsTimeline.css";
 
 const MOBILE_BREAK = 768;
 const MAX_CANVAS_WIDTH = 920;
+const MOBILE_QUERY = `(max-width: ${MOBILE_BREAK}px)`;
+
+function subscribeMobileViewport(onChange: () => void) {
+  const media = window.matchMedia(MOBILE_QUERY);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function getMobileViewportSnapshot() {
+  return window.matchMedia(MOBILE_QUERY).matches;
+}
 
 function TimelineDesktop({
   projects,
@@ -263,15 +280,11 @@ function TimelineRouter({
   projects: TimelineProject[];
   showControls: boolean;
 }) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAK}px)`);
-    const onChange = () => setIsMobile(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const isMobile = useSyncExternalStore(
+    subscribeMobileViewport,
+    getMobileViewportSnapshot,
+    () => false,
+  );
 
   if (isMobile) {
     return <TimelineMobile projects={projects} showControls={showControls} />;

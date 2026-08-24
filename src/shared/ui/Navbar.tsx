@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/shared/config/data";
 import { ThemeToggle } from "./ThemeToggle";
@@ -8,6 +8,9 @@ import { ThemeToggle } from "./ThemeToggle";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
+  const wasMenuOpenRef = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -16,12 +19,16 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    if (menuOpen) document.body.style.overflow = "hidden";
+    if (menuOpen) {
+      wasMenuOpenRef.current = true;
+      const frame = requestAnimationFrame(() => firstMobileLinkRef.current?.focus());
+      return () => cancelAnimationFrame(frame);
+    }
 
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
+    if (wasMenuOpenRef.current) {
+      wasMenuOpenRef.current = false;
+      menuTriggerRef.current?.focus();
+    }
   }, [menuOpen]);
 
   useEffect(() => {
@@ -85,6 +92,7 @@ export function Navbar() {
           <ThemeToggle />
 
           <button
+            ref={menuTriggerRef}
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text transition hover:bg-theme-surface-hover lg:hidden"
             onClick={() => setMenuOpen((v) => !v)}
@@ -103,9 +111,10 @@ export function Navbar() {
           className="border-t border-theme-border bg-theme-nav-bg px-4 py-4 lg:hidden"
         >
           <ul className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <li key={link.href}>
                 <a
+                  ref={index === 0 ? firstMobileLinkRef : undefined}
                   href={link.href}
                   onClick={(e) => handleClick(e, link.href)}
                   className="flex min-h-11 items-center rounded-lg px-3 py-2.5 text-sm font-medium text-theme-text-muted transition hover:bg-theme-surface hover:text-theme-brand"

@@ -9,7 +9,7 @@ export function getEffectiveNodeSize(
   layoutMode: FlowLayoutMode,
   nodeSize: number,
 ): number {
-  return layoutMode === "mobile" ? nodeSize * MOBILE_NODE_SCALE : nodeSize;
+  return layoutMode === "desktop" ? nodeSize : nodeSize * MOBILE_NODE_SCALE;
 }
 
 export interface FlowPath {
@@ -190,16 +190,9 @@ function inputNodesById(nodes: DataFlowNodeLayout[]) {
   ) as Record<string, DataFlowNodeLayout>;
 }
 
-/** Breakpoints — mobile uses a portrait, top-to-bottom pipeline */
+/** Layout follows the canvas shape, not the viewport breakpoint alone. */
 export function getFlowLayoutMode(width: number, height?: number): FlowLayoutMode {
-  if (width < 640) return "mobile";
-
-  const isLandscape = height != null && height > 0 && width / height >= 1.35;
-  if (isLandscape && width >= 640) {
-    if (width < 1024) return "tablet";
-    return "desktop";
-  }
-
+  if (width < 640 && height != null && height > width) return "mobile";
   if (width < 1024) return "tablet";
   return "desktop";
 }
@@ -287,12 +280,20 @@ export function getNodeLayouts(
   mode: FlowLayoutMode,
   nodeSize = 1,
 ): DataFlowNodeLayout[] {
-  const { padY, innerW, innerH, cx } = safeBox(w, h);
+  const { padX, padY, innerW, innerH, cx } = safeBox(w, h);
+  const x = (t: number) => padX + innerW * t;
   const y = (t: number) => padY + innerH * t;
 
   if (mode === "mobile") {
+    const columnSpread = innerW * 0.25;
+    const inputs = layoutVerticalInputStack(
+      cx - columnSpread,
+      padY + innerH * 0.04,
+      padY + innerH * 0.96,
+      nodeSize,
+      12,
+    );
     const pipeline: Array<Omit<DataFlowNodeLayout, "x" | "y">> = [
-      ...INPUT_ITEMS.map((item) => ({ ...item, type: "input" as const })),
       {
         id: "frontend",
         label: "Frontend",
@@ -310,38 +311,43 @@ export function getNodeLayouts(
     ];
 
     return centerNodesInViewport(
-      layoutVerticalPipeline(
-        cx,
-        padY + innerH * 0.02,
-        padY + innerH * 0.98,
-        pipeline,
-        nodeSize,
-        12,
-      ),
+      [
+        ...inputs,
+        ...layoutVerticalPipeline(
+          cx + columnSpread,
+          padY + innerH * 0.04,
+          padY + innerH * 0.96,
+          pipeline,
+          nodeSize,
+          12,
+        ),
+      ],
       w,
       h,
     );
   }
 
   if (mode === "tablet") {
-    const spread = innerW * 0.36;
-    const inputs = layoutVerticalInputStack(
-      cx - spread,
-      padY + innerH * 0.04,
-      padY + innerH * 0.56,
-      nodeSize,
-    );
-    const byId = inputNodesById(inputs);
-    const frontendY = (byId.sdd.y + byId.tdd.y) / 2;
-    const backendY = (byId.design.y + byId.analytics.y) / 2;
+    const inputPositions = [
+      { x: 0.08, y: 0.25 },
+      { x: 0.08, y: 0.75 },
+      { x: 0.28, y: 0.25 },
+      { x: 0.28, y: 0.75 },
+    ] as const;
+    const inputs = INPUT_ITEMS.map((item, index) => ({
+      ...item,
+      x: x(inputPositions[index].x),
+      y: y(inputPositions[index].y),
+      type: "input" as const,
+    }));
 
     return centerNodesInViewport(
       [
         ...inputs,
-        { id: "frontend", label: "Frontend", x: cx - spread * 0.35, y: frontendY, type: "center", icon: "frontend" },
-        { id: "backend", label: "Backend", x: cx + spread * 0.68, y: backendY, type: "center", icon: "backend" },
-        { id: "server", label: "Server", x: cx, y: y(0.66), type: "server", icon: "server" },
-        { id: "user", label: "User", x: cx, y: y(0.88), type: "user", icon: "user" },
+        { id: "frontend", label: "Frontend", x: x(0.48), y: y(0.25), type: "center", icon: "frontend" },
+        { id: "backend", label: "Backend", x: x(0.48), y: y(0.75), type: "center", icon: "backend" },
+        { id: "server", label: "Server", x: x(0.7), y: y(0.5), type: "server", icon: "server" },
+        { id: "user", label: "User", x: x(0.92), y: y(0.5), type: "user", icon: "user" },
       ],
       w,
       h,
@@ -403,7 +409,7 @@ export function buildFlowPaths(
   const server = nodes.find((n) => n.type === "server");
   const user = nodes.find((n) => n.type === "user");
   const paths: FlowPath[] = [];
-  const verticalCurves = mode !== "desktop";
+  const verticalCurves = mode === "mobile";
 
   for (const input of inputs) {
     const targetId = INPUT_TARGET[input.id];
