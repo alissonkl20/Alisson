@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -20,6 +26,17 @@ import "./ProjectsTimeline.css";
 
 const MOBILE_BREAK = 768;
 const MAX_CANVAS_WIDTH = 920;
+const MOBILE_QUERY = `(max-width: ${MOBILE_BREAK}px)`;
+
+function subscribeMobileViewport(onChange: () => void) {
+  const media = window.matchMedia(MOBILE_QUERY);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function getMobileViewportSnapshot() {
+  return window.matchMedia(MOBILE_QUERY).matches;
+}
 
 function TimelineDesktop({
   projects,
@@ -34,7 +51,6 @@ function TimelineDesktop({
   const [activeIndex, setActiveIndex] = useState(0);
   const [layout, setLayout] = useState({
     canvasWidth: MAX_CANVAS_WIDTH,
-    viewportH: 900,
     stickyH: 800,
   });
   const reducedMotion = useReducedMotion() ?? false;
@@ -56,7 +72,6 @@ function TimelineDesktop({
 
       setLayout({
         canvasWidth: Math.max(300, Math.min(MAX_CANVAS_WIDTH, canvasW)),
-        viewportH: window.innerHeight,
         stickyH,
       });
     };
@@ -65,11 +80,9 @@ function TimelineDesktop({
     const ro = new ResizeObserver(update);
     if (canvasRef.current) ro.observe(canvasRef.current);
     if (stickyRef.current) ro.observe(stickyRef.current);
-    window.addEventListener("resize", update);
 
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", update);
     };
   }, []);
 
@@ -247,6 +260,7 @@ function TimelineMobile({
               panelWidth={Math.min(config.panelWidth, 420)}
               reducedMotion={reducedMotion}
               parallaxY={0}
+              animateFromSide={false}
             />
           </div>
         ))}
@@ -262,15 +276,11 @@ function TimelineRouter({
   projects: TimelineProject[];
   showControls: boolean;
 }) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAK}px)`);
-    const onChange = () => setIsMobile(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const isMobile = useSyncExternalStore(
+    subscribeMobileViewport,
+    getMobileViewportSnapshot,
+    () => false,
+  );
 
   if (isMobile) {
     return <TimelineMobile projects={projects} showControls={showControls} />;

@@ -4,9 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -23,22 +21,6 @@ const defaultConfig: DataFlowConfig = {
   nodeSize: 1,
   showLabels: true,
 };
-
-function hexToRgb(hex: string): [number, number, number] {
-  const c = hex.replace("#", "");
-  const n = parseInt(c, 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
-
-function rgbToHex(r: number, g: number, b: number): string {
-  return `#${[r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("")}`;
-}
-
-function lerpColor(a: string, b: string, t: number): string {
-  const [ar, ag, ab] = hexToRgb(a);
-  const [br, bg, bb] = hexToRgb(b);
-  return rgbToHex(ar + (br - ar) * t, ag + (bg - ag) * t, ab + (bb - ab) * t);
-}
 
 function resolveTheme(config: DataFlowConfig, siteMode: ThemeMode): DataFlowTheme {
   const base = DATA_FLOW_THEMES[config.theme];
@@ -87,64 +69,7 @@ export function DataFlowThemeProvider({
     () => resolveTheme(config, siteTheme),
     [config, siteTheme],
   );
-  const [theme, setThemeState] = useState<DataFlowTheme>(targetTheme);
-  const animRef = useRef<number | null>(null);
-  const fromRef = useRef<DataFlowTheme>(targetTheme);
-  const mountedRef = useRef(false);
-
-  useEffect(() => {
-    // Primeira montagem: aplica tema sem lerp (evita ~450ms de re-renders na árvore).
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      fromRef.current = targetTheme;
-      setThemeState(targetTheme);
-      return;
-    }
-
-    const from = fromRef.current;
-    const to = targetTheme;
-    if (from.id === to.id && from.primary === to.primary) {
-      fromRef.current = to;
-      setThemeState(to);
-      return;
-    }
-
-    const start = performance.now();
-    const duration = 450;
-
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const ease = 1 - (1 - t) ** 3;
-
-      setThemeState({
-        ...to,
-        primary: lerpColor(from.primary, to.primary, ease),
-        secondary: lerpColor(from.secondary, to.secondary, ease),
-        particle: lerpColor(from.particle, to.particle, ease),
-        ring: lerpColor(from.ring, to.ring, ease),
-        cardAccent: lerpColor(from.cardAccent, to.cardAccent, ease),
-        nodeBorder: to.nodeBorder,
-        nodeBg: to.nodeBg,
-        cardBg: to.cardBg,
-        cardBorder: to.cardBorder,
-        textColor: to.textColor,
-        background: to.background,
-        id: to.id,
-        label: to.label,
-      });
-
-      if (t < 1) {
-        animRef.current = requestAnimationFrame(tick);
-      } else {
-        fromRef.current = to;
-      }
-    };
-
-    animRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    };
-  }, [targetTheme]);
+  const theme = targetTheme;
 
   const setTheme = useCallback((t: DataFlowThemeKey) => {
     setConfig((c) => ({ ...c, theme: t, primaryColor: undefined, secondaryColor: undefined }));

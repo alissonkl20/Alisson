@@ -7,7 +7,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getLineReachIndex,
   getNodePercussionScale,
@@ -33,7 +33,17 @@ export function CareerTimelineNode({
 }: CareerTimelineNodeProps) {
   const reducedMotion = useReducedMotion() ?? false;
   const prevPathP = useRef(0);
+  const pulseTimeoutRef = useRef<number | null>(null);
   const [pulsing, setPulsing] = useState(false);
+
+  useEffect(
+    () => () => {
+      if (pulseTimeoutRef.current != null) {
+        window.clearTimeout(pulseTimeoutRef.current);
+      }
+    },
+    [],
+  );
 
   const scale = useTransform(pathProgress, (pathP) =>
     reducedMotion
@@ -71,8 +81,14 @@ export function CareerTimelineNode({
       pathP >= anchor - PATH_HIT_EPSILON;
 
     if (crossedForward) {
+      if (pulseTimeoutRef.current != null) {
+        window.clearTimeout(pulseTimeoutRef.current);
+      }
       setPulsing(true);
-      window.setTimeout(() => setPulsing(false), 460);
+      pulseTimeoutRef.current = window.setTimeout(() => {
+        pulseTimeoutRef.current = null;
+        setPulsing(false);
+      }, 460);
     }
 
     prevPathP.current = pathP;

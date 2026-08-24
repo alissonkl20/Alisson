@@ -81,6 +81,7 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
     let modeTime = 0;
     let lastTime = performance.now();
     let maxParticles = MAX_PARTICLES_DESKTOP;
+    let isIntersecting = false;
 
     const readTheme = () => {
       const cs = getComputedStyle(document.documentElement);
@@ -378,6 +379,11 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
     const isCatTarget = () => goingToCat.current;
 
     const loop = (now: number) => {
+      if (!isIntersecting || document.hidden) {
+        raf = undefined;
+        return;
+      }
+
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
       modeTime += dt;
@@ -404,17 +410,17 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
     };
 
     const start = () => {
-      if (raf === undefined) {
+      if (isIntersecting && !document.hidden && raf === undefined) {
         lastTime = performance.now();
         raf = requestAnimationFrame(loop);
       }
     };
 
-    const onClick = (e: MouseEvent) => {
+    const activateAt = (clientX: number, clientY: number) => {
       if (reduced) return;
       const rect = display.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
       if (mode === "cat") {
         goingToCat.current = false;
         explode(x, y, true);
@@ -422,6 +428,17 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
         goingToCat.current = true;
         explode(x, y, false);
       }
+    };
+
+    const onClick = (event: MouseEvent) => {
+      activateAt(event.clientX, event.clientY);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      const rect = display.getBoundingClientRect();
+      activateAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
     };
 
     const onMetadata = () => {
@@ -433,17 +450,37 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
     const onResize = () => {
       if (video.readyState >= 1) configure();
     };
+    const syncPlayback = () => {
+      const shouldPlay = isIntersecting && !document.hidden;
+      if (!shouldPlay) {
+        if (raf !== undefined) cancelAnimationFrame(raf);
+        raf = undefined;
+        video.pause();
+        return;
+      }
+
+      void video.play().then(start).catch(() => {
+        /* Autoplay bloqueado: espera interação do usuário. */
+      });
+    };
+    const onVisibilityChange = () => syncPlayback();
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = Boolean(entry?.isIntersecting);
+        syncPlayback();
+      },
+      { rootMargin: "15% 0px", threshold: 0 },
+    );
 
     video.addEventListener("loadedmetadata", onMetadata);
     video.addEventListener("canplay", onCanPlay);
     video.addEventListener("play", start);
     video.addEventListener("error", onError);
-    display.addEventListener("click", onClick);
+    wrap.addEventListener("click", onClick);
+    wrap.addEventListener("keydown", onKeyDown);
     window.addEventListener("resize", onResize);
-
-    video.play().catch(() => {
-      /* Autoplay bloqueado: espera interação do usuário. */
-    });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    intersectionObserver.observe(wrap);
 
     return () => {
       if (raf !== undefined) cancelAnimationFrame(raf);
@@ -452,8 +489,12 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
       video.removeEventListener("canplay", onCanPlay);
       video.removeEventListener("play", start);
       video.removeEventListener("error", onError);
-      display.removeEventListener("click", onClick);
+      wrap.removeEventListener("click", onClick);
+      wrap.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      intersectionObserver.disconnect();
+      video.pause();
     };
   }, [src]);
 
@@ -476,7 +517,18 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
           video unavailable
         </p>
       ) : (
-        <div ref={wrapRef} className="relative w-full cursor-pointer p-1.5 sm:p-2">
+        <div
+          ref={wrapRef}
+          className="relative w-full cursor-pointer p-1.5 outline-none focus-visible:ring-2 focus-visible:ring-theme-brand sm:p-2"
+          role="button"
+          tabIndex={0}
+          aria-label={
+            isCat
+              ? "Open the interactive ASCII terminal"
+              : "Return to the ASCII camera feed"
+          }
+          aria-pressed={!isCat}
+        >
           <canvas ref={displayRef} aria-hidden className="mx-auto block max-w-full" />
           {isCat && (
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-2 text-center font-mono text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-theme-brand animate-pulse sm:text-xs sm:tracking-[0.25em] [text-shadow:0_0_10px_var(--theme-brand-glow)]">

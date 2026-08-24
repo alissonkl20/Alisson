@@ -8,8 +8,13 @@ import {
   useSyncExternalStore,
 } from "react";
 import { type ThemeMode, THEME_STORAGE_KEY } from "@/shared/config/theme";
+import {
+  readLocalStorage,
+  writeLocalStorage,
+} from "@/shared/lib/safeStorage";
 
 const THEME_CHANGE_EVENT = "portfolio-theme-change";
+let fallbackTheme: ThemeMode = "dark";
 
 interface ThemeContextValue {
   theme: ThemeMode;
@@ -26,8 +31,9 @@ function applyTheme(mode: ThemeMode) {
 function getInitialTheme(): ThemeMode {
   if (typeof window === "undefined") return "dark";
 
-  const stored = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null;
-  return stored === "light" || stored === "dark" ? stored : "dark";
+  const stored = readLocalStorage(THEME_STORAGE_KEY);
+  if (stored === "light" || stored === "dark") fallbackTheme = stored;
+  return fallbackTheme;
 }
 
 function subscribeTheme(onStoreChange: () => void) {
@@ -47,7 +53,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme]);
 
   const setTheme = useCallback((mode: ThemeMode) => {
-    localStorage.setItem(THEME_STORAGE_KEY, mode);
+    fallbackTheme = mode;
+    writeLocalStorage(THEME_STORAGE_KEY, mode);
     applyTheme(mode);
     window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }, []);

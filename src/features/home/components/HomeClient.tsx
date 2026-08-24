@@ -3,6 +3,11 @@
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
+import { isMobileViewport } from "@/shared/lib/isMobileViewport";
+import {
+  readSessionStorage,
+  writeSessionStorage,
+} from "@/shared/lib/safeStorage";
 
 const IntroScreen = dynamic(
   () => import("@/features/intro").then((m) => m.IntroScreen),
@@ -16,17 +21,20 @@ const MainPortfolio = dynamic(
 
 const INTRO_KEY = "dev-kisper-intro-seen";
 const INTRO_CHANGE_EVENT = "portfolio-intro-change";
+let introSeenInMemory = false;
 
 type IntroState = {
   initialized: boolean;
   showIntro: boolean;
   portfolioReady: boolean;
+  isMobile: boolean;
 };
 
 const INTRO_SSR_STATE: IntroState = {
   initialized: false,
   showIntro: true,
   portfolioReady: false,
+  isMobile: false,
 };
 
 let introSnapshot: IntroState = INTRO_SSR_STATE;
@@ -34,19 +42,21 @@ let introSnapshot: IntroState = INTRO_SSR_STATE;
 function readIntroState(): IntroState {
   if (typeof window === "undefined") return INTRO_SSR_STATE;
 
-  const seen = sessionStorage.getItem(INTRO_KEY);
-  const showIntro = !seen;
-  const portfolioReady = Boolean(seen);
+  const seen = introSeenInMemory || Boolean(readSessionStorage(INTRO_KEY));
+  const isMobile = isMobileViewport();
+  const showIntro = !seen && !isMobile;
+  const portfolioReady = seen || isMobile;
 
   if (
     introSnapshot.initialized &&
     introSnapshot.showIntro === showIntro &&
-    introSnapshot.portfolioReady === portfolioReady
+    introSnapshot.portfolioReady === portfolioReady &&
+    introSnapshot.isMobile === isMobile
   ) {
     return introSnapshot;
   }
 
-  introSnapshot = { initialized: true, showIntro, portfolioReady };
+  introSnapshot = { initialized: true, showIntro, portfolioReady, isMobile };
   return introSnapshot;
 }
 
@@ -56,20 +66,24 @@ function subscribeIntro(onStoreChange: () => void) {
 }
 
 export function HomeClient() {
-  const { initialized, showIntro, portfolioReady } = useSyncExternalStore(
-    subscribeIntro,
-    readIntroState,
-    () => INTRO_SSR_STATE,
-  );
+  const { initialized, showIntro, portfolioReady, isMobile } =
+    useSyncExternalStore(
+      subscribeIntro,
+      readIntroState,
+      () => INTRO_SSR_STATE,
+    );
 
   useEffect(() => {
-    if (!sessionStorage.getItem(INTRO_KEY)) void import("./MainPortfolio");
+    if (!introSeenInMemory && !readSessionStorage(INTRO_KEY)) {
+      void import("./MainPortfolio");
+    }
   }, []);
 
-  useLazyLoadSections(initialized);
+  useLazyLoadSections(initialized && !isMobile);
 
   const handleIntroComplete = useCallback(() => {
-    sessionStorage.setItem(INTRO_KEY, "1");
+    introSeenInMemory = true;
+    writeSessionStorage(INTRO_KEY, "1");
     window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
   }, []);
 

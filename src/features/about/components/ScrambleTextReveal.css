@@ -146,6 +146,12 @@
   transform-origin: left center;
 }
 
+@media (max-width: 768px) {
+  .profile-actions__btn {
+    min-height: 2.75rem;
+  }
+}
+
 @media (max-width: 640px) {
   .scramble-reveal__text {
     max-width: 34rem;
