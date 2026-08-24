@@ -9,10 +9,49 @@ interface UseGitHubStatsResult {
   error: boolean;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object";
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function isOptionalFiniteNumber(value: unknown): boolean {
+  return value === undefined || isFiniteNumber(value);
+}
+
 function isValidStats(value: unknown): value is GitHubStats {
-  if (!value || typeof value !== "object") return false;
-  const stats = value as GitHubStats;
-  return Array.isArray(stats.days) && Boolean(stats.totals) && typeof stats.updatedAt === "string";
+  if (!isRecord(value) || !isRecord(value.totals)) return false;
+
+  const validDays =
+    Array.isArray(value.days) &&
+    value.days.every(
+      (day) =>
+        isRecord(day) &&
+        typeof day.date === "string" &&
+        isFiniteNumber(day.commits) &&
+        isOptionalFiniteNumber(day.additions) &&
+        isOptionalFiniteNumber(day.deletions) &&
+        isOptionalFiniteNumber(day.filesChanged),
+    );
+  const validLanguages =
+    Array.isArray(value.languages) &&
+    value.languages.every(
+      (language) =>
+        isRecord(language) &&
+        typeof language.language === "string" &&
+        isFiniteNumber(language.count),
+    );
+  const validTotals =
+    isFiniteNumber(value.totals.totalCommits) &&
+    isFiniteNumber(value.totals.totalAdditions) &&
+    isFiniteNumber(value.totals.totalDeletions);
+  const validTimestamp =
+    typeof value.updatedAt === "string" &&
+    !Number.isNaN(Date.parse(value.updatedAt));
+
+  return validDays && validLanguages && validTotals && validTimestamp;
 }
 
 /** Pede o snapshot em /api/github-stats (cache de 6h no servidor/CDN). */

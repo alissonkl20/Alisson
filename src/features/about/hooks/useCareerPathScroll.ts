@@ -189,7 +189,6 @@ export function useCareerPathScroll(
     applyMeasure();
     const ro = new ResizeObserver(scheduleMeasure);
     ro.observe(trackEl);
-    window.addEventListener("resize", scheduleMeasure);
 
     const imgs = trackEl.querySelectorAll("img");
     imgs.forEach((img) => img.addEventListener("load", scheduleMeasure));
@@ -200,7 +199,6 @@ export function useCareerPathScroll(
         window.cancelIdleCallback(idleHandle);
       }
       ro.disconnect();
-      window.removeEventListener("resize", scheduleMeasure);
       imgs.forEach((img) => img.removeEventListener("load", scheduleMeasure));
     };
   }, [trackRef, rowCount, isMobile]);

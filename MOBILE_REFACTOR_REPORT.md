@@ -12,6 +12,12 @@
 - Introdução pesada em Canvas não é montada em dispositivos mobile; o portfólio é exibido diretamente.
 - Preload antecipado de Three.js, timeline e gráfico foi desativado no mobile. Essas seções continuam carregando sob demanda ao se aproximarem do viewport.
 - Detecção mobile centralizada em `src/shared/lib/isMobileViewport.ts`.
+- Canvas ASCII pausa vídeo e animação fora do viewport ou com a aba oculta, além de aceitar teclado.
+- Partículas Three.js atualizam a cor somente quando o tema muda, sem alocação por frame.
+- Storage de tema/introdução possui fallback seguro; histórico do chat e resposta de GitHub são validados antes do uso.
+- Falhas sistêmicas da API do GitHub não viram estatísticas zeradas em cache; detalhes de commits usam concorrência máxima de cinco requisições.
+- Timers da timeline são cancelados corretamente e medições deixaram de duplicar trabalho entre `ResizeObserver` e `resize`.
+- A troca de tema do data-flow faz uma atualização React única e usa as transições CSS existentes.
 
 ## Breakpoints
 
@@ -30,6 +36,7 @@
 
 - `npm run lint`: concluído sem erros ou warnings.
 - `npm run build`: concluído com sucesso no Next.js 16.3.2.
+- Validação TypeScript concluída pelo `next build`.
 - Chromium emulado em `320px`, `375px`, `768px` e `1024px`:
   - `scrollX = 0` após tentativa de rolagem horizontal;
   - nenhum controle interativo abaixo de `44px` entre `320px` e `768px`;

@@ -93,6 +93,16 @@ function FlowField({ active, layout, reducedMotion }: FlowParticlesProps) {
   }, [paths]);
 
   useEffect(() => {
+    const color = materialRef.current?.uniforms.uColor.value as
+      | THREE.Vector3
+      | undefined;
+    if (!color) return;
+
+    const next = new THREE.Color(theme.particle);
+    color.set(next.r, next.g, next.b);
+  }, [theme.particle]);
+
+  useEffect(() => {
     const cam = camera as THREE.OrthographicCamera;
     cam.left = -width / 2;
     cam.right = width / 2;
@@ -170,7 +180,6 @@ function FlowField({ active, layout, reducedMotion }: FlowParticlesProps) {
     geometry.attributes.position.needsUpdate = true;
     (geometry.attributes.aAlpha as THREE.BufferAttribute).needsUpdate = true;
     (geometry.attributes.aSize as THREE.BufferAttribute).needsUpdate = true;
-    materialRef.current.uniforms.uColor.value = hexToVec3(theme.particle);
   });
 
   return (

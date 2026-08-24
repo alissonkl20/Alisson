@@ -4,6 +4,10 @@ import { useCallback, useEffect, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
 import { isMobileViewport } from "@/shared/lib/isMobileViewport";
+import {
+  readSessionStorage,
+  writeSessionStorage,
+} from "@/shared/lib/safeStorage";
 
 const IntroScreen = dynamic(
   () => import("@/features/intro").then((m) => m.IntroScreen),
@@ -17,6 +21,7 @@ const MainPortfolio = dynamic(
 
 const INTRO_KEY = "dev-kisper-intro-seen";
 const INTRO_CHANGE_EVENT = "portfolio-intro-change";
+let introSeenInMemory = false;
 
 type IntroState = {
   initialized: boolean;
@@ -37,7 +42,7 @@ let introSnapshot: IntroState = INTRO_SSR_STATE;
 function readIntroState(): IntroState {
   if (typeof window === "undefined") return INTRO_SSR_STATE;
 
-  const seen = Boolean(sessionStorage.getItem(INTRO_KEY));
+  const seen = introSeenInMemory || Boolean(readSessionStorage(INTRO_KEY));
   const isMobile = isMobileViewport();
   const showIntro = !seen && !isMobile;
   const portfolioReady = seen || isMobile;
@@ -69,13 +74,16 @@ export function HomeClient() {
     );
 
   useEffect(() => {
-    if (!sessionStorage.getItem(INTRO_KEY)) void import("./MainPortfolio");
+    if (!introSeenInMemory && !readSessionStorage(INTRO_KEY)) {
+      void import("./MainPortfolio");
+    }
   }, []);
 
   useLazyLoadSections(initialized && !isMobile);
 
   const handleIntroComplete = useCallback(() => {
-    sessionStorage.setItem(INTRO_KEY, "1");
+    introSeenInMemory = true;
+    writeSessionStorage(INTRO_KEY, "1");
     window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
   }, []);
 

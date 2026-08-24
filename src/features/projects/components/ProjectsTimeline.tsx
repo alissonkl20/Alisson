@@ -51,7 +51,6 @@ function TimelineDesktop({
   const [activeIndex, setActiveIndex] = useState(0);
   const [layout, setLayout] = useState({
     canvasWidth: MAX_CANVAS_WIDTH,
-    viewportH: 900,
     stickyH: 800,
   });
   const reducedMotion = useReducedMotion() ?? false;
@@ -73,7 +72,6 @@ function TimelineDesktop({
 
       setLayout({
         canvasWidth: Math.max(300, Math.min(MAX_CANVAS_WIDTH, canvasW)),
-        viewportH: window.innerHeight,
         stickyH,
       });
     };
@@ -82,11 +80,9 @@ function TimelineDesktop({
     const ro = new ResizeObserver(update);
     if (canvasRef.current) ro.observe(canvasRef.current);
     if (stickyRef.current) ro.observe(stickyRef.current);
-    window.addEventListener("resize", update);
 
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", update);
     };
   }, []);
 

@@ -10,14 +10,27 @@ import {
   type ChatMessage,
 } from "@/Api";
 
+function isChatMessage(value: unknown): value is ChatMessage {
+  if (!value || typeof value !== "object") return false;
+  const message = value as Record<string, unknown>;
+
+  return (
+    typeof message.id === "string" &&
+    (message.role === "user" || message.role === "assistant") &&
+    typeof message.content === "string" &&
+    typeof message.createdAt === "number" &&
+    Number.isFinite(message.createdAt)
+  );
+}
+
 function loadStoredMessages(): ChatMessage[] | null {
   if (!chatbotConfig.persistHistory) return null;
 
   try {
     const raw = localStorage.getItem(chatbotConfig.historyStorageKey);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as ChatMessage[];
-    return Array.isArray(parsed) ? parsed : null;
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.every(isChatMessage) ? parsed : null;
   } catch {
     return null;
   }

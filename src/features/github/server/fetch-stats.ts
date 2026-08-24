@@ -39,6 +39,8 @@ interface SearchCommitItem {
   commit: { author: { date: string } };
 }
 
+const COMMIT_DETAIL_CONCURRENCY = 5;
+
 function isoDaysAgo(days: number): Date {
   const d = new Date();
   d.setUTCDate(d.getUTCDate() - days);
@@ -111,7 +113,7 @@ async function fetchRecentCommits(token: string, login: string, since: Date) {
     `${GITHUB_API}/search/commits?q=${encodeURIComponent(q)}&per_page=${MAX_DETAIL_COMMITS}&sort=committer-date&order=desc`,
     { headers: githubHeaders(token), cache: "no-store" },
   );
-  if (!res.ok) return [];
+  if (!res.ok) throw new Error("github_commit_search_failed");
   const json = (await res.json()) as { items?: SearchCommitItem[] };
   return json.items ?? [];
 }
@@ -121,7 +123,8 @@ async function fetchCommitDetail(token: string, fullName: string, sha: string) {
     headers: githubHeaders(token),
     cache: "no-store",
   });
-  if (!res.ok) return null;
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("github_commit_detail_failed");
   const json = (await res.json()) as {
     stats?: { additions?: number; deletions?: number };
     files?: unknown[];
@@ -131,6 +134,31 @@ async function fetchCommitDetail(token: string, fullName: string, sha: string) {
     deletions: json.stats?.deletions ?? 0,
     filesChanged: json.files?.length ?? 0,
   };
+}
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  task: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let nextIndex = 0;
+
+  const worker = async () => {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await task(items[index]!);
+    }
+  };
+
+  await Promise.all(
+    Array.from(
+      { length: Math.min(concurrency, items.length) },
+      () => worker(),
+    ),
+  );
+  return results;
 }
 
 /** Agrega stats autenticadas. Falhas internas não vazam mensagem da API. */
@@ -159,14 +187,20 @@ export async function fetchGitHubStats(): Promise<GitHubStats> {
     .sort((a, b) => b.count - a.count)
     .slice(0, 6);
 
-  const recentCommits = await fetchRecentCommits(token, login, isoDaysAgo(DETAIL_DAYS));
-  const details = await Promise.all(
-    recentCommits
-      .slice(0, MAX_DETAIL_COMMITS)
-      .map((c) => fetchCommitDetail(token, c.repository.full_name, c.sha)),
+  const recentCommits = await fetchRecentCommits(
+    token,
+    login,
+    isoDaysAgo(DETAIL_DAYS),
+  );
+  const commitsWithDetails = recentCommits.slice(0, MAX_DETAIL_COMMITS);
+  const details = await mapWithConcurrency(
+    commitsWithDetails,
+    COMMIT_DETAIL_CONCURRENCY,
+    (commit) =>
+      fetchCommitDetail(token, commit.repository.full_name, commit.sha),
   );
 
-  recentCommits.slice(0, MAX_DETAIL_COMMITS).forEach((commit, i) => {
+  commitsWithDetails.forEach((commit, i) => {
     const detail = details[i];
     if (!detail) return;
     const key = commit.commit.author.date.slice(0, 10);
