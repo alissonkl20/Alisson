@@ -473,14 +473,14 @@ export function AsciiVideo({ src = DEFAULT_VIDEO_SRC, className = "" }: AsciiVid
 
       {status === "error" ? (
         <p className="p-4 text-center font-mono text-xs text-theme-text-muted">
-          vídeo indisponível
+          video unavailable
         </p>
       ) : (
         <div ref={wrapRef} className="relative w-full cursor-pointer p-1.5 sm:p-2">
           <canvas ref={displayRef} aria-hidden className="mx-auto block max-w-full" />
           {isCat && (
             <span className="pointer-events-none absolute inset-0 flex items-center justify-center px-2 text-center font-mono text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-theme-brand animate-pulse sm:text-xs sm:tracking-[0.25em] [text-shadow:0_0_10px_var(--theme-brand-glow)]">
-              clique na tela
+              click the screen
             </span>
           )}
         </div>

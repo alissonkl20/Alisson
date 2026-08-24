@@ -29,7 +29,7 @@ export function StatCard({ icon: Icon, label, value, suffix, accent = "brand", i
         <Icon size={16} strokeWidth={1.75} />
       </span>
       <span ref={ref} className={styles.statValue}>
-        {display.toLocaleString("pt-BR")}
+        {display.toLocaleString("en-US")}
         {suffix && <span className={styles.statSuffix}>{suffix}</span>}
       </span>
       <span className={styles.statLabel}>{label}</span>

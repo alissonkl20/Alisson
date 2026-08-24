@@ -17,7 +17,7 @@ interface GitHubPerformanceChartProps {
   data: DayData[];
 }
 
-const MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function formatDate(iso: string): string {
   const d = new Date(`${iso}T12:00:00`);
@@ -44,12 +44,12 @@ function ChartTooltip({ active, payload }: { active?: boolean; payload?: Tooltip
       </p>
       {typeof day.additions === "number" && day.additions > 0 && (
         <p className={styles.tooltipRow}>
-          <span className={styles.tooltipDot} data-kind="additions" />+{day.additions.toLocaleString("pt-BR")} linhas
+          <span className={styles.tooltipDot} data-kind="additions" />+{day.additions.toLocaleString("en-US")} lines
         </p>
       )}
       {typeof day.deletions === "number" && day.deletions > 0 && (
         <p className={styles.tooltipRow}>
-          <span className={styles.tooltipDot} data-kind="deletions" />−{day.deletions.toLocaleString("pt-BR")} linhas
+          <span className={styles.tooltipDot} data-kind="deletions" />−{day.deletions.toLocaleString("en-US")} lines
         </p>
       )}
     </div>

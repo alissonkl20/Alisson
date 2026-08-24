@@ -12,14 +12,10 @@ export function GitHubSection() {
   const { data, loading, error } = useGitHubStats();
 
   return (
-    <section id="github" className={styles.section} aria-label="Estatísticas do GitHub">
+    <section id="github" className={styles.section} aria-label="GitHub statistics">
       <header className="section-header">
         <p className="section-eyebrow">Open Source</p>
-        <h2 className="section-title">Atividade no GitHub</h2>
-        <p className="section-subtitle">
-          Commits, linhas de código e linguagens dos últimos 30 dias. Snapshot em cache —
-          o GitHub só é consultado a cada 6 horas.
-        </p>
+        <h2 className="section-title">GitHub Activity</h2>
       </header>
 
       <div className={styles.body}>
@@ -27,19 +23,19 @@ export function GitHubSection() {
 
         {error && !loading && (
           <div className={styles.stateBox} role="status">
-            Não foi possível carregar as estatísticas agora. Tente novamente em instantes.
+            Unable to load stats right now. Please try again in a moment.
           </div>
         )}
 
         {data && !loading && (
           <>
             <div className={styles.statsGrid}>
-              <StatCard icon={GitCommitHorizontal} label="Commits · 30 dias" value={data.totals.totalCommits} index={0} />
-              <StatCard icon={Plus} label="Linhas adicionadas" value={data.totals.totalAdditions} accent="neutral" index={1} />
-              <StatCard icon={Minus} label="Linhas removidas" value={data.totals.totalDeletions} accent="highlight" index={2} />
+              <StatCard icon={GitCommitHorizontal} label="Commits · 30 days" value={data.totals.totalCommits} index={0} />
+              <StatCard icon={Plus} label="Lines added" value={data.totals.totalAdditions} accent="neutral" index={1} />
+              <StatCard icon={Minus} label="Lines removed" value={data.totals.totalDeletions} accent="highlight" index={2} />
               <StatCard
                 icon={FileDiff}
-                label="Arquivos alterados"
+                label="Files changed"
                 value={data.days.reduce((sum, d) => sum + (d.filesChanged ?? 0), 0)}
                 accent="neutral"
                 index={3}

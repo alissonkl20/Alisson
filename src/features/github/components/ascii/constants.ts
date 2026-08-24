@@ -13,11 +13,11 @@ export const DEFAULT_VIDEO_SRC = "/assets/cat.mp4";
 
 export const TYPED_LINES = [
   { prompt: true, text: "haff manifesto" },
-  { prompt: false, text: "Um sistema simples não sustenta uma marca memorável." },
-  { prompt: false, text: "O que você apresenta reflete quem você é — personalidade," },
-  { prompt: false, text: "visão de negócio e a forma como você se posiciona no mercado." },
-  { prompt: false, text: "Antes de vender serviços, software ou um site," },
-  { prompt: false, text: "precisa existir algo autêntico: emoção antes da oferta." },
-  { prompt: false, text: "A primeira impressão é decisiva. Não desperdice essa chance." },
-  { prompt: false, text: "Vamos criar algo inovador que transmite valor e diferencia você." },
+  { prompt: false, text: "A simple system cannot sustain a memorable brand." },
+  { prompt: false, text: "What you present reflects who you are — personality," },
+  { prompt: false, text: "business vision, and how you position yourself in the market." },
+  { prompt: false, text: "Before selling services, software, or a website," },
+  { prompt: false, text: "something authentic must exist: emotion before the offer." },
+  { prompt: false, text: "First impressions are decisive. Do not waste that chance." },
+  { prompt: false, text: "Let's build something innovative that conveys value and sets you apart." },
 ] as const;

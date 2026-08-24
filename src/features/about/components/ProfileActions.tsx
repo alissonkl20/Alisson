@@ -40,16 +40,16 @@ export function ProfileActions({ visible = true }: ProfileActionsProps) {
     <div className="profile-actions-wrap">
       <nav
         className={`profile-actions${visible ? " profile-actions--visible" : ""}`}
-        aria-label="Contact and resume links"
+        aria-label="Contact and CV links"
       >
       <a
         href={profile.cv}
         download="Alisson_Almeida_CV.pdf"
         className="profile-actions__btn profile-actions__btn--primary"
-        aria-label="Download resume as PDF"
+        aria-label="Download CV as PDF"
       >
         <FileDown size={16} aria-hidden />
-        <span>Resume</span>
+        <span>CV</span>
       </a>
 
       <a
