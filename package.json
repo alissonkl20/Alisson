@@ -6,15 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy:prod": "bash ./production.sh"
   },
   "dependencies": {
-    "@react-three/fiber": "^9.7.0",
+    "@react-three/fiber": "^10.0.0-canary.f5d9cbd",
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.33.0",
     "next": "16.3.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
     "three": "^0.185.1"
   },
   "devDependencies": {
