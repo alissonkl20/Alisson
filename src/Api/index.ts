@@ -33,6 +33,7 @@ export const chatbotConfig = {
   fallbackResponse: CHATBOT_FALLBACK,
   persistHistory: false,
   historyStorageKey: "portfolio-chat-history",
+  sessionStorageKey: "portfolio-chat-session-id",
 } as const;
 
 function normalizeInput(value: string): string {

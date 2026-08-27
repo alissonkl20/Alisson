@@ -66,6 +66,26 @@ export const timelineProjects = [
     link: "#",
     linkLabel: "Case study",
   },
+  {
+    id: 6,
+    title: "Draxy",
+    category: "AI · Agent CLI",
+    initials: "DX",
+    description:
+      "Offline CLI agent specialized in PHP/Laravel, powered by a local Ollama LLM through Python FastAPI. RAG over a JSON knowledge base (Laravel docs, Stack Overflow dumps, params and structs) with auto-training and SOLID architecture — Python indexes training files and queries that context to debug PHP, scaffold MVC CRUDs, define project structure, and run end-to-end tasks with TDD.",
+    link: "#",
+    linkLabel: "Case study",
+  },
+  {
+    id: 7,
+    title: "URL Shortener",
+    category: "Web · Laravel",
+    initials: "US",
+    description:
+      "URL shortener built with PHP and Laravel — generates short links, redirects to the original destination, and tracks clicks.",
+    link: "#",
+    linkLabel: "Case study",
+  },
 ];
 
 export const navLinks = [
