@@ -13,10 +13,13 @@ export function GitHubSection() {
 
   return (
     <section id="github" className={styles.section} aria-label="GitHub statistics">
-      <header className="section-header">
-        <p className="section-eyebrow">Open Source</p>
-        <h2 className="section-title">GitHub Activity</h2>
-      </header>
+      <div className={styles.intro}>
+        <AsciiVideo />
+        <header className="section-header">
+          <p className="section-eyebrow">Open Source</p>
+          <h2 className="section-title">GitHub Activity</h2>
+        </header>
+      </div>
 
       <div className={styles.body}>
         {loading && <div className={styles.skeletonBar} aria-hidden />}
@@ -65,8 +68,6 @@ export function GitHubSection() {
             </div>
           </>
         )}
-
-        <AsciiVideo />
       </div>
     </section>
   );

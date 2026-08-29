@@ -2,6 +2,21 @@
   composes: section-shell from global;
 }
 
+.intro {
+  position: relative;
+  z-index: 2;
+  max-width: var(--section-max-width);
+  margin: 0 auto;
+  padding: var(--section-padding-y) var(--section-padding-x) 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.intro :global(.section-header) {
+  padding: 0;
+}
+
 .body {
   position: relative;
   z-index: 2;
@@ -243,6 +258,7 @@
 
 /* ── Mobile ────────────────────────────────────────────── */
 @media (max-width: 640px) {
+  .intro,
   .body {
     gap: clamp(1.25rem, 3vh, 2rem);
   }

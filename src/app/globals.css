@@ -326,6 +326,7 @@ body.splash-active header {
 @media (max-width: 768px) {
   .about-section,
   .experience-section,
+  .prompt-section,
   .timeline-section {
     overflow-x: clip;
   }

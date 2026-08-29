@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   getLetterReveal,
   useScrambleTextReveal,
@@ -8,17 +8,23 @@ import {
 import type { ScrambleTextRevealProps } from "../types/scrambleTextReveal.types";
 import { DEFAULT_SCRAMBLE_TEXT_REVEAL_PROPS } from "../types/scrambleTextReveal.types";
 import { ProfileActions } from "./ProfileActions";
+import { LiquidGlassCanvas } from "./LiquidGlassCanvas";
 import "./ScrambleTextReveal.css";
 
 function useCompactViewport() {
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 640px)");
-    const update = () => setCompact(media.matches);
+    const narrow = window.matchMedia("(max-width: 640px)");
+    const short = window.matchMedia("(max-height: 540px)");
+    const update = () => setCompact(narrow.matches || short.matches);
     update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    narrow.addEventListener("change", update);
+    short.addEventListener("change", update);
+    return () => {
+      narrow.removeEventListener("change", update);
+      short.removeEventListener("change", update);
+    };
   }, []);
 
   return compact;
@@ -32,6 +38,7 @@ export function ScrambleTextReveal({
   rotation = DEFAULT_SCRAMBLE_TEXT_REVEAL_PROPS.rotation,
   viewportHeight = DEFAULT_SCRAMBLE_TEXT_REVEAL_PROPS.viewportHeight,
   title,
+  glassSrc,
   className = "",
 }: ScrambleTextRevealProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -93,19 +100,32 @@ export function ScrambleTextReveal({
     responsiveRotation,
   ]);
 
+  const extraScroll = compact
+    ? Math.round(scrollDistance * 0.72)
+    : scrollDistance;
+
   return (
     <div
       ref={containerRef}
       className={`scramble-reveal ${className}`.trim()}
-      style={{
-        height: `calc(${viewportHeight}vh - var(--nav-height) + ${scrollDistance}vh)`,
-      }}
+      style={
+        {
+          "--scramble-screen": String(viewportHeight),
+          "--scramble-extra": String(extraScroll),
+        } as CSSProperties
+      }
       aria-label={text}
     >
-      <div
-        className="scramble-reveal__sticky"
-        style={{ height: `calc(${viewportHeight}vh - var(--nav-height))` }}
-      >
+      <div className="scramble-reveal__sticky">
+        {glassSrc ? (
+          <div className="scramble-reveal__glass" aria-hidden>
+            <LiquidGlassCanvas
+              src={glassSrc}
+              fit="fill"
+              priority
+            />
+          </div>
+        ) : null}
         <div className="scramble-reveal__inner">
           {title ? (
             <h2 className="scramble-reveal__title section-title section-title--hero">

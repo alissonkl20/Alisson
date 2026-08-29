@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Padaria Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #3e2c1b;
+            background: #fef8f0;
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            background: #4a2e1b;
+            color: #f9e6d2;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo i, .logo span { color: #e6b17e; }
+        .logo i { font-size: 2rem; }
+        nav ul { display: flex; gap: 28px; font-weight: 500; }
+        nav ul li a { transition: color 0.3s; font-size: 1.05rem; }
+        nav ul li a:hover { color: #e6b17e; }
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #f9e6d2;
+        }
+        .hero {
+            background: linear-gradient(135deg, #3e2c1b 0%, #6b4c32 100%);
+            color: #fff;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+        .hero h1 { font-size: 3.2rem; font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+        .hero h1 i { color: #e6b17e; }
+        .hero p { font-size: 1.3rem; opacity: 0.9; margin-bottom: 32px; }
+        .btn {
+            display: inline-block;
+            background: #e6b17e;
+            color: #3e2c1b;
+            padding: 14px 42px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn:hover { background: #f0c69a; transform: scale(1.04); }
+        .btn i { margin-right: 10px; }
+        .section { padding: 70px 0; }
+        .section-title {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #3e2c1b;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #7a5f44;
+            font-size: 1.1rem;
+            margin-bottom: 48px;
+        }
+        .section-title span { color: #b87c4b; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: #fffcf7;
+            border-radius: 20px;
+            padding: 30px 20px 25px;
+            text-align: center;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f0e2d2;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10); }
+        .card i { font-size: 3.2rem; color: #b87c4b; margin-bottom: 16px; }
+        .card h3 { font-size: 1.4rem; margin-bottom: 8px; }
+        .card p { color: #6b4f36; font-size: 0.98rem; }
+        .card .price {
+            display: inline-block;
+            margin-top: 14px;
+            background: #f0e2d2;
+            padding: 4px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #4a2e1b;
+            font-size: 1.1rem;
+        }
+        .sobre { background: #f5ede4; }
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .sobre-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
+        .sobre-text h2 span { color: #b87c4b; }
+        .sobre-text p { margin-bottom: 18px; color: #4f3825; font-size: 1.05rem; }
+        .sobre-text .btn { margin-top: 10px; }
+        .sobre-imagem {
+            background: #dcc9b5;
+            border-radius: 30px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: #8b6d53;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+        .depoimentos { background: #fffcf7; }
+        .depo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+        .depo-card {
+            background: #f5ede4;
+            border-radius: 20px;
+            padding: 28px 22px;
+            text-align: center;
+        }
+        .depo-card:hover { background: #efe3d6; }
+        .depo-card i { color: #b87c4b; font-size: 2rem; margin-bottom: 8px; opacity: 0.6; }
+        .depo-card p { font-style: italic; color: #3e2c1b; font-size: 1rem; margin-bottom: 12px; }
+        .depo-card .autor { font-weight: 600; color: #6b4c32; font-size: 0.95rem; }
+        .contato { background: #4a2e1b; color: #f9e6d2; }
+        .contato .section-title { color: #f9e6d2; }
+        .contato .section-subtitle { color: #dcc9b5; }
+        .contato-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 20px;
+        }
+        .contato-info h3 { font-size: 1.6rem; margin-bottom: 16px; }
+        .contato-info p {
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .contato-info i { width: 28px; color: #e6b17e; font-size: 1.3rem; }
+        .contato-form input,
+        .contato-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 12px;
+            background: #f9e6d2;
+            color: #3e2c1b;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+        .contato-form textarea { height: 120px; resize: vertical; }
+        .contato-form .btn { width: 100%; }
+        footer {
+            background: #2f1e12;
+            color: #dcc9b5;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        footer .social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 14px;
+            font-size: 1.5rem;
+        }
+        footer .social a { color: #dcc9b5; }
+        footer .social a:hover { color: #e6b17e; }
+        footer span { color: #e6b17e; }
+        html { scroll-behavior: smooth; }
+        @media (max-width: 992px) {
+            .sobre-grid, .contato-grid { grid-template-columns: 1fr; }
+            .sobre-imagem { height: 220px; order: -1; }
+        }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 16px 0 10px;
+                gap: 12px;
+                align-items: center;
+            }
+            nav ul.active { display: flex; }
+            .hero h1 { font-size: 2.4rem; }
+            .grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-bread-slice"></i>
+                Padaria <span>Demo</span>
+            </div>
+            <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="hero" id="inicio">
+        <div class="container hero-content">
+            <h1><i class="fas fa-seedling"></i> Padaria Demo <br />site <span>fictício</span></h1>
+            <p>Nome Demo, Rua Demo e telefone (00) 00000-0000 — dados de exemplo para o prompt.</p>
+            <a href="#produtos" class="btn"><i class="fas fa-utensils"></i> Ver nosso cardápio</a>
+        </div>
+    </section>
+    <section class="section" id="produtos">
+        <div class="container">
+            <h2 class="section-title">Nossos <span>destaques</span></h2>
+            <p class="section-subtitle">Feitos com farinha de qualidade e receitas que passam de geração em geração.</p>
+            <div class="grid">
+                <div class="card">
+                    <i class="fas fa-bread-slice"></i>
+                    <h3>Produto Demo 01</h3>
+                    <p>Descrição demo do item 01, só para o preview do prompt.</p>
+                    <span class="price">R$ 00,00</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-croissant"></i>
+                    <h3>Produto Demo 02</h3>
+                    <p>Descrição demo do item 02, só para o preview do prompt.</p>
+                    <span class="price">R$ 00,00</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cake-candles"></i>
+                    <h3>Produto Demo 03</h3>
+                    <p>Descrição demo do item 03, só para o preview do prompt.</p>
+                    <span class="price">R$ 00,00</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-mug-saucer"></i>
+                    <h3>Produto Demo 04</h3>
+                    <p>Descrição demo do item 04, só para o preview do prompt.</p>
+                    <span class="price">R$ 00,00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section sobre" id="sobre">
+        <div class="container sobre-grid">
+            <div class="sobre-text">
+                <h2>Mais que uma padaria, <span>um demo</span></h2>
+                <p>Há 00 anos, a Padaria Demo usa nome, rua e telefone fictícios só para mostrar o site.</p>
+                <p>Cliente Demo, Rua Demo, 000, Cidade Demo — nenhum dado real neste preview.</p>
+                <a href="#contato" class="btn"><i class="fas fa-store"></i> Visite nossa loja</a>
+            </div>
+            <div class="sobre-imagem"><i class="fas fa-fire-burner"></i></div>
+        </div>
+    </section>
+    <section class="section depoimentos" id="depoimentos">
+        <div class="container">
+            <h2 class="section-title">O que dizem <span>nossos clientes</span></h2>
+            <p class="section-subtitle">Quem prova, aprova e volta sempre.</p>
+            <div class="depo-grid">
+                <div class="depo-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Depoimento demo 01. Nome e texto fictícios para o preview."</p>
+                    <div class="autor"><i class="fas fa-user"></i> Nome Demo</div>
+                </div>
+                <div class="depo-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Depoimento demo 02. Cliente Demo, Cidade Demo."</p>
+                    <div class="autor"><i class="fas fa-user"></i> Cliente Demo</div>
+                </div>
+                <div class="depo-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Depoimento demo 03. Autor Demo, telefone (00) 00000-0000."</p>
+                    <div class="autor"><i class="fas fa-user"></i> Autor Demo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section contato" id="contato">
+        <div class="container">
+            <h2 class="section-title">Fale <span>conosco</span></h2>
+            <p class="section-subtitle">Envie uma mensagem, tire suas dúvidas ou faça uma encomenda.</p>
+            <div class="contato-grid">
+                <div class="contato-info">
+                    <h3><i class="fas fa-store"></i> Nossa loja</h3>
+                    <p><i class="fas fa-map-pin"></i> Rua Demo, 000 — Bairro Demo, Cidade Demo</p>
+                    <p><i class="fas fa-phone"></i> (00) 00000-0000</p>
+                    <p><i class="fas fa-envelope"></i> contato@demo.com</p>
+                    <p><i class="fas fa-clock"></i> Seg–Sex: 00h – 00h | Sáb: 00h – 00h</p>
+                </div>
+                <form class="contato-form" id="formContato">
+                    <input type="text" placeholder="Seu nome" required />
+                    <input type="email" placeholder="Seu e-mail" required />
+                    <textarea placeholder="Sua mensagem..." required></textarea>
+                    <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Enviar mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="social">
+                <a href="#inicio" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#inicio" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#inicio" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p>&copy; 0000 <span>Padaria Demo</span> — Dados fictícios para o prompt.</p>
+        </div>
+    </footer>
+    <script>
+        const toggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        toggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+        document.querySelectorAll('#navMenu a').forEach((link) => {
+            link.addEventListener('click', () => navMenu.classList.remove('active'));
+        });
+        document.getElementById('formContato').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.reset();
+        });
+    </script>
+</body>
+</html>

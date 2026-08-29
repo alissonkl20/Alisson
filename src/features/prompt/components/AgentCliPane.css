@@ -1,0 +1,253 @@
+.agent-cli {
+  --cli-bg: #161412;
+  --cli-fg: #f4f0ea;
+  --cli-muted: #9c9590;
+  --cli-border: #3f3a36;
+  --cli-accent: #d97757;
+  --cli-input: #1c1917;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0.65rem 0.85rem 0.7rem;
+  overflow: hidden;
+  background: var(--cli-bg);
+  color: var(--cli-fg);
+  font-family: var(--font-mono), ui-monospace, Consolas, monospace;
+}
+
+.agent-cli--craft {
+  --cli-accent: #e8c872;
+}
+
+.cli-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--cli-border);
+}
+
+.cli-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #3f3a36;
+}
+
+.cli-dot:nth-child(1) {
+  background: #c45c4a;
+}
+
+.cli-dot:nth-child(2) {
+  background: #c9a227;
+}
+
+.cli-dot:nth-child(3) {
+  background: #5b8f5b;
+}
+
+.cli-title {
+  margin-left: 0.45rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--cli-muted);
+}
+
+.cli-chrome__tag {
+  margin-left: auto;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--cli-border);
+  border-radius: 999px;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cli-accent);
+  white-space: nowrap;
+}
+
+.cli-welcome {
+  flex-shrink: 0;
+  border: 1px solid var(--cli-border);
+  border-radius: 0.35rem;
+  padding: 0.75rem 0.85rem 0.8rem;
+}
+
+.cli-welcome__hi {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cli-fg);
+}
+
+.cli-start-cmd {
+  display: block;
+  margin: 0 0 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cli-accent);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+}
+
+.cli-side__label {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cli-fg);
+}
+
+.cli-side .cli-side__label:not(:first-child) {
+  margin-top: 0.85rem;
+}
+
+.cli-side__muted,
+.cli-side li {
+  margin: 0 0 0.3rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--cli-muted);
+}
+
+.cli-side ul {
+  margin: 0;
+  padding: 0 0 0 1.1rem;
+}
+
+.cli-meta {
+  margin: 0.75rem 0 0.15rem;
+  font-size: 0.78rem;
+  color: var(--cli-accent);
+}
+
+.cli-cwd {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--cli-muted);
+}
+
+.cli-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  flex-shrink: 0;
+  max-height: 9.5rem;
+  overflow: auto;
+}
+
+.cli-log p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--cli-fg);
+}
+
+.cli-log__user {
+  color: var(--cli-accent);
+  overflow-wrap: anywhere;
+  font-size: 0.72rem;
+}
+
+.cli-log__system {
+  color: var(--cli-muted);
+}
+
+.cli-log__tool {
+  color: var(--cli-muted);
+  padding-left: 1.1rem;
+}
+
+.cli-prompt-mark,
+.cli-claude-mark,
+.cli-tool-mark {
+  margin-right: 0.35rem;
+  color: var(--cli-accent);
+}
+
+.cli-input {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 0.55rem 0.7rem;
+  background: var(--cli-input);
+  border: 1px solid var(--cli-border);
+  border-radius: 0.3rem;
+  min-height: 2.5rem;
+}
+
+.cli-input__value {
+  flex: 1;
+  min-width: 0;
+  max-height: 7.2rem;
+  overflow: hidden;
+  color: var(--cli-fg);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cli-input__placeholder {
+  color: var(--cli-muted);
+  font-size: 0.82rem;
+}
+
+.cli-caret {
+  display: inline-block;
+  width: 0.45rem;
+  height: 1em;
+  margin-left: 0.08rem;
+  background: var(--cli-accent);
+  animation: cli-caret 0.9s steps(1, end) infinite;
+  vertical-align: text-bottom;
+}
+
+.cli-shortcuts {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: var(--cli-muted);
+}
+
+.agent-cli .bakery-frame {
+  flex: 1 1 auto;
+  min-height: 12rem;
+}
+
+.agent-cli:has(.bakery-frame) .cli-log {
+  max-height: 5.2rem;
+}
+
+@keyframes cli-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cli-caret {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .cli-chrome__tag {
+    display: none;
+  }
+
+  .agent-cli .bakery-frame {
+    min-height: 14rem;
+  }
+}

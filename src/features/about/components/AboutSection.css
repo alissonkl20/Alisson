@@ -3,7 +3,8 @@
 .about-section {
   position: relative;
   width: 100%;
-  overflow: visible;
+  max-width: 100%;
+  overflow-x: clip;
   background: var(--theme-bg);
   color: var(--theme-text);
 }

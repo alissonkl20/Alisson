@@ -9,6 +9,7 @@ import {
   LazyAboutSection,
   LazyExperienceSection,
   LazyGitHubSection,
+  LazyPromptSection,
   LazyProjectsSection,
 } from "../hooks/useLazyLoadSections";
 
@@ -27,11 +28,9 @@ export function MainPortfolio() {
       <CustomCursor />
       <Navbar />
       <main>
-        {/* About é o primeiro conteúdo visível: monta imediatamente. */}
         <Suspense fallback={<SectionFallback />}>
           <LazyAboutSection />
         </Suspense>
-        {/* Seções pesadas (WebGL/timelines) montam só perto do viewport. */}
         <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <LazyExperienceSection />
@@ -45,6 +44,11 @@ export function MainPortfolio() {
         <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <LazyGitHubSection />
+          </Suspense>
+        </DeferredSection>
+        <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
+          <Suspense fallback={<SectionFallback />}>
+            <LazyPromptSection />
           </Suspense>
         </DeferredSection>
       </main>

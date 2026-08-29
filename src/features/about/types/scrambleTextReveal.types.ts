@@ -11,6 +11,7 @@ export interface ScrambleTextRevealProps {
   viewportHeight?: number;
   /** Título principal acima do texto */
   title?: string;
+  glassSrc?: string;
   className?: string;
 }
 

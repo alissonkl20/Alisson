@@ -9,7 +9,9 @@ import {
   createWelcomeMessage,
   type ChatMessage,
 } from "@/Api";
+import { useChatLauncherScroll } from "@/shared/hooks/useChatLauncherScroll";
 import { readLocalStorage, writeLocalStorage } from "@/shared/lib/safeStorage";
+import "./ChatWidget.css";
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -165,6 +167,9 @@ export function ChatWidget() {
     return () => abortRef.current?.abort();
   }, []);
 
+  const isRight = ui.position === "bottom-right";
+  const { tucked } = useChatLauncherScroll(open);
+
   if (!enabled) return null;
 
   const sendMessage = async () => {
@@ -199,16 +204,15 @@ export function ChatWidget() {
     }
   };
 
-  const positionClass =
-    ui.position === "bottom-right"
-      ? "right-4 sm:right-6"
-      : "left-4 sm:left-6";
+  const sideClass = isRight ? "chat-launcher--right" : "chat-launcher--left";
+  const openClass = open ? " chat-launcher--open" : "";
+  const tuckedClass = tucked ? " chat-launcher--tucked" : "";
 
   return (
-    <div className={`fixed bottom-4 z-[60] sm:bottom-6 ${positionClass}`}>
+    <div className={`chat-launcher ${sideClass}${openClass}${tuckedClass}`}>
       {open && (
         <div
-          className="mb-3 flex max-h-[calc(100dvh-6rem)] w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-2xl border border-theme-border bg-theme-nav-bg shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:w-96 lg:max-h-none"
+          className="chat-launcher__panel flex max-h-[calc(100dvh-6rem)] w-[min(100vw-2rem,22rem)] flex-col overflow-hidden rounded-2xl border border-theme-border bg-theme-nav-bg shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:w-96 lg:max-h-none"
           role="dialog"
           aria-label={ui.title}
           aria-busy={sending}
@@ -293,11 +297,14 @@ export function ChatWidget() {
         ref={launcherRef}
         type="button"
         onClick={toggleOpen}
-        className="flex h-14 w-14 items-center justify-center rounded-full border border-theme-border bg-theme-brand text-black shadow-[0_8px_24px_var(--theme-brand-glow)] transition hover:scale-105 hover:opacity-95"
+        className="chat-launcher__btn"
         aria-expanded={open}
         aria-label={open ? "Close chat" : "Open chat"}
       >
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        <span className="chat-launcher__icon" aria-hidden>
+          {open ? <X size={20} /> : <MessageCircle size={20} />}
+        </span>
+        {open ? null : <span className="chat-launcher__label">Chat</span>}
       </button>
     </div>
   );

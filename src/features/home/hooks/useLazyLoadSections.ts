@@ -13,6 +13,11 @@ export const LazyExperienceSection = lazy(() =>
 export const LazyProjectsSection = lazy(() =>
   import("@/features/projects").then((m) => ({ default: m.ProjectsSection })),
 );
+export const LazyPromptSection = lazy(() =>
+  import("@/features/prompt").then((m) => ({
+    default: m.PromptSection,
+  })),
+);
 export const LazyGitHubSection = lazy(() =>
   import("@/features/github").then((m) => ({ default: m.GitHubSection })),
 );
@@ -27,15 +32,6 @@ function idle(): Promise<void> {
   });
 }
 
-/**
- * Preload progressivo e sequencial dos chunks das sections:
- * About (prioridade) → Experience → Projects, com uma pausa em idle
- * entre cada um para a main-thread respirar.
- *
- * Começa assim que `enabled` vira true (início da intro): como a animação
- * de partículas é leve e propositalmente lenta, os chunks chegam prontos
- * antes do fim da intro — sem gargalo na montagem.
- */
 export function useLazyLoadSections(enabled: boolean): void {
   useEffect(() => {
     if (!enabled) return;
@@ -56,6 +52,10 @@ export function useLazyLoadSections(enabled: boolean): void {
       await idle();
       if (cancelled) return;
       await import("@/features/github");
+      if (cancelled) return;
+      await idle();
+      if (cancelled) return;
+      await import("@/features/prompt");
     })();
 
     return () => {

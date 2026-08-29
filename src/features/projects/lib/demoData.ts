@@ -9,7 +9,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Real-time analytics dashboard with WebGL visualizations and predictive alerts for product teams.",
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Headless checkout with premium micro-interactions and a mobile-first conversion funnel.",
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Social feed with audio, live transcription, and scroll-synced reaction animations.",
     image:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Collaborative editor with infinite canvas, dynamic themes, and one-click vector export.",
     image:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Investment platform with animated charts, seamless KYC, and glassmorphism dashboards.",
     image:
-      "https://images.unsplash.com/photo-1642790106117-e829e14a794f?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1642790106117-e829e14a794f?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Telemedicine app with gamified onboarding and a scroll-driven clinical timeline.",
     image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1400&h=870&fit=crop&q=90",
   },
   {
     id: 7,
@@ -69,6 +69,6 @@ export const DEMO_TIMELINE_PROJECTS: TimelineProject[] = [
     description:
       "Modular CMS with instant preview, visual versioning, and a unified GraphQL API.",
     image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&h=560&fit=crop",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&h=870&fit=crop&q=90",
   },
 ];

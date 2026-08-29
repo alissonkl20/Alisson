@@ -1,0 +1,52 @@
+.prompt-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100svh - var(--nav-height));
+  min-height: calc(100svh - var(--nav-height));
+  overflow: hidden;
+  background: #000;
+  color: #e8e4df;
+}
+
+.prompt-head {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  max-width: var(--section-max-width);
+  margin: 0 auto;
+  padding: 0.55rem var(--section-padding-x) 0.45rem;
+  text-align: center;
+}
+
+.prompt-head .section-eyebrow {
+  margin-bottom: 0.25rem;
+}
+
+.prompt-head .section-title {
+  font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+}
+
+.prompt-head .section-subtitle {
+  margin-top: 0.35rem;
+  max-width: 42rem;
+  font-size: var(--text-body-sm);
+}
+
+.prompt-section .prompt-split {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .prompt-section {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .prompt-section .prompt-split {
+    flex: none;
+  }
+}
