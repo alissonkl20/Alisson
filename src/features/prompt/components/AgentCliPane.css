@@ -1,10 +1,10 @@
 .agent-cli {
-  --cli-bg: #161412;
-  --cli-fg: #f4f0ea;
-  --cli-muted: #9c9590;
-  --cli-border: #3f3a36;
-  --cli-accent: #d97757;
-  --cli-input: #1c1917;
+  --cli-bg: var(--theme-bg-alt);
+  --cli-fg: var(--theme-title);
+  --cli-muted: var(--theme-text-muted);
+  --cli-border: var(--theme-border);
+  --cli-accent: var(--theme-highlight);
+  --cli-input: var(--theme-surface);
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
@@ -15,11 +15,11 @@
   overflow: hidden;
   background: var(--cli-bg);
   color: var(--cli-fg);
-  font-family: var(--font-mono), ui-monospace, Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 .agent-cli--craft {
-  --cli-accent: #e8c872;
+  --cli-accent: var(--theme-brand);
 }
 
 .cli-chrome {
@@ -35,19 +35,19 @@
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 999px;
-  background: #3f3a36;
+  background: var(--theme-border);
 }
 
 .cli-dot:nth-child(1) {
-  background: #c45c4a;
+  background: var(--theme-highlight);
 }
 
 .cli-dot:nth-child(2) {
-  background: #c9a227;
+  background: var(--theme-brand);
 }
 
 .cli-dot:nth-child(3) {
-  background: #5b8f5b;
+  background: var(--theme-title);
 }
 
 .cli-title {
@@ -56,7 +56,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.72rem;
+  font-size: var(--text-label);
   letter-spacing: 0.04em;
   color: var(--cli-muted);
 }
@@ -66,8 +66,9 @@
   padding: 0.12rem 0.45rem;
   border: 1px solid var(--cli-border);
   border-radius: 999px;
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--cli-accent);
   white-space: nowrap;
@@ -76,14 +77,16 @@
 .cli-welcome {
   flex-shrink: 0;
   border: 1px solid var(--cli-border);
-  border-radius: 0.35rem;
+  border-radius: var(--card-radius);
   padding: 0.75rem 0.85rem 0.8rem;
 }
 
 .cli-welcome__hi {
   margin: 0 0 0.65rem;
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-body-lg);
   font-weight: 600;
+  letter-spacing: var(--tracking-tight);
   color: var(--cli-fg);
 }
 
@@ -94,17 +97,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--cli-accent);
-  font-size: 0.88rem;
+  font-size: var(--text-body-sm);
   letter-spacing: 0.03em;
 }
 
 .cli-side__label {
   margin: 0 0 0.35rem;
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: var(--text-label);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cli-fg);
+  color: var(--theme-brand-muted);
 }
 
 .cli-side .cli-side__label:not(:first-child) {
@@ -114,8 +118,8 @@
 .cli-side__muted,
 .cli-side li {
   margin: 0 0 0.3rem;
-  font-size: 0.76rem;
-  line-height: 1.45;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
   color: var(--cli-muted);
 }
 
@@ -126,13 +130,13 @@
 
 .cli-meta {
   margin: 0.75rem 0 0.15rem;
-  font-size: 0.78rem;
+  font-size: var(--text-body-sm);
   color: var(--cli-accent);
 }
 
 .cli-cwd {
   margin: 0;
-  font-size: 0.74rem;
+  font-size: var(--text-sm);
   color: var(--cli-muted);
 }
 
@@ -147,15 +151,15 @@
 
 .cli-log p {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
   color: var(--cli-fg);
 }
 
 .cli-log__user {
   color: var(--cli-accent);
   overflow-wrap: anywhere;
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
 }
 
 .cli-log__system {
@@ -193,15 +197,15 @@
   max-height: 7.2rem;
   overflow: hidden;
   color: var(--cli-fg);
-  font-size: 0.78rem;
-  line-height: 1.35;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .cli-input__placeholder {
   color: var(--cli-muted);
-  font-size: 0.82rem;
+  font-size: var(--text-body-sm);
 }
 
 .cli-caret {
@@ -217,7 +221,7 @@
 .cli-shortcuts {
   margin: 0;
   flex-shrink: 0;
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   color: var(--cli-muted);
 }
 

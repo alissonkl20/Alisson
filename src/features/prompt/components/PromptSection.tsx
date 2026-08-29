@@ -7,7 +7,7 @@ export function PromptSection() {
   return (
     <section
       id="prompt"
-      className="prompt-section"
+      className="prompt-section section-shell"
       aria-label="Mesmo negócio, dois sites — pedido solto versus brief com spec"
     >
       <header className="prompt-head">

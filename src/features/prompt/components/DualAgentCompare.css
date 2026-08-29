@@ -3,14 +3,14 @@
   grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);
   width: 100%;
   min-height: 36rem;
-  background: #000;
+  background: var(--theme-bg);
 }
 
 .prompt-split__line {
   width: 2px;
   align-self: stretch;
-  background: #fff;
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.55);
+  background: var(--theme-brand);
+  box-shadow: 0 0 14px var(--theme-brand-glow);
 }
 
 @media (max-width: 900px) {

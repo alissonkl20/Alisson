@@ -245,7 +245,7 @@ export function ChatWidget() {
                 <p
                   className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                     message.role === "user"
-                      ? "bg-theme-brand text-black"
+                      ? "bg-theme-brand text-theme-bg"
                       : "border border-theme-border bg-theme-surface text-theme-text"
                   }`}
                 >
@@ -284,7 +284,7 @@ export function ChatWidget() {
             <button
               type="submit"
               disabled={!input.trim() || sending}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-theme-brand text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 lg:h-10 lg:w-10"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-theme-brand text-theme-bg transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 lg:h-10 lg:w-10"
               aria-label={ui.sendLabel}
             >
               <Send size={16} />

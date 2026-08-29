@@ -6,8 +6,6 @@
   height: calc(100svh - var(--nav-height));
   min-height: calc(100svh - var(--nav-height));
   overflow: hidden;
-  background: #000;
-  color: #e8e4df;
 }
 
 .prompt-head {
@@ -25,7 +23,7 @@
 }
 
 .prompt-head .section-title {
-  font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+  font-size: var(--text-card-title);
 }
 
 .prompt-head .section-subtitle {

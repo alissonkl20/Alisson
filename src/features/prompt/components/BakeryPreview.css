@@ -5,7 +5,7 @@
   overflow: hidden;
   border: 1px solid var(--cli-border);
   border-radius: 0.35rem;
-  background: #0c0b0a;
+  background: var(--theme-bg);
   animation: bakery-in 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
@@ -16,7 +16,7 @@
   flex-shrink: 0;
   padding: 0.35rem 0.55rem;
   border-bottom: 1px solid var(--cli-border);
-  background: #1a1816;
+  background: var(--theme-surface);
 }
 
 .bakery-frame__dots {
@@ -29,23 +29,23 @@
   width: 0.42rem;
   height: 0.42rem;
   border-radius: 999px;
-  background: #3f3a36;
+  background: var(--theme-border);
 }
 
 .bakery-frame--novice .bakery-frame__dots i:nth-child(1) {
-  background: #c45c4a;
+  background: var(--theme-highlight);
 }
 
 .bakery-frame--novice .bakery-frame__dots i:nth-child(2) {
-  background: #c9a227;
+  background: var(--theme-brand);
 }
 
 .bakery-frame--novice .bakery-frame__dots i:nth-child(3) {
-  background: #5b8f5b;
+  background: var(--theme-title);
 }
 
 .bakery-frame--craft .bakery-frame__dots i {
-  background: #c4a574;
+  background: var(--theme-brand);
 }
 
 .bakery-frame__url {
@@ -56,9 +56,10 @@
   white-space: nowrap;
   padding: 0.12rem 0.45rem;
   border-radius: 0.2rem;
-  background: #11100e;
-  color: var(--cli-muted);
-  font-size: 0.62rem;
+  background: var(--theme-bg);
+  color: var(--theme-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
 }
 
 .bakery-frame__viewport {
@@ -67,7 +68,7 @@
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  background: #fdf8f3;
+  background: var(--theme-bg-alt);
 }
 
 .bakery-frame__site {
@@ -77,12 +78,7 @@
   left: 0;
   border: 0;
   transform-origin: top left;
-  background: #fdf8f3;
-}
-
-.bakery-frame--craft .bakery-frame__viewport,
-.bakery-frame--craft .bakery-frame__site {
-  background: #efe6d6;
+  background: var(--theme-bg-alt);
 }
 
 @keyframes bakery-in {

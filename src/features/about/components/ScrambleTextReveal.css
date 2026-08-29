@@ -53,8 +53,8 @@
   z-index: 1;
   background: linear-gradient(
     160deg,
-    rgba(255, 255, 255, 0.16) 0%,
-    rgba(255, 255, 255, 0.04) 32%,
+    color-mix(in srgb, var(--theme-title) 16%, transparent) 0%,
+    color-mix(in srgb, var(--theme-title) 4%, transparent) 32%,
     transparent 58%
   );
   pointer-events: none;
@@ -274,7 +274,7 @@
 
   .profile-actions__btn {
     padding: 0.5rem 0.875rem;
-    font-size: 0.78rem;
+    font-size: var(--text-body-sm);
   }
 }
 
