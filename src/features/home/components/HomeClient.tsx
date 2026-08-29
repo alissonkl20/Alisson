@@ -1,18 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useLazyLoadSections } from "../hooks/useLazyLoadSections";
 import { isMobileViewport } from "@/shared/lib/isMobileViewport";
-import {
-  readSessionStorage,
-  writeSessionStorage,
-} from "@/shared/lib/safeStorage";
+import { readSessionStorage } from "@/shared/lib/safeStorage";
 
-const IntroScreen = dynamic(
-  () => import("@/features/intro").then((m) => m.IntroScreen),
-  { ssr: false },
-);
+// Intro "dev kisper" desligada. Descomentar para reativar.
+// const IntroScreen = dynamic(
+//   () => import("@/features/intro").then((m) => m.IntroScreen),
+//   { ssr: false },
+// );
 
 const MainPortfolio = dynamic(
   () => import("./MainPortfolio").then((m) => m.MainPortfolio),
@@ -21,7 +19,7 @@ const MainPortfolio = dynamic(
 
 const INTRO_KEY = "dev-kisper-intro-seen";
 const INTRO_CHANGE_EVENT = "portfolio-intro-change";
-let introSeenInMemory = false;
+const introSeenInMemory = false;
 
 type IntroState = {
   initialized: boolean;
@@ -30,10 +28,12 @@ type IntroState = {
   isMobile: boolean;
 };
 
+const INTRO_DISABLED = true;
+
 const INTRO_SSR_STATE: IntroState = {
-  initialized: false,
-  showIntro: true,
-  portfolioReady: false,
+  initialized: INTRO_DISABLED,
+  showIntro: false,
+  portfolioReady: INTRO_DISABLED,
   isMobile: false,
 };
 
@@ -44,8 +44,8 @@ function readIntroState(): IntroState {
 
   const seen = introSeenInMemory || Boolean(readSessionStorage(INTRO_KEY));
   const isMobile = isMobileViewport();
-  const showIntro = !seen && !isMobile;
-  const portfolioReady = seen || isMobile;
+  const showIntro = INTRO_DISABLED ? false : !seen && !isMobile;
+  const portfolioReady = INTRO_DISABLED ? true : seen || isMobile;
 
   if (
     introSnapshot.initialized &&
@@ -66,12 +66,11 @@ function subscribeIntro(onStoreChange: () => void) {
 }
 
 export function HomeClient() {
-  const { initialized, showIntro, portfolioReady, isMobile } =
-    useSyncExternalStore(
-      subscribeIntro,
-      readIntroState,
-      () => INTRO_SSR_STATE,
-    );
+  const { initialized, portfolioReady, isMobile } = useSyncExternalStore(
+    subscribeIntro,
+    readIntroState,
+    () => INTRO_SSR_STATE,
+  );
 
   useEffect(() => {
     if (!introSeenInMemory && !readSessionStorage(INTRO_KEY)) {
@@ -81,11 +80,11 @@ export function HomeClient() {
 
   useLazyLoadSections(initialized && !isMobile);
 
-  const handleIntroComplete = useCallback(() => {
-    introSeenInMemory = true;
-    writeSessionStorage(INTRO_KEY, "1");
-    window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
-  }, []);
+  // const handleIntroComplete = useCallback(() => {
+  //   introSeenInMemory = true;
+  //   writeSessionStorage(INTRO_KEY, "1");
+  //   window.dispatchEvent(new Event(INTRO_CHANGE_EVENT));
+  // }, []);
 
   if (!initialized) {
     return <div className="fixed inset-0 z-[200] bg-black" aria-hidden />;
@@ -93,7 +92,7 @@ export function HomeClient() {
 
   return (
     <>
-      {showIntro && <IntroScreen onComplete={handleIntroComplete} />}
+      {/* {showIntro && <IntroScreen onComplete={handleIntroComplete} />} */}
       {portfolioReady && <MainPortfolio />}
     </>
   );
