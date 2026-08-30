@@ -49,6 +49,10 @@ export function CareerNarrative() {
     >
       <header className="career-narrative__header section-header">
         <h2 className="premium-timeline__heading section-title">{heading}</h2>
+        <p className="section-subtitle">
+          Four things I bring to every project — from the API contract to the
+          release.
+        </p>
       </header>
 
       <div className="career-narrative__track">
@@ -124,7 +128,11 @@ export function CareerNarrative() {
               data-career-bridge
               aria-hidden
             />
-            <h2 className="experience-title section-title">Recent Work</h2>
+            <h2 className="experience-title section-title">Recent work</h2>
+            <p className="experience-subtitle section-subtitle">
+              Places I&apos;ve owned the backend, the UI, and everything in
+              between.
+            </p>
           </header>
 
           {experienceData.map((exp, i) => {

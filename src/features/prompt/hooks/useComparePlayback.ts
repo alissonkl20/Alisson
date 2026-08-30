@@ -138,6 +138,13 @@ const session = {
   shown: { novice: false, craft: false },
 };
 
+const RANGE_THRESHOLDS = [0, 0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 1];
+const RANGE_ROOT_MARGIN = "-18% 0px -18% 0px";
+
+function isInPromptRange(entry: IntersectionObserverEntry | undefined): boolean {
+  return Boolean(entry?.isIntersecting);
+}
+
 export function useComparePlayback(
   rootRef: RefObject<HTMLElement | null>,
 ): ComparePlayback {
@@ -148,8 +155,8 @@ export function useComparePlayback(
   useEffect(() => {
     if (frozen) return;
 
-    const root = rootRef.current;
-    if (!root) return;
+    const range = rootRef.current;
+    if (!range) return;
 
     let raf = 0;
     let origin = 0;
@@ -203,15 +210,17 @@ export function useComparePlayback(
       raf = requestAnimationFrame(tick);
     };
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        inView = Boolean(entry?.isIntersecting);
-        if (inView) play();
-        else stop();
-      },
-      { threshold: 0.28 },
-    );
-    io.observe(root);
+    const syncRange = (entry?: IntersectionObserverEntry) => {
+      inView = isInPromptRange(entry);
+      if (inView) play();
+      else stop();
+    };
+
+    const io = new IntersectionObserver(([entry]) => syncRange(entry), {
+      threshold: RANGE_THRESHOLDS,
+      rootMargin: RANGE_ROOT_MARGIN,
+    });
+    io.observe(range);
 
     const onVis = () => {
       if (document.hidden) {

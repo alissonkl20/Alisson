@@ -1,2 +1,2 @@
 export const DATA_FLOW_SUMMARY =
-  "SDD, TDD, System Design, and Analytics guide how software is planned and built — shaping Frontend and Backend, flowing through the Server to the User. The animation below illustrates this end-to-end development ecosystem.";
+  "I approach the work as both an analyst and an engineer: SDD and TDD to decide what we build, system design for the architecture, and analytics for what happens after we ship. Frontend and backend meet on the server — then they reach the person using the product.";

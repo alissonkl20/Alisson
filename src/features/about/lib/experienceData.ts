@@ -9,7 +9,7 @@ export const experienceData: ExperienceItem[] = [
     period: "Mar 2026 — Jul 2026",
     milestoneYear: "2026",
     description:
-      "Worked as a full stack developer on systems focused on productivity and operational efficiency. Contributed to the optimization of credit analysis workflows for banking correspondents, improving agility, control, and accuracy across approval processes using Laravel, Flask, React, Vue.js, Next.js, and AWS.",
+      "I worked full-stack on tools for productivity and day-to-day operations. I streamlined credit-analysis workflows for banking correspondents — faster approvals, tighter control, fewer mistakes — using Laravel, Flask, React, Vue.js, Next.js, and AWS.",
     technologies: [
       "Laravel",
       "Flask",
@@ -30,7 +30,7 @@ export const experienceData: ExperienceItem[] = [
     period: "Jun 2025 — Sep 2025",
     milestoneYear: "2025",
     description:
-      "Contributed to the improvement of a WhatsApp-based SaaS platform by improving system stability, performance, and user experience. Worked on back-end fixes, front-end UI/UX refinements, and basic stress testing to identify bottlenecks and strengthen reliability.",
+      "I improved a WhatsApp SaaS: backend stability, front-end UX, and a few focused stress tests to catch bottlenecks before they hit production.",
     technologies: ["Tailwind CSS", "React.js", "UI/UX", "Testing"],
   },
   {
@@ -40,7 +40,7 @@ export const experienceData: ExperienceItem[] = [
     period: "May 2024 — Nov 2024",
     milestoneYear: "2024",
     description:
-      "Worked as a Full Stack Developer on the WhaticketSaaS project, delivering high-quality solutions and technological innovation. Built an end-to-end audio transcription module, implemented REST APIs with Node.js, Express and TypeScript, and developed a responsive React interface integrated with PostgreSQL.",
+      "I worked full-stack on WhaticketSaaS. I built an audio transcription feature from start to finish — REST APIs in Node.js, Express, and TypeScript, and a responsive React UI on PostgreSQL.",
     technologies: ["TypeScript", "Node.js", "React", "PostgreSQL"],
   },
 ];

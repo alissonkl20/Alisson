@@ -1,19 +1,21 @@
 "use client";
 
-import { useRef } from "react";
+import type { RefObject } from "react";
 import { AgentCliPane } from "./AgentCliPane";
 import { useComparePlayback } from "../hooks/useComparePlayback";
 import "./DualAgentCompare.css";
 
-export function DualAgentCompare() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const playback = useComparePlayback(rootRef);
+type DualAgentCompareProps = {
+  rangeRef: RefObject<HTMLElement | null>;
+};
+
+export function DualAgentCompare({ rangeRef }: DualAgentCompareProps) {
+  const playback = useComparePlayback(rangeRef);
 
   return (
     <div
-      ref={rootRef}
       className="prompt-split"
-      aria-label="Comparação lado a lado: o mesmo pedido em dois agents"
+      aria-label="Comparação lado a lado: o mesmo briefing, dois métodos, duas peças"
     >
       <AgentCliPane id="novice" playback={playback.novice} />
       <div className="prompt-split__line" aria-hidden />

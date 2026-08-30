@@ -24,7 +24,7 @@ const handwriting = Just_Me_Again_Down_Here({
 export const metadata: Metadata = {
   title: "Alisson de Almeida de Oliveira — Full-Stack Developer",
   description:
-    "Web developer portfolio with immersive Canvas animations and interactive experiences.",
+    "Alisson de Almeida de Oliveira is a full-stack developer. He builds REST APIs, business UIs, and premium, immersive websites — Laravel, Flask, Next.js, React, and Vue.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "48x48" },

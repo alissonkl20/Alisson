@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 import { Navbar } from "@/shared/ui/Navbar";
-import { CustomCursor } from "@/shared/ui/CustomCursor";
 import { ChatWidget } from "@/shared/ui/ChatWidget";
 import { DeferredSection } from "@/shared/ui/DeferredSection";
 import {
@@ -25,7 +24,6 @@ function SectionFallback() {
 export function MainPortfolio() {
   return (
     <>
-      <CustomCursor />
       <Navbar />
       <main>
         <Suspense fallback={<SectionFallback />}>
@@ -41,14 +39,16 @@ export function MainPortfolio() {
             <LazyProjectsSection />
           </Suspense>
         </DeferredSection>
+        <div id="skills">
+          <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
+            <Suspense fallback={<SectionFallback />}>
+              <LazyPromptSection />
+            </Suspense>
+          </DeferredSection>
+        </div>
         <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
           <Suspense fallback={<SectionFallback />}>
             <LazyGitHubSection />
-          </Suspense>
-        </DeferredSection>
-        <DeferredSection rootMargin="35% 0px" fallback={<SectionFallback />}>
-          <Suspense fallback={<SectionFallback />}>
-            <LazyPromptSection />
           </Suspense>
         </DeferredSection>
       </main>

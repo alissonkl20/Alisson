@@ -21,10 +21,10 @@ export const chatbotConfig = {
   enabled: true,
   ui: {
     title: "Assistant",
-    subtitle: "Ask about career, projects, or contact",
-    placeholder: "E.g.: what projects have you built?",
+    subtitle: "Ask about the work, the stack, or how to get in touch",
+    placeholder: "e.g. What have you built?",
     welcomeMessage:
-      "Hi! I'm Alisson's portfolio assistant.\n\nI can talk about profile, experience, projects, stack, services, pricing, and contact — all based on this site's content.\n\nHow can I help?",
+      "Hi — I'm Alisson's portfolio assistant.\n\nI can talk about how he builds products: REST APIs, business UIs, premium sites, SDD and TDD, recent work, and how to get in touch. Everything I say comes from this site — I won't invent prices.\n\nWhat would you like to know?",
     sendLabel: "Send",
     maxMessages: 50,
     showTimestamps: false,

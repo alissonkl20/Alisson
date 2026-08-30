@@ -28,17 +28,17 @@ const firstName = profile.name.split(" ")[0];
 
 function greetingResponse(): string {
   return [
-    "Hi! Great to have you here.",
-    `I'm ${firstName}'s portfolio assistant — a full-stack developer focused on complete web products, from API to interface.`,
-    "I can talk about career, projects, stack, and contact. Where would you like to start?",
+    "Hey — glad you're here.",
+    `I'm ${firstName}'s portfolio assistant. He's a full-stack developer with more than three years of experience building products from start to finish — REST APIs, business UIs, and premium, immersive sites.`,
+    "I can talk about how he works, recent roles, projects, the stack, and how to get in touch. What would you like to know?",
   ].join("\n\n");
 }
 
 function aboutResponse(): string {
   return [
-    `${profile.name} is a ${profile.title.toLowerCase()} with over 3 years building and evolving web systems.`,
-    "Works across the full development cycle: scalable, secure backends, modern interfaces, and digital experiences with a distinct identity.",
-    "Want to go deeper? Ask about professional experience, projects, or technologies.",
+    `${profile.name} is a ${profile.title.toLowerCase()} with more than three years of experience building products from start to finish.`,
+    "He writes REST APIs that stay secure and scale, builds business UIs in React, Next.js, and Vue, and designs premium sites with a real point of view. SDD, TDD, and system design are how he gets from spec to production.",
+    "Want to go deeper? Ask about recent work, a project, or the stack.",
   ].join("\n\n");
 }
 
@@ -49,7 +49,7 @@ function projectsResponse(): string {
   });
 
   return [
-    `The site highlights ${timelineProjects.length} recent projects — a sample of the areas ${firstName} works in. In total, more than 15 projects delivered and 25+ services provided, plus corporate contracts by milestone or open-ended engagement.`,
+    `The site features ${timelineProjects.length} recent projects — AI, automation, and product work. He's delivered more than 15 projects and 25+ engagements, including longer corporate contracts and milestone-based work.`,
     lines.join("\n\n"),
     'Want details on a specific one? Ask by name, e.g. "Finance AI" or "Ponto Web".',
   ].join("\n\n");
@@ -61,34 +61,35 @@ function stackResponse(): string {
     .join("\n");
 
   return [
-    `${firstName} organizes the stack into four main pillars:`,
+    `${firstName}'s work breaks down into four areas:`,
     pillars,
-    "Core day-to-day technologies:",
-    "• Backend: PHP, Laravel, Python, and Flask",
-    "• Frontend: React, Vue, and Next.js",
-    "• Infra: cloud hosting, CI/CD, and deployment (AWS and general cloud environments)",
+    "Day to day:",
+    "• Backend: PHP, Laravel, Python, Flask — REST APIs",
+    "• Frontend: React, Vue, Next.js — component-based UIs and premium sites",
+    "• Method: SDD, TDD, system design, and analytics — he works as an analyst across the whole product",
+    "• Infra: Git, CI/CD, cloud hosting, and AWS",
   ].join("\n\n");
 }
 
 function servicesResponse(): string {
   return [
-    `${firstName} provides full-stack development services — from demand analysis through delivery.`,
-    "Before proposing any solution, the real project complexity is assessed. Simple systems don't need heavy architectures: over-engineering is avoided, and robust setups are recommended only when truly necessary.",
-    "On the front end, helps build visual identity in projects — interfaces with personality, not generic templates. Premium sites may require external resources (image creation, refined custom templates), and that's factored in from the start.",
-    "Corporate contracts can be milestone-based or open-ended, depending on client needs.",
+    `${firstName} builds products from the first spec through to production.`,
+    "Before he recommends a stack, he figures out how complex the project actually is. Simple systems stay lean. He only reaches for a heavier setup when the product needs it.",
+    "On the frontend, he builds a real visual identity — business UIs and premium, immersive sites, not generic templates. Premium work sometimes needs extra help (custom imagery, a more polished finish), and that's scoped up front.",
+    "Corporate work can be milestone-based or ongoing, depending on what you need.",
     "For budget or scope, ask about pricing or use the contact email.",
   ].join("\n\n");
 }
 
 function pricingResponse(): string {
   return [
-    "Service pricing isn't fixed — it depends on project complexity and the need for external resources.",
-    "Examples that affect cost:",
-    "• Premium sites: image creation, custom templates, and more polished visual finish",
-    "• Simple systems: lean flows, no heavy infra — cost reflects only what's needed",
+    "There's no fixed price — it depends on how complex the project is and whether we need outside help.",
+    "What tends to change the cost:",
+    "• Premium sites: custom imagery, custom templates, and a more polished finish",
+    "• Simple systems: lean flows, no heavy infra — you only pay for what you need",
     "• Integrations, automations (RPA), APIs, local or cloud AI — each layer changes the effort",
-    `${firstName} analyzes the demand before proposing stack and architecture, so you don't pay for complexity the project doesn't require.`,
-    `For a personalized estimate, the best channel is ${profile.email}.`,
+    `${firstName} sizes the work before he proposes a stack or architecture, so you don't pay for complexity you don't need.`,
+    `For a quote that fits your project, email is the best place to start: ${profile.email}.`,
   ].join("\n\n");
 }
 
@@ -101,48 +102,48 @@ function experienceResponse(): string {
     .join("\n\n");
 
   return [
-    "Professional background at a glance:",
+    "Here's a quick look at his recent roles:",
     roles,
-    "The experience combines product thinking, performance, and end-to-end delivery in real-world environments.",
+    "What stays consistent: he works as both analyst and engineer on the same product — SDD, TDD, system design, and delivery from the API to the UI.",
   ].join("\n\n");
 }
 
 function contactResponse(): string {
   return [
-    `To reach ${firstName}, these are the main channels:`,
+    `Here's how to reach ${firstName}:`,
     `• Email: ${profile.email}`,
     `• LinkedIn: ${profile.social.linkedin}`,
     `• GitHub: ${profile.social.github}`,
-    "The resume is also available in the About section if you'd like to download it.",
+    "You can also download his resume from the About section.",
   ].join("\n\n");
 }
 
 function cvResponse(): string {
   return [
-    "The resume is available for download in the About section.",
+    "You can download his resume from the About section.",
     `File: ${profile.cv}`,
-    `If you're evaluating an opportunity, ${profile.email} is the best channel for direct contact.`,
+    `If you're hiring, email is the fastest way to reach him: ${profile.email}.`,
   ].join("\n\n");
 }
 
 function thanksResponse(): string {
   return [
-    "You're welcome! Happy to help.",
-    "If you'd like to keep exploring, I can go into more detail on projects, stack, or professional experience.",
+    "You're welcome — happy to help.",
+    "If you want to keep going, I can go deeper on a project, the stack, or how he works.",
   ].join("\n\n");
 }
 
 function helpResponse(): string {
   return [
-    "I can answer based on this portfolio's content. Some examples:",
-    '• "Who are you?" — profile and professional focus',
-    '• "Projects" — overview or a specific project',
-    '• "Stack" — technologies and areas of expertise',
-    '• "Services" — what is offered and how demand is analyzed',
-    '• "Price" or "budget" — how pricing works',
-    '• "Experience" — professional history',
+    "I answer from what's on this site. You can ask things like:",
+    '• "Who are you?" — profile and how he works',
+    '• "Projects" — an overview or a specific project',
+    '• "Stack" — APIs, frontend, method, and infra',
+    '• "Services" — how he scopes work before sending a proposal',
+    '• "Price" or "budget" — how pricing works (no invented numbers)',
+    '• "Experience" — recent roles',
     '• "Contact" — email and social links',
-    "Even with small typos, I'll try to understand what you asked.",
+    "Small typos are fine — I'll still try to match what you meant.",
   ].join("\n\n");
 }
 
@@ -407,15 +408,15 @@ export const CHATBOT_TRAINING: TrainingEntry[] = [
 ];
 
 export const CHATBOT_FALLBACK =
-  "I couldn't find a specific answer for that in the portfolio.\n\nTry asking about: profile, projects, stack, services, pricing/budget, experience, or contact. You can also name a project — like Finance AI or Ponto Web.";
+  "I don't have a specific answer for that on this site.\n\nTry asking about: profile, how he works, projects, stack, services, pricing/budget, recent work, or contact. You can also name a project — like Finance AI or Ponto Web.";
 
 export function buildProjectResponse(project: (typeof timelineProjects)[number]): string {
   return [
     `${project.title} (${project.category})`,
     project.description,
     project.featured
-      ? "This is one of the featured projects in the portfolio."
-      : "You can explore more context in the Projects section of the site.",
+      ? "This is one of the featured projects on the site."
+      : "You can see more context in the Projects section.",
   ].join("\n\n");
 }
 

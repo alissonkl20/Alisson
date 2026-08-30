@@ -16,8 +16,12 @@ export function GitHubSection() {
       <div className={styles.intro}>
         <AsciiVideo />
         <header className="section-header">
-          <p className="section-eyebrow">Open Source</p>
-          <h2 className="section-title">GitHub Activity</h2>
+          <p className="section-eyebrow">Versioning</p>
+          <h2 className="section-title">What&apos;s on GitHub</h2>
+          <p className="section-subtitle">
+            Commits, diffs, and languages from the last 30 days — the same
+            versioning habit I bring to every release.
+          </p>
         </header>
       </div>
 

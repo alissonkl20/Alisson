@@ -47,5 +47,5 @@ export const DEFAULT_PREMIUM_TIMELINE_PROPS = {
   scrollLength: 200,
   animationDuration: 0.6,
   eyebrow: "",
-  heading: "Experience",
+  heading: "How I work",
 } as const;

@@ -77,13 +77,16 @@ export function ExperienceSection() {
         ref={sectionRef}
         className="experience-section experience-section--flow"
         style={{ minHeight: trackMinHeight, background: "var(--theme-bg)" }}
-        aria-label="Data Flow"
+        aria-label="From spec to the user"
       >
         <header className="experience-header experience-header--flow">
           <p className="section-eyebrow">Immersion</p>
           <h2 className="experience-title section-title">
-          Software Development Cycle</h2>
-          <p className="experience-subtitle">{DATA_FLOW_SUMMARY}</p>
+            From spec to the user
+          </h2>
+          <p className="experience-subtitle section-subtitle">
+            {DATA_FLOW_SUMMARY}
+          </p>
         </header>
 
         <div className="experience-track experience-track--flow">
