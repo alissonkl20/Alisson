@@ -4,7 +4,7 @@ export const profile = {
   bio: "I'm Alisson de Almeida de Oliveira. I've spent the last three-plus years as a full-stack developer, building products all the way through — from the API to the interface. I write REST APIs that stay secure and scale, build business UIs in React, Next.js, and Vue, and design premium sites with a real point of view. I refactor so the code stays readable, and I lean on SDD, TDD, and system design to get from spec to production.",
   avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
   email: "almeidadeoliveiraalisson04@gmail.com",
-  cv: "/cv/Alisson_Almeida_CV.pdf",
+  cv: "/cv/Alisson_Almeida_CV.pdf?v=20260831",
   social: {
     github: "https://github.com/alissonkl20",
     linkedin:
