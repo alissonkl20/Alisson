@@ -1,0 +1,12 @@
+---
+description: Portfólio Next.js — chat e ponte com SOFIA local. Sempre aplicar neste repo.
+alwaysApply: true
+---
+
+# Agent portfólio (Alisson)
+
+- Chat público: `src/shared/ui/ChatWidget.tsx` + treino em `src/Api/`.
+- Ponte SOFIA: Route Handler no servidor; token nunca no client.
+- Fallback: bot estático se túnel/PC/LLM estiver down.
+- Nunca inventar preços de orçamento.
+- Não alterar o backend Laravel (`Documentos/sofia-ia`), só ler o contrato em `docs/vercel-portfolio-chat.md`.
