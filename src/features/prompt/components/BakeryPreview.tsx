@@ -13,7 +13,7 @@ const DEMOS = {
   novice: {
     src: "/demos/padaria-demo.html",
     url: "http://padaria-demo.com",
-    title: "Padaria Demo",
+    title: "Demo Bakery",
   },
   craft: {
     src: "/demos/atelier-demo.html",

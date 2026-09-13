@@ -47,9 +47,9 @@ export function AgentCliPane({ id, playback }: AgentCliPaneProps) {
   const logRef = useRef<HTMLDivElement>(null);
   const inputValue = playback.submitted ? "" : playback.typed;
   const placeholder = playback.busy
-    ? "gerando…"
+    ? "generating…"
     : playback.showPreview
-      ? "site no ar"
+      ? "site is live"
       : meta.hint;
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function AgentCliPane({ id, playback }: AgentCliPaneProps) {
   return (
     <article
       className={`agent-cli agent-cli--${id}`}
-      aria-label={`${meta.label} — interface de agent CLI`}
+      aria-label={`${meta.label} — agent CLI interface`}
     >
       <div className="cli-chrome">
         <span className="cli-dot" aria-hidden />
@@ -122,11 +122,11 @@ export function AgentCliPane({ id, playback }: AgentCliPaneProps) {
       <p className="cli-shortcuts">
         {playback.showPreview
           ? id === "novice"
-            ? "Padaria Demo"
+            ? "Demo Bakery"
             : "Atelier Demo"
           : playback.busy
             ? "agent working"
-            : "digitando o pedido"}
+            : "typing request"}
       </p>
     </article>
   );

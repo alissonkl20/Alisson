@@ -11,16 +11,16 @@ export function PromptSection() {
     <section
       ref={sectionRef}
       className="prompt-section section-shell"
-      aria-label="Prompt — o mesmo briefing, duas peças"
+      aria-label="Prompt — same brief, two outputs"
     >
       <header className="prompt-head">
         <p className="section-eyebrow">Prompt</p>
-        <h2 className="section-title">O mesmo briefing, duas peças</h2>
+        <h2 className="section-title">Same brief, two outputs</h2>
         <p className="section-subtitle">
-          Os dois agents partem dos mesmos dados. O que muda é o método: um
-          pedido solto vira template; um brief com spec — componentes, caderno
-          editorial e motion — vira produto. É o recorte que uso no ciclo: SDD,
-          TDD e system design antes do código.
+          Both agents start from the same facts. What changes is the method: a
+          loose request becomes a template; a spec-backed brief — components,
+          editorial notebook, and motion — becomes a product. That is the lens I
+          use in the loop: SDD, TDD, and system design before code.
         </p>
       </header>
       <DualAgentCompare rangeRef={sectionRef} />

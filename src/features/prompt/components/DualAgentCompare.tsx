@@ -15,7 +15,7 @@ export function DualAgentCompare({ rangeRef }: DualAgentCompareProps) {
   return (
     <div
       className="prompt-split"
-      aria-label="Comparação lado a lado: o mesmo briefing, dois métodos, duas peças"
+      aria-label="Side-by-side comparison: same brief, two methods, two outputs"
     >
       <AgentCliPane id="novice" playback={playback.novice} />
       <div className="prompt-split__line" aria-hidden />

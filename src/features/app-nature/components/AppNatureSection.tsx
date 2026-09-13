@@ -26,32 +26,13 @@ export function AppNatureSection() {
         <article className="ui-card nature-card nature-video-card">
           <div className="nature-video-frame">
             <video
-              src="/demos/go-nature.mp4"
+              src="/assets/preve.webm"
               muted
               loop
               playsInline
               autoPlay
               preload="metadata"
-              aria-label="Demonstração do aplicativo GO NATURE"
-            />
-          </div>
-        </article>
-
-        <article className="ui-card nature-card nature-arch-card">
-          <h2 className="text-card-title">
-            System architecture{" "}
-            <span className="nature-subtitle"> - Specs</span>
-          </h2>
-          <p className="text-body-muted nature-arch-lead">
-            Full product map: context, login, domain flows, and the specs behind
-            GO NATURE — the same trade-offs described above, laid out end to end.
-          </p>
-          <div className="nature-arch-frame">
-            <img
-              src="/demos/go-nature-arch.png"
-              alt="Diagrama de arquitetura e specs do aplicativo GO NATURE"
-              width={1024}
-              height={461}
+              aria-label="GO NATURE app demo"
             />
           </div>
         </article>

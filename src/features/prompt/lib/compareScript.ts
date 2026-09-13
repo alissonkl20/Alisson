@@ -105,23 +105,23 @@ export function finalPrompt(ops: TypeOp[]): string {
 }
 
 export const NOVICE_OPS: TypeOp[] = [
-  { kind: "type", text: "oi, preciso de um site pra padaraia", charMs: 56 },
+  { kind: "type", text: "hi, i need a website for a bakary", charMs: 56 },
   { kind: "pause", ms: 520 },
   { kind: "delete", count: 3, charMs: 38 },
-  { kind: "type", text: "ia", charMs: 48 },
+  { kind: "type", text: "ery", charMs: 48 },
   { kind: "pause", ms: 280 },
-  { kind: "type", text: " da Padaria Demo", charMs: 52 },
+  { kind: "type", text: " for Demo Bakery", charMs: 52 },
   { kind: "pause", ms: 380 },
-  { kind: "type", text: " moderno desing", charMs: 54 },
+  { kind: "type", text: " modern desing", charMs: 54 },
   { kind: "pause", ms: 640 },
   { kind: "delete", count: 6, charMs: 36 },
   { kind: "type", text: "design", charMs: 48 },
   { kind: "pause", ms: 260 },
-  { kind: "type", text: " bonito, mostra os produtos", charMs: 52 },
+  { kind: "type", text: ", show the products", charMs: 52 },
   { kind: "pause", ms: 380 },
   {
     kind: "type",
-    text: ". Rua Demo, 000, Cidade Demo. Tel (00) 00000-0000",
+    text: ". Demo St, 000, Demo City. Tel (00) 00000-0000",
     charMs: 48,
   },
 ];
@@ -129,31 +129,31 @@ export const NOVICE_OPS: TypeOp[] = [
 export const CRAFT_OPS: TypeOp[] = [
   {
     kind: "type",
-    text: "Projeto Atelier Demo. Site institucional de padaria artesanal. ",
+    text: "Project Atelier Demo. Artisan bakery institutional site. ",
     charMs: 30,
   },
   { kind: "pause", ms: 200 },
   {
     kind: "type",
-    text: "HeroSection: kicker, headline editorial e CTA. Paleta papel e sangue, full-bleed. ",
+    text: "HeroSection: kicker, editorial headline and CTA. Paper and blood palette, full-bleed. ",
     charMs: 27,
   },
   { kind: "pause", ms: 200 },
   {
     kind: "type",
-    text: "Caderno de produtos em lista — nome, origem, preço. Sem grid de cards. ",
+    text: "Product notebook in a list — name, origin, price. No card grid. ",
     charMs: 27,
   },
   { kind: "pause", ms: 180 },
   {
     kind: "type",
-    text: "Motion: nav sticky, reveal e scroll suave. ",
+    text: "Motion: sticky nav, reveal and smooth scroll. ",
     charMs: 27,
   },
   { kind: "pause", ms: 160 },
   {
     kind: "type",
-    text: "Dados demo: Rua Demo, 000, Cidade Demo, (00) 00000-0000.",
+    text: "Demo data: Demo St, 000, Demo City, (00) 00000-0000.",
     charMs: 27,
   },
 ];
@@ -170,36 +170,36 @@ export const CRAFT_SUBMIT_AT =
   CRAFT_START_MS + trackDuration(CRAFT_OPS) + SUBMIT_PAUSE_MS;
 
 export const NOVICE_SCRIPT: ScriptLine[] = [
-  { at: 80, kind: "assistant", text: "Beleza — um site pra Padaria Demo." },
+  { at: 80, kind: "assistant", text: "Sure — a site for Demo Bakery." },
   { at: 280, kind: "tool", text: "Write index.html" },
   { at: 500, kind: "tool", text: "Link Font Awesome CDN" },
-  { at: 740, kind: "tool", text: "Hero, produtos, sobre e contato" },
-  { at: 980, kind: "tool", text: "Dados demo · Rua Demo, 000" },
-  { at: 1200, kind: "assistant", text: "Pronto. Padaria Demo no ar." },
+  { at: 740, kind: "tool", text: "Hero, products, about and contact" },
+  { at: 980, kind: "tool", text: "Demo data · Demo St, 000" },
+  { at: 1200, kind: "assistant", text: "Done. Demo Bakery is live." },
 ];
 
 export const CRAFT_SCRIPT: ScriptLine[] = [
   {
     at: 140,
     kind: "assistant",
-    text: "Spec Atelier Demo: hero editorial, caderno e motion.",
+    text: "Spec Atelier Demo: editorial hero, notebook and motion.",
   },
   {
     at: 780,
     kind: "tool",
-    text: "Tokens · papel / sangue · Fraunces + Plex Mono",
+    text: "Tokens · paper / blood · Fraunces + Plex Mono",
   },
   {
     at: 1500,
     kind: "tool",
-    text: "Hero full-bleed + caderno em lista + encomenda",
+    text: "Hero full-bleed + list notebook + order",
   },
-  { at: 2220, kind: "tool", text: "Dados demo · Cidade Demo · (00) 00000-0000" },
-  { at: 2940, kind: "tool", text: "nav sticky, reveal e scroll suave" },
+  { at: 2220, kind: "tool", text: "Demo data · Demo City · (00) 00000-0000" },
+  { at: 2940, kind: "tool", text: "sticky nav, reveal and smooth scroll" },
   {
     at: 3600,
     kind: "assistant",
-    text: "Atelier Demo no ar — editorial e interativo.",
+    text: "Atelier Demo is live — editorial and interactive.",
   },
 ];
 
@@ -208,37 +208,37 @@ export const CRAFT_PREVIEW_AT = CRAFT_SUBMIT_AT + 3680;
 export const PLAY_END_MS = Math.max(NOVICE_PREVIEW_AT, CRAFT_PREVIEW_AT) + 120;
 
 export const NOVICE_META = {
-  title: "agent — sem experiência",
-  label: "Sem experiência",
+  title: "agent — no experience",
+  label: "No experience",
   welcome: "Welcome back.",
   model: "Agent · default template",
-  cwd: "~/demo/padaria",
-  hint: "oi, preciso de um site pra Padaria Demo…",
+  cwd: "~/demo/bakery",
+  hint: "hi, i need a website for Demo Bakery…",
   activity: [
-    "Pedido fictício, sem spec de layout",
-    "Nome, rua e telefone demo no texto",
+    "Fictional request, no layout spec",
+    "Demo name, street and phone in the prompt",
   ],
   news: [
     "Font Awesome via CDN",
-    "Hero genérico, produtos e contato",
-    "Template quente, botão pill",
+    "Generic hero, products and contact",
+    "Hot template, pill button",
   ],
 } as const;
 
 export const CRAFT_META = {
-  title: "agent — com experiência",
-  label: "Com experiência",
+  title: "agent — experienced",
+  label: "Experienced",
   welcome: "Welcome back, Alisson.",
   model: "Agent · spec first",
   cwd: "~/demo/atelier",
-  hint: "Projeto Atelier Demo. HeroSection editorial…",
+  hint: "Project Atelier Demo. Editorial HeroSection…",
   activity: [
-    "Brief fictício: caderno, a casa, encomenda",
-    "Rua Demo, Cidade Demo, telefone 00",
+    "Fictional brief: notebook, the house, order",
+    "Demo St, Demo City, phone 00",
   ],
   news: [
-    "Caderno editorial · Fraunces + Plex Mono",
-    "Lista de produtos, não grid de cards",
-    "Papel, sangue e filete — sem pill button",
+    "Editorial notebook · Fraunces + Plex Mono",
+    "Product list, not card grid",
+    "Paper, blood and rule — no pill button",
   ],
 } as const;
