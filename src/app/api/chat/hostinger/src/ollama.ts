@@ -30,7 +30,7 @@ export async function chatWithOllama(history: ChatTurn[], userMessage: string): 
         model: config.ollamaModel,
         messages,
         stream: false,
-        options: { temperature: 0.25, top_p: 0.85 },
+        options: { temperature: 0.15, top_p: 0.8, num_predict: 512 },
       }),
       signal: AbortSignal.timeout(config.ollamaTimeoutMs),
       cache: "no-store",
