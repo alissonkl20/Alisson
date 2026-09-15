@@ -1,7 +1,10 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { FileDown, Mail } from "lucide-react";
 import { profile } from "@/shared/config/data";
+
+const CV_DOWNLOAD_NAME = "Alisson_Almeida_CV.pdf";
 
 function LinkedInIcon() {
   return (
@@ -36,21 +39,45 @@ type ProfileActionsProps = {
 };
 
 export function ProfileActions({ visible = true }: ProfileActionsProps) {
+  const [cvLoading, setCvLoading] = useState(false);
+
+  const handleCvDownload = useCallback(async () => {
+    if (cvLoading) return;
+    setCvLoading(true);
+    try {
+      const res = await fetch(profile.cv, { cache: "no-store" });
+      if (!res.ok) throw new Error("cv_download_failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = CV_DOWNLOAD_NAME;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      window.open("/cv/Alisson_Almeida_CV.pdf", "_blank", "noopener,noreferrer");
+    } finally {
+      setCvLoading(false);
+    }
+  }, [cvLoading]);
+
   return (
     <div className="profile-actions-wrap">
       <nav
         className={`profile-actions${visible ? " profile-actions--visible" : ""}`}
         aria-label="Contact and CV links"
       >
-      <a
-        href={profile.cv}
-        download="Alisson_Almeida_CV.pdf"
+      <button
+        type="button"
+        onClick={handleCvDownload}
+        disabled={cvLoading}
         className="profile-actions__btn profile-actions__btn--primary"
         aria-label="Download CV as PDF"
+        aria-busy={cvLoading}
       >
         <FileDown size={16} aria-hidden />
-        <span>CV</span>
-      </a>
+        <span>{cvLoading ? "…" : "CV"}</span>
+      </button>
 
       <a
         href={profile.social.linkedin}

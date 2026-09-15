@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { requestSofiaReply } from "./sofia";
+import { consumeLlmQuota, extractClientIp, hasLlmQuota } from "./guard";
+import { requestRemoteReply } from "./client";
+import { CONTACT_LINKS, LIMIT_REACHED_REPLY } from "./shared/contact-links";
 
-/** Tempo alto: Ollama local via túnel pode demorar dezenas de segundos. */
 export const maxDuration = 60;
 
 const NO_STORE = { "Cache-Control": "no-store" } as const;
@@ -26,7 +27,18 @@ function invalidRequest() {
   return NextResponse.json({ error: "invalid_request" }, { status: 400, headers: NO_STORE });
 }
 
-/** POST /api/chat — proxy SOFIA; token fica no servidor. */
+function limitReached() {
+  return NextResponse.json(
+    {
+      status: "limit_reached",
+      reply: LIMIT_REACHED_REPLY,
+      contact_links: CONTACT_LINKS,
+    },
+    { status: 429, headers: NO_STORE },
+  );
+}
+
+/** POST /api/chat — proxy to Hostinger; token stays on the server. */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -43,17 +55,44 @@ export async function POST(request: Request) {
     return invalidRequest();
   }
 
+  const clientIp = extractClientIp(request);
+  if (!hasLlmQuota(clientIp, sessionId)) return limitReached();
+
   const name = readRequiredString(body.name) ?? undefined;
   const email = readRequiredString(body.email) ?? undefined;
 
   try {
-    const result = await requestSofiaReply({ sessionId, message, name, email });
-    if (!result) return unavailable();
+    const result = await requestRemoteReply({
+      sessionId,
+      message,
+      clientIp,
+      name,
+      email,
+    });
 
-    const status = result.status === "queued" ? 202 : 200;
+    if (result.kind === "limit_reached") {
+      return NextResponse.json(
+        {
+          status: "limit_reached",
+          reply: result.reply,
+          contact_links: result.contactLinks,
+        },
+        { status: 429, headers: NO_STORE },
+      );
+    }
+
+    if (result.kind === "busy") {
+      return NextResponse.json({ status: "busy" }, { status: 409, headers: NO_STORE });
+    }
+
+    if (result.kind === "unavailable") return unavailable();
+
+    if (!result.cached) consumeLlmQuota(clientIp, sessionId);
+
+    const httpStatus = result.status === "queued" ? 202 : 200;
     return NextResponse.json(
-      { reply: result.reply, status: result.status },
-      { status, headers: NO_STORE },
+      { reply: result.reply, status: result.status, cached: result.cached ?? false },
+      { status: httpStatus, headers: NO_STORE },
     );
   } catch {
     return unavailable();

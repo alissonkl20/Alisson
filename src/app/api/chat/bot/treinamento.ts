@@ -109,10 +109,12 @@ function experienceResponse(): string {
 }
 
 function contactResponse(): string {
+  const whatsapp = profile.social.whatsapp ?? "https://wa.me/5546999420574";
   return [
     `Here's how to reach ${firstName}:`,
     `• Email: ${profile.email}`,
     `• LinkedIn: ${profile.social.linkedin}`,
+    `• WhatsApp: ${whatsapp}`,
     `• GitHub: ${profile.social.github}`,
     "You can also download his resume from the About section.",
   ].join("\n\n");

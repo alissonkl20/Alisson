@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { Navbar } from "@/shared/ui/Navbar";
-import { ChatWidget } from "@/shared/ui/ChatWidget";
+import { ChatWidget } from "@/app/api/chat/ui/ChatWidget";
 import { DeferredSection } from "@/shared/ui/DeferredSection";
 import { AppNatureSection } from "@/features/app-nature";
 import {

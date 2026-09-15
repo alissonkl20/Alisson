@@ -17,6 +17,19 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/cv/:filename*.pdf",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+          {
+            key: "Content-Disposition",
+            value: 'attachment; filename="Alisson_Almeida_CV.pdf"',
+          },
+        ],
+      },
+      {
         source: "/cv/:path*",
         headers: [
           {
