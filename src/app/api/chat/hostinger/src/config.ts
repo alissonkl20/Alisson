@@ -11,7 +11,7 @@ export const config = {
   ollamaBaseUrl: (process.env.OLLAMA_BASE_URL?.trim() || "http://127.0.0.1:11434").replace(/\/+$/, ""),
   ollamaModel: process.env.OLLAMA_MODEL?.trim() || "llama3.2:3b",
   ollamaTimeoutMs: readInt("OLLAMA_TIMEOUT_MS", 120_000),
-  rateLimitMax: readInt("RATE_LIMIT_MAX", 5),
+  rateLimitMax: readInt("RATE_LIMIT_MAX", 10),
   rateLimitWindowMs: readInt("RATE_LIMIT_WINDOW_MS", 86_400_000),
   cacheTtlMs: readInt("CACHE_TTL_MS", 86_400_000),
   cacheMaxEntries: readInt("CACHE_MAX_ENTRIES", 500),

@@ -7,4 +7,4 @@ export const CONTACT_LINKS = {
 export type ContactLinks = typeof CONTACT_LINKS;
 
 export const LIMIT_REACHED_REPLY =
-  "You've reached the chat limit for today. For a longer conversation, reach out directly:";
+  "Você atingiu o limite de 10 perguntas por dia neste chat. Para continuar a conversa, entre em contato diretamente:";

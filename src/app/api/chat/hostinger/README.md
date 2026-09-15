@@ -41,5 +41,5 @@ server {
 
 - `GET /api/portfolio/status` without Bearer → 401
 - With Bearer → `{ "online": true, "llm": true }`
-- 5 distinct LLM questions → 6th returns 429 + contact links
+- 10 distinct LLM questions per IP → 11th returns 429 + contact links
 - Same question twice → cache hit, no extra Ollama call

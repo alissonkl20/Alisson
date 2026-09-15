@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { consumeLlmQuota, extractClientIp, hasLlmQuota } from "./guard";
 import { requestRemoteReply } from "./client";
 import { CONTACT_LINKS, LIMIT_REACHED_REPLY } from "./shared/contact-links";
 
@@ -19,6 +18,17 @@ function readRequiredString(value: unknown): string | null {
   return trimmed.length ? trimmed : null;
 }
 
+function extractClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+  return "unknown";
+}
+
 function unavailable() {
   return NextResponse.json({ error: "unavailable" }, { status: 503, headers: NO_STORE });
 }
@@ -27,18 +37,7 @@ function invalidRequest() {
   return NextResponse.json({ error: "invalid_request" }, { status: 400, headers: NO_STORE });
 }
 
-function limitReached() {
-  return NextResponse.json(
-    {
-      status: "limit_reached",
-      reply: LIMIT_REACHED_REPLY,
-      contact_links: CONTACT_LINKS,
-    },
-    { status: 429, headers: NO_STORE },
-  );
-}
-
-/** POST /api/chat — proxy to Hostinger; token stays on the server. */
+/** POST /api/chat — proxy to Hostinger chat API; rate limit enforced there (10/IP/24h). */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -56,8 +55,6 @@ export async function POST(request: Request) {
   }
 
   const clientIp = extractClientIp(request);
-  if (!hasLlmQuota(clientIp, sessionId)) return limitReached();
-
   const name = readRequiredString(body.name) ?? undefined;
   const email = readRequiredString(body.email) ?? undefined;
 
@@ -86,8 +83,6 @@ export async function POST(request: Request) {
     }
 
     if (result.kind === "unavailable") return unavailable();
-
-    if (!result.cached) consumeLlmQuota(clientIp, sessionId);
 
     const httpStatus = result.status === "queued" ? 202 : 200;
     return NextResponse.json(

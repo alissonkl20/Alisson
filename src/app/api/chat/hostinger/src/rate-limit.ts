@@ -2,19 +2,18 @@ import { config } from "./config.js";
 
 type Counter = { count: number; resetAt: number };
 const ipCounters = new Map<string, Counter>();
-const sessionCounters = new Map<string, Counter>();
 
-function prune(map: Map<string, Counter>, now: number) {
-  for (const [key, value] of map) {
-    if (value.resetAt <= now) map.delete(key);
+function prune(now: number) {
+  for (const [key, value] of ipCounters) {
+    if (value.resetAt <= now) ipCounters.delete(key);
   }
 }
 
-function getCounter(map: Map<string, Counter>, key: string, now: number): Counter {
-  const existing = map.get(key);
+function getCounter(key: string, now: number): Counter {
+  const existing = ipCounters.get(key);
   if (existing && existing.resetAt > now) return existing;
   const next = { count: 0, resetAt: now + config.rateLimitWindowMs };
-  map.set(key, next);
+  ipCounters.set(key, next);
   return next;
 }
 
@@ -24,18 +23,21 @@ export function extractClientIp(forwarded: string | undefined, fallback = "unkno
   return first || fallback;
 }
 
-export function isLlmQuotaAvailable(ip: string, sessionId: string): boolean {
+/** True when this IP may still ask the LLM (does not increment). */
+export function isLlmQuotaAvailable(ip: string): boolean {
   const now = Date.now();
-  prune(ipCounters, now);
-  prune(sessionCounters, now);
-  return (
-    getCounter(ipCounters, ip, now).count < config.rateLimitMax &&
-    getCounter(sessionCounters, sessionId, now).count < config.rateLimitMax
-  );
+  prune(now);
+  return getCounter(ip, now).count < config.rateLimitMax;
 }
 
-export function consumeLlmQuota(ip: string, sessionId: string): void {
+/** Increment after a successful LLM call (not cache/idempotency). */
+export function consumeLlmQuota(ip: string): void {
   const now = Date.now();
-  getCounter(ipCounters, ip, now).count += 1;
-  getCounter(sessionCounters, sessionId, now).count += 1;
+  getCounter(ip, now).count += 1;
+}
+
+export function remainingQuota(ip: string): number {
+  const now = Date.now();
+  prune(now);
+  return Math.max(0, config.rateLimitMax - getCounter(ip, now).count);
 }

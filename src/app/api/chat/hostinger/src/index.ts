@@ -77,15 +77,7 @@ app.post("/api/portfolio/chat", async (c) => {
     return c.json({ status: "ok", reply: idempotent, cached: true });
   }
 
-  const cached = getCachedReply(messageHash);
-  if (cached) {
-    setIdempotentReply(idempotencyKey, cached);
-    appendSessionMessage(sessionId, "user", message);
-    appendSessionMessage(sessionId, "assistant", cached);
-    return c.json({ status: "ok", reply: cached, cached: true });
-  }
-
-  if (!isLlmQuotaAvailable(clientIp, sessionId)) {
+  if (!isLlmQuotaAvailable(clientIp)) {
     return c.json(
       {
         status: "limit_reached",
@@ -96,6 +88,14 @@ app.post("/api/portfolio/chat", async (c) => {
     );
   }
 
+  const cached = getCachedReply(messageHash);
+  if (cached) {
+    setIdempotentReply(idempotencyKey, cached);
+    appendSessionMessage(sessionId, "user", message);
+    appendSessionMessage(sessionId, "assistant", cached);
+    return c.json({ status: "ok", reply: cached, cached: true });
+  }
+
   setSessionBusy(sessionId, true);
   try {
     const history = getSessionMessages(sessionId);
@@ -104,7 +104,7 @@ app.post("/api/portfolio/chat", async (c) => {
       return c.json({ error: "unavailable" }, 503);
     }
 
-    consumeLlmQuota(clientIp, sessionId);
+    consumeLlmQuota(clientIp);
     setCachedReply(messageHash, reply);
     setIdempotentReply(idempotencyKey, reply);
     appendSessionMessage(sessionId, "user", message);
