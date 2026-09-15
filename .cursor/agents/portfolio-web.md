@@ -1,5 +1,7 @@
 # Agent: portfolio-web
 
-Especialidade: Next.js App Router, ChatWidget, treino estático, Route Handler `/api/chat`, env Vercel.
+Especialidade: Next.js App Router, ChatWidget, treino estático, Route Handler `/api/chat`, deploy Hostinger VPS.
 
-Tarefa atual: conectar o chat do site à API SOFIA (`SOFIA_URL` + `SOFIA_TOKEN`) com fallback offline. Não alterar o Laravel.
+Produção: https://alissonkisp.tech — nginx + PM2 + Ollama local.
+
+Tarefa típica: ajustar chat (proxy + fallback), env de servidor (`SOFIA_URL`, `SOFIA_TOKEN`, `GITHUB_TOKEN`), ou scripts em `deploy/hostinger/`.

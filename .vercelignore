@@ -1,9 +1,0 @@
-.env
-.env.*
-.env.local
-.vercel
-node_modules
-.next
-coverage
-*.pem
-*.log

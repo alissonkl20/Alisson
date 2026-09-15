@@ -39,9 +39,6 @@ yarn-error.log*
 # chat API build output (compile on VPS)
 src/app/api/chat/hostinger/dist/
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts

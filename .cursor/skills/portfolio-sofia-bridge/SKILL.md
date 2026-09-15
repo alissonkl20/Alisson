@@ -1,20 +1,21 @@
 ---
 name: portfolio-sofia-bridge
-description: Wires the Next.js portfolio ChatWidget to SOFIA IA via a server-only Route Handler. Use when working on ChatWidget, chatbot, /api/chat, SOFIA_URL, SOFIA_TOKEN, orçamento, or local LLM from the Vercel site.
+description: Portfolio ChatWidget wired to Hostinger VPS chat API (Hono + Ollama) via server-only Route Handler. Use for ChatWidget, /api/chat, SOFIA_URL, SOFIA_TOKEN, orçamento, or VPS deploy.
 ---
 
-# Portfolio → SOFIA (web)
+# Portfolio → chat Hostinger
 
-Read `/home/alisson/Documentos/sofia-ia/docs/vercel-portfolio-chat.md` and this repo `AGENTS.md` (section Portfólio).
+Read this repo `AGENTS.md` and `deploy/hostinger/README.md`.
 
 ## Do
 
 - Server-only `SOFIA_URL` + `SOFIA_TOKEN`
-- Keep static `getChatbotReply` as fallback
+- Keep static `createAssistantReply` / `bot/` as fallback
 - UUID `session_id` per visitor
 - Never put the token in client bundles
+- Deploy with `deploy/hostinger/deploy.sh` on the VPS
 
 ## Do not
 
-- Edit Laravel in `~/Documentos/sofia-ia`
 - Use `NEXT_PUBLIC_SOFIA_TOKEN`
+- Commit `.env.local` or `.env.production`

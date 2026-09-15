@@ -1,64 +1,60 @@
 # Deploy do portfólio na VPS Hostinger
 
-Migração completa da Vercel para a mesma VPS que já roda a API de chat (`chat.alissonkisp.tech`).
+Produção: **https://alissonkisp.tech**
 
 ## Arquitetura
 
 ```
-alissonkisp.tech (443) ──nginx──► Next.js :3000  (portfólio)
-chat.alissonkisp.tech (443) ──nginx──► Hono API :3100 + Ollama
+alissonkisp.tech (443) ──nginx──► Next.js :3000
+127.0.0.1:3100 ◄── Hono chat API + Ollama (só local, PM2)
+127.0.0.1:11434 ◄── Ollama
 ```
 
-Na VPS, o Next.js pode chamar o chat em `http://127.0.0.1:3100` (sem sair pela internet).
+O Next.js chama o chat em `http://127.0.0.1:3100` — não precisa expor a porta 3100 na internet.
 
 ## Pré-requisitos na VPS
 
 ```bash
-# Node 20+ (via nvm ou nodesource)
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nginx certbot python3-certbot-nginx
 sudo npm i -g pm2
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3.2:3b
 ```
 
-## 1. Clonar / atualizar o repo
+Setup inicial (uma vez): `bash deploy/hostinger/provision.sh`
+
+## 1. Clonar / atualizar
 
 ```bash
-cd /var/www
-sudo git clone git@github.com:alissonkl20/Alisson.git portfolio
-sudo chown -R $USER:$USER portfolio
-cd portfolio
+cd /var/www/portfolio   # git clone … ver histórico do repo
 git checkout develop
+git pull
 ```
 
 ## 2. Variáveis de ambiente
 
 ```bash
 cp deploy/hostinger/.env.example .env.production
-nano .env.production
+cp src/app/api/chat/hostinger/.env.example src/app/api/chat/hostinger/.env
+# editar tokens
 ```
 
 | Variável | Descrição |
 |----------|-----------|
-| `GITHUB_TOKEN` | PAT GitHub (mesmo da Vercel) |
-| `GITHUB_LOGIN` | Opcional; default em `data.ts` |
-| `SOFIA_URL` | `http://127.0.0.1:3100` na mesma VPS |
-| `SOFIA_TOKEN` | Igual a `PORTFOLIO_API_TOKEN` do chat |
-| `PORT` | `3000` (default) |
-
-Carregar no PM2:
-
-```bash
-set -a && source .env.production && set +a
-```
+| `GITHUB_TOKEN` | PAT GitHub (read repos/commits) |
+| `SOFIA_URL` | `http://127.0.0.1:3100` |
+| `SOFIA_TOKEN` | = `PORTFOLIO_API_TOKEN` do chat |
 
 ## 3. Build e PM2
 
 ```bash
-npm ci
-npm run build
+npm ci && npm run build
+cd src/app/api/chat/hostinger && npm ci && npm run build
+cd /var/www/portfolio
 pm2 start deploy/hostinger/ecosystem.config.cjs
-pm2 save
-pm2 startup   # seguir instrução do comando
+pm2 start src/app/api/chat/hostinger/ecosystem.config.cjs
+pm2 save && pm2 startup
 ```
 
 ## 4. Nginx + SSL
@@ -70,34 +66,16 @@ sudo nginx -t && sudo systemctl reload nginx
 sudo certbot --nginx -d alissonkisp.tech -d www.alissonkisp.tech
 ```
 
-## 5. DNS (hPanel ou MCP)
+## 5. Validar
 
-Apontar para o IP da VPS:
+- `https://alissonkisp.tech`
+- `https://alissonkisp.tech/api/cv`
+- Chat no widget (Ollama ou fallback estático)
+- `/api/github-stats`
 
-| Tipo | Nome | Valor |
-|------|------|-------|
-| A | `@` | IP da VPS |
-| A | `www` | IP da VPS |
-| A | `chat` | IP da VPS (já deve existir) |
-
-## 6. Validar
-
-- `https://alissonkisp.tech` — portfólio carrega
-- `https://alissonkisp.tech/api/cv` — PDF do CV
-- Chat no widget — resposta via Ollama ou fallback estático
-- Gráfico GitHub (usa `GITHUB_TOKEN`)
-
-## 7. Desligar Vercel
-
-Depois de validar DNS + SSL + chat:
-
-1. Remover alias `devkisper.vercel.app` ou apontar domínio custom na Vercel
-2. Opcional: pausar projeto na Vercel para não cobrar deploys
-
-## Deploy incremental (atualizações)
-
-Na VPS, na raiz do repo:
+## Deploy incremental
 
 ```bash
 bash deploy/hostinger/deploy.sh
+# ou, na raiz do repo: npm run deploy
 ```

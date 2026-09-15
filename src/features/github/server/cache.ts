@@ -6,7 +6,7 @@ import { fetchGitHubStats } from "./fetch-stats";
 const REVALIDATE_MS = REVALIDATE_SECONDS * 1000;
 
 /**
- * Data Cache da Vercel/Next: no máximo 1 ida ao GitHub a cada 6h,
+ * Data Cache do Next.js: no máximo 1 ida ao GitHub a cada 6h,
  * compartilhada entre todos os visitantes.
  */
 const readFromDataCache = unstable_cache(

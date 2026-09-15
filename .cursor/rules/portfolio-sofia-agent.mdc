@@ -1,12 +1,13 @@
 ---
-description: Portfólio Next.js — chat e ponte com SOFIA local. Sempre aplicar neste repo.
+description: Portfólio Next.js — chat Hostinger + Ollama na VPS. Sempre aplicar neste repo.
 alwaysApply: true
 ---
 
 # Agent portfólio (Alisson)
 
-- Chat público: `src/shared/ui/ChatWidget.tsx` + treino em `src/Api/`.
-- Ponte SOFIA: Route Handler no servidor; token nunca no client.
-- Fallback: bot estático se túnel/PC/LLM estiver down.
+- Chat: `src/app/api/chat/ui/ChatWidget.tsx` + treino estático em `src/app/api/chat/bot/`.
+- LLM: API Hono em `src/app/api/chat/hostinger/` (Ollama local na VPS).
+- Proxy: Route Handler `src/app/api/chat/route.ts`; token nunca no client.
+- Fallback: bot estático se API/LLM offline.
 - Nunca inventar preços de orçamento.
-- Não alterar o backend Laravel (`Documentos/sofia-ia`), só ler o contrato em `docs/vercel-portfolio-chat.md`.
+- Deploy: `deploy/hostinger/` — produção em https://alissonkisp.tech

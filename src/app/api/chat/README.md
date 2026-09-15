@@ -4,20 +4,20 @@ Everything related to the portfolio chatbot lives here.
 
 | Path | Role |
 |------|------|
-| `route.ts` | Vercel POST `/api/chat` proxy + guard |
-| `guard.ts` | Rate limit (5 LLM / IP / 24h) on Vercel |
-| `client.ts` | HTTP client to Hostinger API |
+| `route.ts` | POST `/api/chat` — server proxy + rate limit |
+| `guard.ts` | Rate limit (5 LLM / IP / 24h) on Next.js |
+| `client.ts` | HTTP client to Hostinger chat API |
 | `bot/` | Static preset fallback (offline) |
 | `ui/` | ChatWidget component |
 | `shared/` | Contact links (single source) |
-| `hostinger/` | Hono API + Ollama — deploy on VPS |
+| `hostinger/` | Hono API + Ollama — runs on VPS |
 
-## Vercel env
+## Env (server)
 
-- `SOFIA_URL` — HTTPS of Hostinger API (no trailing slash)
+- `SOFIA_URL` — chat API base URL (prod: `http://127.0.0.1:3100`)
 - `SOFIA_TOKEN` — same as `PORTFOLIO_API_TOKEN` on VPS
 - `CHAT_RATE_LIMIT_MAX` — optional, default `5`
 
-## Deploy VPS
+## Deploy
 
-See [hostinger/README.md](./hostinger/README.md).
+See [hostinger/README.md](./hostinger/README.md) and [deploy/hostinger/README.md](../../../../deploy/hostinger/README.md).

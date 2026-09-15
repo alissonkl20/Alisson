@@ -1,6 +1,6 @@
 /**
  * HTTP client for the Hostinger chat API — server only.
- * SOFIA_TOKEN must never be imported by "use client" components.
+ * SOFIA_URL / SOFIA_TOKEN must never be imported by "use client" components.
  */
 
 import type { ChatApiResult } from "./types";

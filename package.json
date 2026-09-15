@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy:prod": "bash ./production.sh"
+    "deploy": "bash deploy/hostinger/deploy.sh"
   },
   "dependencies": {
     "@react-three/fiber": "^10.0.0-canary.f5d9cbd",
