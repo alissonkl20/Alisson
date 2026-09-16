@@ -1,13 +1,12 @@
 ---
-description: Portfólio Next.js — chat Hostinger + Ollama na VPS. Sempre aplicar neste repo.
+description: Portfólio Next.js — chat estático na VPS. Sempre aplicar neste repo.
 alwaysApply: true
 ---
 
 # Agent portfólio (Alisson)
 
-- Chat: `src/app/api/chat/ui/ChatWidget.tsx` + treino estático em `src/app/api/chat/bot/`.
-- LLM: API Hono em `src/app/api/chat/hostinger/` (Ollama local na VPS).
-- Proxy: Route Handler `src/app/api/chat/route.ts`; token nunca no client.
-- Fallback: bot estático se API/LLM offline.
+- Chat: `src/app/api/chat/ui/ChatWidget.tsx` + treino em `src/app/api/chat/bot/`.
+- Route Handler `src/app/api/chat/route.ts` — só bot estático (`getChatbotReply`).
+- Sem LLM/Ollama. Pasta `hostinger/` é legado — não deployar.
 - Nunca inventar preços de orçamento.
 - Deploy: `deploy/hostinger/` — produção em https://alissonkisp.tech

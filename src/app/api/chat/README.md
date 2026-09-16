@@ -1,25 +1,23 @@
 # Chat module
 
-Everything related to the portfolio chatbot lives here.
+Static portfolio chatbot — no LLM.
 
 | Path | Role |
 |------|------|
-| `route.ts` | POST `/api/chat` — server proxy to VPS API |
-| `client.ts` | HTTP client to Hostinger chat API |
-| `bot/` | Static preset fallback (API offline only) |
+| `route.ts` | POST `/api/chat` — preset replies from `bot/` |
+| `bot/` | Training data + matcher (`treinamento.ts`, `replies.ts`) |
 | `ui/` | ChatWidget component |
-| `shared/` | Contact links (single source) |
-| `hostinger/` | Hono API + Ollama — runs on VPS |
 
-## Rate limit
+## Flow
 
-**10 LLM questions per IP per 24h**, enforced on the VPS API (`RATE_LIMIT_MAX`). Cached/idempotent repeats do not call Ollama again.
+1. `ChatWidget` → `POST /api/chat` with `session_id` + `message`.
+2. `getChatbotReply()` matches training/projects or returns the generic fallback.
+3. No Ollama, no external API, no rate limit.
 
-## Env (server)
+## Edit answers
 
-- `SOFIA_URL` — chat API base URL (prod: `http://127.0.0.1:3100`)
-- `SOFIA_TOKEN` — same as `PORTFOLIO_API_TOKEN` on VPS
+Update `bot/treinamento.ts` (triggers + responses). Rebuild and redeploy Next.js.
 
-## Deploy
+## Legacy (unused)
 
-See [hostinger/README.md](./hostinger/README.md) and [deploy/hostinger/README.md](../../../../deploy/hostinger/README.md).
+`hostinger/` and `knowledge/` were for the Ollama API — kept for reference only.

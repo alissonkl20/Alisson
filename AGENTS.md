@@ -14,20 +14,16 @@ Você é o **agent do portfólio**. Trabalhe **somente** neste repositório (`/d
 
 ## Produção
 
-Site em **https://alissonkisp.tech** na VPS Hostinger (nginx + PM2 + Next.js). Chat LLM via API Hono + Ollama local na mesma VPS (`src/app/api/chat/hostinger/`).
+Site em **https://alissonkisp.tech** na VPS Hostinger (nginx + PM2 + Next.js). Chat **estático** — sem LLM/Ollama.
 
 ## Chat
 
 1. `ChatWidget` (`src/app/api/chat/ui/`) → `POST /api/chat` (mesma origem).
-2. `route.ts` — proxy servidor + rate limit; token nunca no browser.
-3. `client.ts` — chama a API na VPS (`SOFIA_URL` + `SOFIA_TOKEN`, só servidor).
-4. `bot/` — fallback estático se LLM/API offline; **nunca inventar preços**.
-5. `session_id` UUID estável em localStorage.
+2. `route.ts` — `getChatbotReply()` em `bot/`; **nunca inventar preços**.
+3. `session_id` UUID estável em localStorage.
 
 ## Env (servidor)
 
-- `SOFIA_URL` — URL da API de chat (prod na VPS: `http://127.0.0.1:3100`)
-- `SOFIA_TOKEN` — igual a `PORTFOLIO_API_TOKEN` em `hostinger/.env`
 - `GITHUB_TOKEN` — stats GitHub (Route Handler `/api/github-stats`)
 - Ver `.env.example` e `deploy/hostinger/README.md`
 

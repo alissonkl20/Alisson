@@ -11,6 +11,7 @@ export type TrainingTopicId =
   | "pricing"
   | "contact"
   | "experience"
+  | "seniority"
   | "cv"
   | "thanks"
   | "help";
@@ -90,6 +91,15 @@ function pricingResponse(): string {
     "• Integrations, automations (RPA), APIs, local or cloud AI — each layer changes the effort",
     `${firstName} sizes the work before he proposes a stack or architecture, so you don't pay for complexity you don't need.`,
     `For a quote that fits your project, email is the best place to start: ${profile.email}.`,
+  ].join("\n\n");
+}
+
+function seniorityResponse(): string {
+  return [
+    `${firstName} is a full-stack developer with more than three years of experience.`,
+    "He delivers products end-to-end — REST APIs, business UIs, and production releases — using SDD, TDD, and system design.",
+    "Job titles vary by company, but on this site he's described as an experienced full-stack developer (3+ years), not strictly labeled junior, pleno, or senior.",
+    "For hiring, the best next step is email — he can walk through recent roles and fit for your team.",
   ].join("\n\n");
 }
 
@@ -303,6 +313,37 @@ export const CHATBOT_TRAINING: TrainingEntry[] = [
     priority: 3,
   },
   {
+    id: "seniority",
+    triggers: [
+      "junior",
+      "pleno",
+      "senior",
+      "sênior",
+      "senioridade",
+      "seniority",
+      "nivel",
+      "nível",
+      "level",
+      "carreira junior",
+      "carreira pleno",
+      "carreira senior",
+      "dev junior",
+      "dev pleno",
+      "dev senior",
+      "desenvolvedor junior",
+      "desenvolvedor pleno",
+      "desenvolvedor senior",
+      "desenvolvedor sênior",
+      "anos de experiencia",
+      "anos de experiência",
+      "years of experience",
+      "how experienced",
+    ],
+    response: seniorityResponse,
+    context: "Career level — 3+ years full-stack; not a fixed junior/pleno/senior label.",
+    priority: 6,
+  },
+  {
     id: "pricing",
     triggers: [
       "preco",
@@ -321,8 +362,10 @@ export const CHATBOT_TRAINING: TrainingEntry[] = [
       "quanto custa",
       "how much",
       "how much does it cost",
-      "quanto e",
-      "quanto é",
+      "quanto e o",
+      "quanto é o",
+      "quanto e a",
+      "quanto é a",
       "cobranca",
       "cobrança",
       "billing",

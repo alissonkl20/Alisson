@@ -14,10 +14,6 @@ fi
 
 npm install -g pm2
 
-if ! command -v ollama >/dev/null; then
-  curl -fsSL https://ollama.com/install.sh | sh
-fi
-
 mkdir -p /var/www/portfolio
 systemctl enable nginx
 systemctl start nginx

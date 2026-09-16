@@ -44,7 +44,7 @@ function levenshtein(a: string, b: string): number {
 }
 
 function maxEditDistance(word: string): number {
-  if (word.length <= 4) return 1;
+  if (word.length <= 5) return 1;
   if (word.length <= 7) return 2;
   return 3;
 }
@@ -118,16 +118,25 @@ function shouldPreferProjectReply(input: string, topic: TrainingTopicId | null):
   return titleWords.some((word) => normalized.includes(word));
 }
 
-export function getChatbotReply(input: string): string {
+function resolvePresetReply(input: string): string | null {
   const normalized = normalizeInput(input);
-  if (!normalized) return chatbotConfig.fallbackResponse;
+  if (!normalized) return null;
   const project = findProjectMatch(input);
   const match = findTrainingMatch(input);
   if (project && shouldPreferProjectReply(input, match?.id ?? null)) {
     return buildProjectResponse(project);
   }
   if (match) return resolveTrainingResponse(match.response);
-  return chatbotConfig.fallbackResponse;
+  return null;
+}
+
+/** Preset from training/projects only — null when the question would hit the generic fallback. */
+export function tryPresetReply(input: string): string | null {
+  return resolvePresetReply(input);
+}
+
+export function getChatbotReply(input: string): string {
+  return resolvePresetReply(input) ?? chatbotConfig.fallbackResponse;
 }
 
 export function createMessage(role: ChatRole, content: string, id = crypto.randomUUID()): ChatMessage {

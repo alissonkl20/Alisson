@@ -1,13 +1,14 @@
-# Portfolio chat API (Hostinger)
+# Portfolio chat API (Hostinger) — **deprecated**
 
-Hono + Ollama. Deploy this folder on your VPS.
+The site uses the static bot in `../bot/` only. This Hono + Ollama stack is kept for reference; do not deploy or run on the VPS.
 
 ## Setup
 
 ```bash
 # Install Ollama + model
 curl -fsSL https://ollama.com/install.sh | sh
-ollama pull llama3.2:3b
+ollama pull llama3.2:1b
+# Preset bot handles most questions; LLM loads on demand (OLLAMA_KEEP_ALIVE=0)
 
 # API
 cd src/app/api/chat/hostinger
@@ -36,6 +37,12 @@ server {
   }
 }
 ```
+
+## Atualizar conhecimento do chat
+
+1. Edite `../knowledge/portfolio/SKILL.md` (fatos) ou `rules.md` (regras)
+2. Seções usam header `## stack`, `## experience`, etc.
+3. Na VPS: `npm run build && pm2 restart portfolio-chat-api`
 
 ## Checklist
 

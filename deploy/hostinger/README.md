@@ -5,12 +5,10 @@ Produção: **https://alissonkisp.tech**
 ## Arquitetura
 
 ```
-alissonkisp.tech (443) ──nginx──► Next.js :3000
-127.0.0.1:3100 ◄── Hono chat API + Ollama (só local, PM2)
-127.0.0.1:11434 ◄── Ollama
+alissonkisp.tech (443) ──nginx──► Next.js :3000 (PM2)
 ```
 
-O Next.js chama o chat em `http://127.0.0.1:3100` — não precisa expor a porta 3100 na internet.
+Chat é **100% estático** — `POST /api/chat` usa `bot/treinamento.ts`. Sem Ollama nem API na porta 3100.
 
 ## Pré-requisitos na VPS
 
@@ -18,16 +16,14 @@ O Next.js chama o chat em `http://127.0.0.1:3100` — não precisa expor a porta
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nginx certbot python3-certbot-nginx
 sudo npm i -g pm2
-curl -fsSL https://ollama.com/install.sh | sh
-ollama pull llama3.2:3b
 ```
 
-Setup inicial (uma vez): `bash deploy/hostinger/provision.sh`
+Setup inicial (uma vez): `bash deploy/hostinger/provision.sh` (ignore Ollama se ainda estiver no script antigo).
 
 ## 1. Clonar / atualizar
 
 ```bash
-cd /var/www/portfolio   # git clone … ver histórico do repo
+cd /var/www/portfolio
 git checkout develop
 git pull
 ```
@@ -36,24 +32,19 @@ git pull
 
 ```bash
 cp deploy/hostinger/.env.example .env.production
-cp src/app/api/chat/hostinger/.env.example src/app/api/chat/hostinger/.env
-# editar tokens
+# editar GITHUB_TOKEN se necessário
 ```
 
 | Variável | Descrição |
 |----------|-----------|
 | `GITHUB_TOKEN` | PAT GitHub (read repos/commits) |
-| `SOFIA_URL` | `http://127.0.0.1:3100` |
-| `SOFIA_TOKEN` | = `PORTFOLIO_API_TOKEN` do chat |
+| `GITHUB_LOGIN` | Opcional |
 
 ## 3. Build e PM2
 
 ```bash
 npm ci && npm run build
-cd src/app/api/chat/hostinger && npm ci && npm run build
-cd /var/www/portfolio
 pm2 start deploy/hostinger/ecosystem.config.cjs
-pm2 start src/app/api/chat/hostinger/ecosystem.config.cjs
 pm2 save && pm2 startup
 ```
 
@@ -69,13 +60,20 @@ sudo certbot --nginx -d alissonkisp.tech -d www.alissonkisp.tech
 ## 5. Validar
 
 - `https://alissonkisp.tech`
-- `https://alissonkisp.tech/api/cv`
-- Chat no widget (Ollama ou fallback estático)
+- Chat no widget (respostas instantâneas, sem LLM)
 - `/api/github-stats`
+
+## Desligar Ollama (se ainda rodando)
+
+```bash
+pm2 delete portfolio-chat-api 2>/dev/null || true
+sudo systemctl stop ollama
+sudo systemctl disable ollama
+```
 
 ## Deploy incremental
 
 ```bash
 bash deploy/hostinger/deploy.sh
-# ou, na raiz do repo: npm run deploy
+# ou: npm run deploy
 ```

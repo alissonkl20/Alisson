@@ -17,5 +17,4 @@ export const chatbotConfig = {
   persistHistory: false,
   historyStorageKey: "portfolio-chat-history",
   sessionStorageKey: "portfolio-chat-session-id",
-  limitReachedStorageKey: "portfolio-chat-limit-reached",
 } as const;

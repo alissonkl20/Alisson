@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import { requestRemoteReply } from "./client";
-import { CONTACT_LINKS, LIMIT_REACHED_REPLY } from "./shared/contact-links";
-
-export const maxDuration = 60;
+import { getChatbotReply } from "./bot/replies";
 
 const NO_STORE = { "Cache-Control": "no-store" } as const;
 const UUID_PATTERN =
@@ -18,26 +15,11 @@ function readRequiredString(value: unknown): string | null {
   return trimmed.length ? trimmed : null;
 }
 
-function extractClientIp(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const first = forwarded.split(",")[0]?.trim();
-    if (first) return first;
-  }
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp) return realIp;
-  return "unknown";
-}
-
-function unavailable() {
-  return NextResponse.json({ error: "unavailable" }, { status: 503, headers: NO_STORE });
-}
-
 function invalidRequest() {
   return NextResponse.json({ error: "invalid_request" }, { status: 400, headers: NO_STORE });
 }
 
-/** POST /api/chat — proxy to Hostinger chat API; rate limit enforced there (10/IP/24h). */
+/** POST /api/chat — static preset bot only (no LLM). */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -54,42 +36,9 @@ export async function POST(request: Request) {
     return invalidRequest();
   }
 
-  const clientIp = extractClientIp(request);
-  const name = readRequiredString(body.name) ?? undefined;
-  const email = readRequiredString(body.email) ?? undefined;
-
-  try {
-    const result = await requestRemoteReply({
-      sessionId,
-      message,
-      clientIp,
-      name,
-      email,
-    });
-
-    if (result.kind === "limit_reached") {
-      return NextResponse.json(
-        {
-          status: "limit_reached",
-          reply: result.reply,
-          contact_links: result.contactLinks,
-        },
-        { status: 429, headers: NO_STORE },
-      );
-    }
-
-    if (result.kind === "busy") {
-      return NextResponse.json({ status: "busy" }, { status: 409, headers: NO_STORE });
-    }
-
-    if (result.kind === "unavailable") return unavailable();
-
-    const httpStatus = result.status === "queued" ? 202 : 200;
-    return NextResponse.json(
-      { reply: result.reply, status: result.status, cached: result.cached ?? false },
-      { status: httpStatus, headers: NO_STORE },
-    );
-  } catch {
-    return unavailable();
-  }
+  const reply = getChatbotReply(message);
+  return NextResponse.json(
+    { reply, status: "ok", source: "preset" },
+    { status: 200, headers: NO_STORE },
+  );
 }

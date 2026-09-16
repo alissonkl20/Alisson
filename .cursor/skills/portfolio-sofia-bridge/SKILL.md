@@ -1,21 +1,21 @@
 ---
 name: portfolio-sofia-bridge
-description: Portfolio ChatWidget wired to Hostinger VPS chat API (Hono + Ollama) via server-only Route Handler. Use for ChatWidget, /api/chat, SOFIA_URL, SOFIA_TOKEN, orçamento, or VPS deploy.
+description: Portfolio static ChatWidget via /api/chat Route Handler. Use for ChatWidget, chatbot, bot/treinamento, orçamento, or VPS deploy.
 ---
 
-# Portfolio → chat Hostinger
+# Portfolio chat (static)
 
-Read this repo `AGENTS.md` and `deploy/hostinger/README.md`.
+Read `AGENTS.md` and `deploy/hostinger/README.md`.
 
 ## Do
 
-- Server-only `SOFIA_URL` + `SOFIA_TOKEN`
-- Keep static `createAssistantReply` / `bot/` as fallback
+- Static replies from `src/app/api/chat/bot/treinamento.ts`
+- `POST /api/chat` → `getChatbotReply()` on the server
 - UUID `session_id` per visitor
-- Never put the token in client bundles
 - Deploy with `deploy/hostinger/deploy.sh` on the VPS
 
 ## Do not
 
-- Use `NEXT_PUBLIC_SOFIA_TOKEN`
+- Call Ollama or `hostinger/` API (legacy, unused)
+- Invent budget prices in chat
 - Commit `.env.local` or `.env.production`

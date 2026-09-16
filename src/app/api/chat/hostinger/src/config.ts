@@ -9,7 +9,9 @@ export const config = {
   port: readInt("PORT", 3100),
   token: process.env.PORTFOLIO_API_TOKEN?.trim() ?? "",
   ollamaBaseUrl: (process.env.OLLAMA_BASE_URL?.trim() || "http://127.0.0.1:11434").replace(/\/+$/, ""),
-  ollamaModel: process.env.OLLAMA_MODEL?.trim() || "llama3.2:3b",
+  ollamaModel: process.env.OLLAMA_MODEL?.trim() || "llama3.2:1b",
+  /** Unload model after each request when "0" — keeps idle RAM low on small VPS. */
+  ollamaKeepAlive: process.env.OLLAMA_KEEP_ALIVE?.trim() || "0",
   ollamaTimeoutMs: readInt("OLLAMA_TIMEOUT_MS", 120_000),
   rateLimitMax: readInt("RATE_LIMIT_MAX", 10),
   rateLimitWindowMs: readInt("RATE_LIMIT_WINDOW_MS", 86_400_000),

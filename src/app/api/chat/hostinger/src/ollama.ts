@@ -1,5 +1,5 @@
+import { buildSystemPrompt } from "./build-prompt.js";
 import { config } from "./config.js";
-import { SYSTEM_PROMPT } from "./system-prompt.js";
 
 type ChatTurn = { role: "user" | "assistant"; content: string };
 
@@ -17,7 +17,7 @@ export async function pingOllama(): Promise<boolean> {
 
 export async function chatWithOllama(history: ChatTurn[], userMessage: string): Promise<string | null> {
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: buildSystemPrompt(userMessage) },
     ...history.slice(-8),
     { role: "user", content: userMessage },
   ];
@@ -30,7 +30,8 @@ export async function chatWithOllama(history: ChatTurn[], userMessage: string): 
         model: config.ollamaModel,
         messages,
         stream: false,
-        options: { temperature: 0.15, top_p: 0.8, num_predict: 512 },
+        keep_alive: config.ollamaKeepAlive,
+        options: { temperature: 0.15, top_p: 0.8, num_predict: 512, num_ctx: 2048 },
       }),
       signal: AbortSignal.timeout(config.ollamaTimeoutMs),
       cache: "no-store",
